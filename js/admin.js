@@ -90,6 +90,14 @@
     if (att === false) return '<span class="badge badge--no">Declined</span>';
     return '<span class="badge badge--pending">Awaiting</span>';
   }
+  function rsvpSelect(att) {
+    var v = att === true ? 'yes' : att === false ? 'no' : '';
+    return '<select class="grow-rsvp grow-rsvp--' + (v || 'await') + '" aria-label="RSVP status">' +
+      '<option value=""' + (v === '' ? ' selected' : '') + '>Awaiting</option>' +
+      '<option value="yes"' + (v === 'yes' ? ' selected' : '') + '>Attending</option>' +
+      '<option value="no"' + (v === 'no' ? ' selected' : '') + '>Declined</option>' +
+      '</select>';
+  }
 
   function renderMetrics() {
     var total = guests.length;
@@ -109,16 +117,18 @@
     var name = g ? g.full_name : '';
     var phone = g ? (g.phone || '') : '';
     var email = g ? (g.email || '') : '';
+    var note = g ? (g.note || '') : '';
     var plus = g ? g.is_plus_one : false;
-    var status = g ? statusBadge(g.attending) : '<span class="badge badge--new">Unsaved</span>';
+    var att = g ? g.attending : null;
     return '<div class="grow' + (plus ? ' grow--plus' : '') + '" data-id="' + esc(id) + '" data-party="' + esc(partyKey) + '">' +
       '<input class="grow-name" type="text" value="' + esc(name) + '" placeholder="Full name" />' +
       '<label class="grow-plus-tog"><input type="checkbox"' + (plus ? ' checked' : '') + ' /> +1</label>' +
       '<input class="grow-phone" type="tel" value="' + esc(phone) + '" placeholder="Phone" />' +
       '<input class="grow-emailf" type="email" value="' + esc(email) + '" placeholder="Email" />' +
-      '<span class="grow-status">' + status + '</span>' +
+      rsvpSelect(att) +
       '<button class="grow-save" type="button">Save</button>' +
       '<button class="grow-del" type="button" title="Remove" aria-label="Remove">&#10005;</button>' +
+      '<input class="grow-note" type="text" value="' + esc(note) + '" placeholder="Note for us (optional)" />' +
       '</div>';
   }
 
@@ -155,23 +165,31 @@
     var name = row.querySelector('.grow-name').value.trim();
     var phone = row.querySelector('.grow-phone').value.trim();
     var email = row.querySelector('.grow-emailf').value.trim();
+    var note = row.querySelector('.grow-note').value.trim();
+    var rv = row.querySelector('.grow-rsvp').value;
+    var attending = rv === 'yes' ? true : rv === 'no' ? false : null;
     var plus = row.querySelector('.grow-plus-tog input').checked;
     if (!name) { setMsg(dashMsg, 'A name is required to save.', 'err'); return; }
     var btn = row.querySelector('.grow-save'); btn.disabled = true;
     var res = await sb.rpc('admin_save_guest', {
-      p_id: id, p_party_key: party, p_full_name: name, p_is_plus_one: plus, p_phone: phone, p_email: email
+      p_id: id, p_party_key: party, p_full_name: name, p_is_plus_one: plus,
+      p_phone: phone, p_email: email, p_attending: attending, p_note: note
     });
     btn.disabled = false;
     if (res.error) { setMsg(dashMsg, 'Could not save: ' + res.error.message, 'err'); return; }
     var saved = res.data;
     if (id) {
       var g = guests.filter(function (x) { return x.id === id; })[0];
-      if (g) { g.full_name = saved.full_name; g.phone = saved.phone; g.email = saved.email; g.is_plus_one = saved.is_plus_one; g.party_key = saved.party_key; }
+      if (g) {
+        g.full_name = saved.full_name; g.phone = saved.phone; g.email = saved.email;
+        g.is_plus_one = saved.is_plus_one; g.party_key = saved.party_key;
+        g.attending = saved.attending; g.note = saved.note; g.responded_at = saved.responded_at;
+      }
     } else {
       guests.push(saved); row.setAttribute('data-id', saved.id);
-      var st = row.querySelector('.grow-status'); if (st) st.innerHTML = statusBadge(saved.attending);
     }
     row.classList.toggle('grow--plus', plus);
+    row.querySelector('.grow-rsvp').className = 'grow-rsvp grow-rsvp--' + (rv || 'await');
     row.classList.add('grow--ok'); setTimeout(function () { row.classList.remove('grow--ok'); }, 1200);
     setMsg(dashMsg, 'Saved ' + esc(name) + '.', 'ok');
     renderMetrics();

@@ -147,12 +147,13 @@ $$;
 grant execute on function public.admin_list_guests() to authenticated;
 
 -- Add or edit a guest from the admin manager (allow-listed admins only).
--- p_phone / p_email write to the SAME guests.phone / guests.email columns that
--- submit_rsvp updates, so the admin manager and the RSVP form share one set of
--- contact fields (no duplicate/parallel contact data).
-drop function if exists public.admin_save_guest(uuid, text, text, boolean, text);
+-- phone, email, attending, and note all write to the SAME guests columns that
+-- submit_rsvp updates, so a manual RSVP from the admin and a guest's own RSVP
+-- land in one shared set of fields (no duplicate/parallel data).
+drop function if exists public.admin_save_guest(uuid, text, text, boolean, text, text);
 create or replace function public.admin_save_guest(
-  p_id uuid, p_party_key text, p_full_name text, p_is_plus_one boolean, p_phone text, p_email text
+  p_id uuid, p_party_key text, p_full_name text, p_is_plus_one boolean,
+  p_phone text, p_email text, p_attending boolean, p_note text
 ) returns public.guests
 language plpgsql security definer set search_path = public as $$
 declare result public.guests;
@@ -161,23 +162,30 @@ begin
     raise exception 'Not authorized';
   end if;
   if p_id is null then
-    insert into public.guests (party_key, full_name, is_plus_one, phone, email)
+    insert into public.guests (party_key, full_name, is_plus_one, phone, email, attending, note, responded_at)
     values (
       coalesce(nullif(btrim(p_party_key),''), 'party-' || substr(replace(gen_random_uuid()::text,'-',''),1,8)),
-      btrim(p_full_name), coalesce(p_is_plus_one,false), nullif(btrim(p_phone),''), nullif(btrim(p_email),'')
+      btrim(p_full_name), coalesce(p_is_plus_one,false), nullif(btrim(p_phone),''), nullif(btrim(p_email),''),
+      p_attending, nullif(btrim(p_note),''),
+      case when p_attending is not null then now() else null end
     ) returning * into result;
   else
     update public.guests set
-      party_key   = coalesce(nullif(btrim(p_party_key),''), party_key),
-      full_name   = btrim(p_full_name),
-      is_plus_one = coalesce(p_is_plus_one,false),
-      phone       = nullif(btrim(p_phone),''),
-      email       = nullif(btrim(p_email),'')
+      party_key    = coalesce(nullif(btrim(p_party_key),''), party_key),
+      full_name    = btrim(p_full_name),
+      is_plus_one  = coalesce(p_is_plus_one,false),
+      phone        = nullif(btrim(p_phone),''),
+      email        = nullif(btrim(p_email),''),
+      attending    = p_attending,
+      note         = nullif(btrim(p_note),''),
+      responded_at = case when p_attending is null then null
+                          when responded_at is null then now()
+                          else responded_at end
     where id = p_id returning * into result;
   end if;
   return result;
 end $$;
-grant execute on function public.admin_save_guest(uuid, text, text, boolean, text, text) to authenticated;
+grant execute on function public.admin_save_guest(uuid, text, text, boolean, text, text, boolean, text) to authenticated;
 
 -- Delete a guest from the admin manager (allow-listed admins only).
 create or replace function public.admin_delete_guest(p_id uuid)

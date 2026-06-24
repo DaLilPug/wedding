@@ -67,6 +67,11 @@
 .grow-name { flex: 2 1 180px; }
 .grow-phone { flex: 1 1 130px; }
 .grow-emailf { flex: 1 1 180px; }
+.grow-rsvp { flex: 1 1 120px; font-family: var(--sans); font-size: 13px; color: var(--ink); background: var(--ivory); border: 1px solid var(--line); border-radius: 3px; padding: 9px 10px; cursor: pointer; }
+.grow-rsvp:focus { outline: none; border-color: var(--sage); }
+.grow-rsvp--yes { background: #e3ebdd; color: var(--sage-deep); border-color: #cdd8c4; }
+.grow-rsvp--no { background: #efe1d8; color: #8a5238; border-color: #e2cbbd; }
+.grow-note { flex: 1 1 100%; }
 .grow-plus-tog { font-family: var(--sans); font-size: 12px; letter-spacing: 0.08em; color: var(--sage-deep); display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
 .grow-status { flex: 1 1 130px; display: flex; align-items: center; gap: 8px; }
 .grow-email { font-family: var(--sans); font-size: 12px; color: var(--ink-soft); }
