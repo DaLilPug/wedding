@@ -2,14 +2,16 @@
    main.js  -  nav, countdown, scroll reveals, photo fallback
    ========================================================= */
 
-/* Photo placeholder fallback (called inline from each <img onerror>) */
-function photoMissing(img) {
-  var box = img.closest('[data-photo]');
-  if (box) box.classList.add('photo--missing');
-}
+/* photoMissing() is defined inline in <head> so it exists before any image
+   finishes loading. This file only handles the rest of the page behavior. */
 
 document.addEventListener('DOMContentLoaded', function () {
   var cfg = window.WEDDING_CONFIG || {};
+
+  /* Catch any placeholder images that already errored before their handler ran */
+  document.querySelectorAll('[data-photo] img').forEach(function (img) {
+    if (img.complete && img.naturalWidth === 0 && typeof photoMissing === 'function') photoMissing(img);
+  });
 
   /* ---- Formatted dates from the config date ---- */
   if (cfg.weddingDateISO) {
