@@ -12,8 +12,8 @@ window.WEDDING_CONFIG = {
 
   // Supabase (leave blank to run in local demo mode) ----------------------
   // Project Settings -> API -> Project URL and "anon public" key.
-  supabaseUrl: "",
-  supabaseAnonKey: "",
+  supabaseUrl: "https://ugweqscwfbxsdecgruqw.supabase.co",
+  supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVnd2Vxc2N3ZmJ4c2RlY2dydXF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzMDcyNTksImV4cCI6MjA5Nzg4MzI1OX0.7WBJyPrDkiKgk4fvy49WBcV7Q9cRiDeBdIGDiR1zvyU",
 
   // RSVP options ----------------------------------------------------------
   // Add meal choices here to show a meal selector per attending guest.
