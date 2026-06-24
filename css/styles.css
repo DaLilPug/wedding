@@ -136,7 +136,7 @@ a { color: inherit; }
   font-family: var(--serif); font-size: 26px; font-weight: 500; letter-spacing: 0.18em;
   text-decoration: none; color: var(--cream); transition: color 0.35s;
 }
-.nav__brand span { color: var(--gold); }
+.nav__brand span { color: var(--gold-bright); }
 .nav__links { display: flex; align-items: center; gap: 30px; }
 .nav__links a {
   font-family: var(--sans); text-transform: uppercase; letter-spacing: 0.16em; font-size: 12.5px;
@@ -149,6 +149,7 @@ a { color: inherit; }
 /* nav once scrolled */
 .nav--solid { background: var(--cream); box-shadow: 0 1px 0 var(--line); padding: 0; }
 .nav--solid .nav__brand { color: var(--ink); }
+.nav--solid .nav__brand span { color: var(--gold); }
 .nav--solid .nav__links a { color: var(--ink); opacity: 0.85; }
 .nav--solid .nav__links a:hover { color: var(--sage-deep); }
 .nav--solid .nav__cta { border-color: var(--sage); }
