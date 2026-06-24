@@ -146,6 +146,45 @@ $$;
 -- Only signed-in users may call it; the function itself enforces the allowlist.
 grant execute on function public.admin_list_guests() to authenticated;
 
+-- Add or edit a guest from the admin manager (allow-listed admins only).
+create or replace function public.admin_save_guest(
+  p_id uuid, p_party_key text, p_full_name text, p_is_plus_one boolean, p_phone text
+) returns public.guests
+language plpgsql security definer set search_path = public as $$
+declare result public.guests;
+begin
+  if not exists (select 1 from public.admins where lower(email) = lower(coalesce(auth.jwt() ->> 'email',''))) then
+    raise exception 'Not authorized';
+  end if;
+  if p_id is null then
+    insert into public.guests (party_key, full_name, is_plus_one, phone)
+    values (
+      coalesce(nullif(btrim(p_party_key),''), 'party-' || substr(replace(gen_random_uuid()::text,'-',''),1,8)),
+      btrim(p_full_name), coalesce(p_is_plus_one,false), nullif(btrim(p_phone),'')
+    ) returning * into result;
+  else
+    update public.guests set
+      party_key   = coalesce(nullif(btrim(p_party_key),''), party_key),
+      full_name   = btrim(p_full_name),
+      is_plus_one = coalesce(p_is_plus_one,false),
+      phone       = nullif(btrim(p_phone),'')
+    where id = p_id returning * into result;
+  end if;
+  return result;
+end $$;
+grant execute on function public.admin_save_guest(uuid, text, text, boolean, text) to authenticated;
+
+-- Delete a guest from the admin manager (allow-listed admins only).
+create or replace function public.admin_delete_guest(p_id uuid)
+returns void language plpgsql security definer set search_path = public as $$
+begin
+  if not exists (select 1 from public.admins where lower(email) = lower(coalesce(auth.jwt() ->> 'email',''))) then
+    raise exception 'Not authorized';
+  end if;
+  delete from public.guests where id = p_id;
+end $$;
+grant execute on function public.admin_delete_guest(uuid) to authenticated;
+
 -- ---------------------------------------------------------
 -- Sample party so you can test search immediately. Delete it,
 -- then import your real list (see supabase/guests_template.csv).

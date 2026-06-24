@@ -51,3 +51,31 @@
   .admin-table { font-size: 15px; }
   .admin-controls input { min-width: 100%; }
 }
+
+/* ---- editable guest manager ---- */
+.admin-hint { font-family: var(--sans); font-size: 13px; line-height: 1.6; color: var(--ink-soft); margin: 0 0 18px; }
+.admin-list { display: flex; flex-direction: column; gap: 14px; }
+.party { background: var(--cream); border: 1px solid var(--line); border-radius: 6px; padding: 8px 14px 10px; }
+.grow { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px dashed var(--line); flex-wrap: wrap; border-radius: 4px; }
+.grow:last-of-type { border-bottom: none; }
+.grow--plus .grow-name { font-style: italic; }
+.grow input[type="text"], .grow input[type="tel"] {
+  font-family: var(--serif); font-size: 17px; color: var(--ink);
+  background: var(--ivory); border: 1px solid var(--line); border-radius: 3px; padding: 9px 11px;
+}
+.grow input:focus { outline: none; border-color: var(--sage); }
+.grow-name { flex: 2 1 190px; }
+.grow-phone { flex: 1 1 150px; }
+.grow-plus-tog { font-family: var(--sans); font-size: 12px; letter-spacing: 0.08em; color: var(--sage-deep); display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.grow-status { flex: 1 1 130px; display: flex; align-items: center; gap: 8px; }
+.grow-email { font-family: var(--sans); font-size: 12px; color: var(--ink-soft); }
+.grow-save { font-family: var(--sans); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; padding: 8px 16px; background: var(--sage); color: var(--cream); border: none; border-radius: 3px; cursor: pointer; }
+.grow-save:hover { background: var(--sage-deep); }
+.grow-save:disabled { opacity: 0.5; cursor: default; }
+.grow-del { background: none; border: 1px solid var(--line); color: var(--ink-soft); border-radius: 3px; width: 34px; height: 34px; cursor: pointer; }
+.grow-del:hover { border-color: #c2a08f; color: #a4533f; }
+.grow--ok { animation: growok 1.2s ease; }
+@keyframes growok { 0% { background: #e3ebdd; } 100% { background: transparent; } }
+.party-add { background: none; border: none; color: var(--sage-deep); font-family: var(--sans); font-size: 12px; letter-spacing: 0.06em; cursor: pointer; padding: 8px 0 2px; }
+.party-add:hover { color: var(--ink); text-decoration: underline; }
+.badge--new { background: #efe9d8; color: #8a7a3a; }
