@@ -1,0 +1,7 @@
+party_key,full_name,is_plus_one,phone
+sabella-oliinyk,Austin Sabella,false,
+sabella-oliinyk,Anastasiia Oliinyk,false,
+smith-household,Jordan Smith,false,+15555550101
+smith-household,Taylor Smith,false,+15555550102
+lee-guest,Morgan Lee,false,+15555550103
+lee-guest,Guest of Morgan Lee,true,

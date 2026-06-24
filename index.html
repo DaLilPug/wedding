@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Austin &amp; Anastasiia | April 23, 2027</title>
+  <meta name="description" content="Austin Sabella and Anastasiia Oliinyk are getting married on April 23, 2027. Join us." />
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%237E8C75'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='15' fill='%23F7F3EC' text-anchor='middle'%3EA%26A%3C/text%3E%3C/svg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&family=Tangerine:wght@400;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <script defer src="js/config.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="js/main.js"></script>
+  <script defer src="js/rsvp.js"></script>
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <header class="nav" id="nav">
+    <div class="nav__inner container">
+      <a href="#top" class="nav__brand">A <span>&amp;</span> A</a>
+      <button class="nav__toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav__links" id="navLinks">
+        <a href="#story">Our Story</a>
+        <a href="#details">The Day</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#travel">Travel</a>
+        <a href="#registry">Registry</a>
+        <a href="#faq">FAQ</a>
+        <a href="#rsvp" class="nav__cta">RSVP</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="top">
+    <div class="hero__media photo" data-photo>
+      <!-- Replace assets/photos/hero.jpg with your favorite full-width photo (landscape, high-res) -->
+      <img src="assets/photos/hero.jpg" alt="Austin and Anastasiia" onerror="photoMissing(this)" />
+      <span class="photo__hint">assets/photos/hero.jpg<small>your hero photo (wide, high-res)</small></span>
+    </div>
+    <div class="hero__overlay"></div>
+    <div class="hero__content reveal">
+      <p class="hero__eyebrow">We're getting married</p>
+      <h1 class="hero__names">Austin <span>&amp;</span> Anastasiia</h1>
+      <p class="hero__meta" id="heroDate">Friday, April 23, 2027</p>
+      <p class="hero__place">[City, State]</p>
+
+      <div class="countdown" id="countdown" aria-label="Countdown to the wedding">
+        <div class="countdown__unit"><span id="cdDays">--</span><label>Days</label></div>
+        <div class="countdown__unit"><span id="cdHours">--</span><label>Hours</label></div>
+        <div class="countdown__unit"><span id="cdMins">--</span><label>Minutes</label></div>
+        <div class="countdown__unit"><span id="cdSecs">--</span><label>Seconds</label></div>
+      </div>
+
+      <a href="#rsvp" class="btn btn--primary hero__btn">RSVP</a>
+    </div>
+    <a href="#story" class="hero__scroll" aria-label="Scroll down">scroll</a>
+  </section>
+
+  <!-- ===== OUR STORY ===== -->
+  <section class="section story" id="story">
+    <div class="container">
+      <div class="section__head reveal">
+        <p class="section__label">The beginning</p>
+        <h2 class="section__title">Our Story</h2>
+        <div class="section__rule"></div>
+      </div>
+
+      <div class="story__row reveal">
+        <div class="story__media photo" data-photo style="--ratio: 4/5">
+          <img src="assets/photos/story-1.jpg" alt="" onerror="photoMissing(this)" />
+          <span class="photo__hint">assets/photos/story-1.jpg<small>a photo of you two</small></span>
+        </div>
+        <div class="story__body">
+          <h3>How we met</h3>
+          <p>This is where your story begins. Share how the two of you met, the moment you knew, and the little things that make you, you. Keep it warm and a few sentences long.</p>
+          <p>You can edit every word of this on the page anytime. Replace the brackets and this paragraph with your real story.</p>
+        </div>
+      </div>
+
+      <div class="story__row story__row--reverse reveal">
+        <div class="story__media photo" data-photo style="--ratio: 4/5">
+          <img src="assets/photos/story-2.jpg" alt="" onerror="photoMissing(this)" />
+          <span class="photo__hint">assets/photos/story-2.jpg<small>the proposal</small></span>
+        </div>
+        <div class="story__body">
+          <h3>The proposal</h3>
+          <p>Tell everyone about the proposal. Where it happened, how it felt, and who was there to share it. A short, heartfelt paragraph is perfect.</p>
+          <p>And now, we would love to celebrate with the people we love most.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== INTERLUDE BANNER ===== -->
+  <section class="banner photo" data-photo aria-hidden="true">
+    <img src="assets/photos/banner.jpg" alt="" onerror="photoMissing(this)" />
+    <span class="photo__hint">assets/photos/banner.jpg<small>a wide, atmospheric photo</small></span>
+    <p class="banner__quote">"[A favorite line, a lyric, or a vow you both love.]"</p>
+  </section>
+
+  <!-- ===== THE DAY / DETAILS ===== -->
+  <section class="section details" id="details">
+    <div class="container">
+      <div class="section__head reveal">
+        <p class="section__label">Join us</p>
+        <h2 class="section__title">The Day</h2>
+        <div class="section__rule"></div>
+      </div>
+
+      <div class="details__grid reveal">
+        <div class="detail-card">
+          <p class="detail-card__label">When</p>
+          <p class="detail-card__big" id="detailsDate">Friday, April 23, 2027</p>
+          <p class="detail-card__sub">Ceremony begins at [4:00 PM]</p>
+        </div>
+        <div class="detail-card">
+          <p class="detail-card__label">Where</p>
+          <p class="detail-card__big">[Venue Name]</p>
+          <p class="detail-card__sub">[123 Street, City, State]</p>
+          <a class="link" href="[GOOGLE MAPS LINK]" target="_blank" rel="noopener">View map</a>
+        </div>
+        <div class="detail-card">
+          <p class="detail-card__label">Dress code</p>
+          <p class="detail-card__big">[Black tie optional]</p>
+          <p class="detail-card__sub">We can't wait to see you dressed up.</p>
+        </div>
+      </div>
+
+      <div class="timeline reveal">
+        <h3 class="timeline__title">Schedule</h3>
+        <div class="timeline__item"><span class="timeline__time">4:00 PM</span><span class="timeline__desc">Ceremony</span></div>
+        <div class="timeline__item"><span class="timeline__time">4:30 PM</span><span class="timeline__desc">Cocktail hour</span></div>
+        <div class="timeline__item"><span class="timeline__time">6:00 PM</span><span class="timeline__desc">Dinner &amp; toasts</span></div>
+        <div class="timeline__item"><span class="timeline__time">8:00 PM</span><span class="timeline__desc">Dancing</span></div>
+        <div class="timeline__item"><span class="timeline__time">11:00 PM</span><span class="timeline__desc">Send-off</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GALLERY ===== -->
+  <section class="section gallery" id="gallery">
+    <div class="container">
+      <div class="section__head reveal">
+        <p class="section__label">A few of our favorites</p>
+        <h2 class="section__title">Gallery</h2>
+        <div class="section__rule"></div>
+      </div>
+      <div class="gallery__grid reveal">
+        <div class="gallery__item photo" data-photo><img src="assets/photos/gallery-1.jpg" alt="" onerror="photoMissing(this)" /><span class="photo__hint">gallery-1.jpg</span></div>
+        <div class="gallery__item photo" data-photo><img src="assets/photos/gallery-2.jpg" alt="" onerror="photoMissing(this)" /><span class="photo__hint">gallery-2.jpg</span></div>
+        <div class="gallery__item photo" data-photo><img src="assets/photos/gallery-3.jpg" alt="" onerror="photoMissing(this)" /><span class="photo__hint">gallery-3.jpg</span></div>
+        <div class="gallery__item photo" data-photo><img src="assets/photos/gallery-4.jpg" alt="" onerror="photoMissing(this)" /><span class="photo__hint">gallery-4.jpg</span></div>
+        <div class="gallery__item photo" data-photo><img src="assets/photos/gallery-5.jpg" alt="" onerror="photoMissing(this)" /><span class="photo__hint">gallery-5.jpg</span></div>
+        <div class="gallery__item photo" data-photo><img src="assets/photos/gallery-6.jpg" alt="" onerror="photoMissing(this)" /><span class="photo__hint">gallery-6.jpg</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TRAVEL & STAY ===== -->
+  <section class="section travel" id="travel">
+    <div class="container">
+      <div class="section__head reveal">
+        <p class="section__label">Plan your trip</p>
+        <h2 class="section__title">Travel &amp; Stay</h2>
+        <div class="section__rule"></div>
+      </div>
+      <div class="cols reveal">
+        <div class="card">
+          <h3>Where to stay</h3>
+          <p>We've reserved a room block at <strong>[Hotel Name]</strong>. Mention "[Sabella-Oliinyk Wedding]" when booking by [date] for our group rate.</p>
+          <a class="link" href="[HOTEL LINK]" target="_blank" rel="noopener">Book your room</a>
+        </div>
+        <div class="card">
+          <h3>Getting there</h3>
+          <p>The nearest airport is <strong>[Airport]</strong>, about [XX] minutes from the venue. [Parking / shuttle / rideshare notes go here.]</p>
+        </div>
+        <div class="card">
+          <h3>Things to do</h3>
+          <p>Making a weekend of it? A few of our favorite spots nearby: [restaurant], [coffee], [thing to do].</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== REGISTRY ===== -->
+  <section class="section registry" id="registry">
+    <div class="container reveal">
+      <p class="section__label">If you wish</p>
+      <h2 class="section__title">Registry</h2>
+      <div class="section__rule"></div>
+      <p class="registry__lead">Your presence is the greatest gift. For those who have asked, we've put together a few things here.</p>
+      <div class="registry__links">
+        <a class="btn btn--outline" href="[REGISTRY LINK 1]" target="_blank" rel="noopener">[Registry name]</a>
+        <a class="btn btn--outline" href="[REGISTRY LINK 2]" target="_blank" rel="noopener">[Registry name]</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RSVP ===== -->
+  <section class="section rsvp" id="rsvp">
+    <div class="container">
+      <div class="section__head reveal">
+        <p class="section__label">We hope you'll join us</p>
+        <h2 class="section__title">RSVP</h2>
+        <div class="section__rule"></div>
+        <p class="rsvp__lead">Kindly respond by <strong>[March 23, 2027]</strong>. Search your name (or your partner's) to find your invitation.</p>
+      </div>
+
+      <div class="rsvp__card reveal">
+        <!-- Step 1: search -->
+        <div class="rsvp__step" id="rsvpStepSearch">
+          <div class="field">
+            <label class="field__label" for="rsvpName">Your name</label>
+            <input id="rsvpName" type="text" autocomplete="name" placeholder="First and last name" />
+          </div>
+          <button class="btn btn--primary" id="rsvpSearchBtn">Find my invitation</button>
+          <p class="rsvp__msg" id="rsvpSearchMsg" role="status"></p>
+        </div>
+
+        <!-- Step 2: respond (built by js/rsvp.js) -->
+        <div class="rsvp__step" id="rsvpStepRespond" hidden></div>
+
+        <!-- Step 3: done (built by js/rsvp.js) -->
+        <div class="rsvp__step" id="rsvpStepDone" hidden></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section class="section faq" id="faq">
+    <div class="container">
+      <div class="section__head reveal">
+        <p class="section__label">Good to know</p>
+        <h2 class="section__title">FAQ</h2>
+        <div class="section__rule"></div>
+      </div>
+      <div class="faq__list reveal">
+        <details class="faq__item"><summary>When should I RSVP by?</summary><p>Please RSVP by [March 23, 2027] so we can finalize numbers with our venue.</p></details>
+        <details class="faq__item"><summary>What is the dress code?</summary><p>[Black tie optional]. Think [a description of the vibe here].</p></details>
+        <details class="faq__item"><summary>Can I bring a guest?</summary><p>We've reserved seats for the names listed on your invitation. When you search your name in the RSVP, you'll see everyone included in your party.</p></details>
+        <details class="faq__item"><summary>Are kids welcome?</summary><p>[We love your little ones, but our celebration is adults only. / Children are welcome.]</p></details>
+        <details class="faq__item"><summary>Where do I park?</summary><p>[Parking and transportation details for the venue go here.]</p></details>
+        <details class="faq__item"><summary>Is the ceremony indoors or outdoors?</summary><p>[Ceremony location and weather notes go here.]</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <p class="footer__names">Austin <span>&amp;</span> Anastasiia</p>
+    <p class="footer__date">Friday, April 23, 2027</p>
+    <p class="footer__thanks">We can't wait to celebrate with you.</p>
+  </footer>
+
+</body>
+</html>
