@@ -108,14 +108,15 @@
     var id = g ? g.id : '';
     var name = g ? g.full_name : '';
     var phone = g ? (g.phone || '') : '';
+    var email = g ? (g.email || '') : '';
     var plus = g ? g.is_plus_one : false;
     var status = g ? statusBadge(g.attending) : '<span class="badge badge--new">Unsaved</span>';
-    var email = g && g.email ? '<span class="grow-email">' + esc(g.email) + '</span>' : '';
     return '<div class="grow' + (plus ? ' grow--plus' : '') + '" data-id="' + esc(id) + '" data-party="' + esc(partyKey) + '">' +
       '<input class="grow-name" type="text" value="' + esc(name) + '" placeholder="Full name" />' +
       '<label class="grow-plus-tog"><input type="checkbox"' + (plus ? ' checked' : '') + ' /> +1</label>' +
-      '<input class="grow-phone" type="tel" value="' + esc(phone) + '" placeholder="Phone (optional)" />' +
-      '<span class="grow-status">' + status + email + '</span>' +
+      '<input class="grow-phone" type="tel" value="' + esc(phone) + '" placeholder="Phone" />' +
+      '<input class="grow-emailf" type="email" value="' + esc(email) + '" placeholder="Email" />' +
+      '<span class="grow-status">' + status + '</span>' +
       '<button class="grow-save" type="button">Save</button>' +
       '<button class="grow-del" type="button" title="Remove" aria-label="Remove">&#10005;</button>' +
       '</div>';
@@ -153,18 +154,19 @@
     var party = row.getAttribute('data-party');
     var name = row.querySelector('.grow-name').value.trim();
     var phone = row.querySelector('.grow-phone').value.trim();
+    var email = row.querySelector('.grow-emailf').value.trim();
     var plus = row.querySelector('.grow-plus-tog input').checked;
     if (!name) { setMsg(dashMsg, 'A name is required to save.', 'err'); return; }
     var btn = row.querySelector('.grow-save'); btn.disabled = true;
     var res = await sb.rpc('admin_save_guest', {
-      p_id: id, p_party_key: party, p_full_name: name, p_is_plus_one: plus, p_phone: phone
+      p_id: id, p_party_key: party, p_full_name: name, p_is_plus_one: plus, p_phone: phone, p_email: email
     });
     btn.disabled = false;
     if (res.error) { setMsg(dashMsg, 'Could not save: ' + res.error.message, 'err'); return; }
     var saved = res.data;
     if (id) {
       var g = guests.filter(function (x) { return x.id === id; })[0];
-      if (g) { g.full_name = saved.full_name; g.phone = saved.phone; g.is_plus_one = saved.is_plus_one; g.party_key = saved.party_key; }
+      if (g) { g.full_name = saved.full_name; g.phone = saved.phone; g.email = saved.email; g.is_plus_one = saved.is_plus_one; g.party_key = saved.party_key; }
     } else {
       guests.push(saved); row.setAttribute('data-id', saved.id);
       var st = row.querySelector('.grow-status'); if (st) st.innerHTML = statusBadge(saved.attending);

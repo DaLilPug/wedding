@@ -59,13 +59,14 @@
 .grow { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px dashed var(--line); flex-wrap: wrap; border-radius: 4px; }
 .grow:last-of-type { border-bottom: none; }
 .grow--plus .grow-name { font-style: italic; }
-.grow input[type="text"], .grow input[type="tel"] {
+.grow input[type="text"], .grow input[type="tel"], .grow input[type="email"] {
   font-family: var(--serif); font-size: 17px; color: var(--ink);
   background: var(--ivory); border: 1px solid var(--line); border-radius: 3px; padding: 9px 11px;
 }
 .grow input:focus { outline: none; border-color: var(--sage); }
-.grow-name { flex: 2 1 190px; }
-.grow-phone { flex: 1 1 150px; }
+.grow-name { flex: 2 1 180px; }
+.grow-phone { flex: 1 1 130px; }
+.grow-emailf { flex: 1 1 180px; }
 .grow-plus-tog { font-family: var(--sans); font-size: 12px; letter-spacing: 0.08em; color: var(--sage-deep); display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
 .grow-status { flex: 1 1 130px; display: flex; align-items: center; gap: 8px; }
 .grow-email { font-family: var(--sans); font-size: 12px; color: var(--ink-soft); }

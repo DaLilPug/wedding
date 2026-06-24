@@ -147,8 +147,12 @@ $$;
 grant execute on function public.admin_list_guests() to authenticated;
 
 -- Add or edit a guest from the admin manager (allow-listed admins only).
+-- p_phone / p_email write to the SAME guests.phone / guests.email columns that
+-- submit_rsvp updates, so the admin manager and the RSVP form share one set of
+-- contact fields (no duplicate/parallel contact data).
+drop function if exists public.admin_save_guest(uuid, text, text, boolean, text);
 create or replace function public.admin_save_guest(
-  p_id uuid, p_party_key text, p_full_name text, p_is_plus_one boolean, p_phone text
+  p_id uuid, p_party_key text, p_full_name text, p_is_plus_one boolean, p_phone text, p_email text
 ) returns public.guests
 language plpgsql security definer set search_path = public as $$
 declare result public.guests;
@@ -157,22 +161,23 @@ begin
     raise exception 'Not authorized';
   end if;
   if p_id is null then
-    insert into public.guests (party_key, full_name, is_plus_one, phone)
+    insert into public.guests (party_key, full_name, is_plus_one, phone, email)
     values (
       coalesce(nullif(btrim(p_party_key),''), 'party-' || substr(replace(gen_random_uuid()::text,'-',''),1,8)),
-      btrim(p_full_name), coalesce(p_is_plus_one,false), nullif(btrim(p_phone),'')
+      btrim(p_full_name), coalesce(p_is_plus_one,false), nullif(btrim(p_phone),''), nullif(btrim(p_email),'')
     ) returning * into result;
   else
     update public.guests set
       party_key   = coalesce(nullif(btrim(p_party_key),''), party_key),
       full_name   = btrim(p_full_name),
       is_plus_one = coalesce(p_is_plus_one,false),
-      phone       = nullif(btrim(p_phone),'')
+      phone       = nullif(btrim(p_phone),''),
+      email       = nullif(btrim(p_email),'')
     where id = p_id returning * into result;
   end if;
   return result;
 end $$;
-grant execute on function public.admin_save_guest(uuid, text, text, boolean, text) to authenticated;
+grant execute on function public.admin_save_guest(uuid, text, text, boolean, text, text) to authenticated;
 
 -- Delete a guest from the admin manager (allow-listed admins only).
 create or replace function public.admin_delete_guest(p_id uuid)
