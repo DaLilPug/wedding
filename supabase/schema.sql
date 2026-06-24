@@ -43,16 +43,22 @@ language sql
 security definer
 set search_path = public
 as $$
+  with term as (
+    select btrim(q) as raw,
+           -- escape LIKE wildcards so % and _ are treated literally
+           replace(replace(replace(lower(btrim(q)), '\', '\\'), '%', '\%'), '_', '\_') as t
+  )
   select g.party_key,
          jsonb_agg(
            jsonb_build_object('id', g.id, 'name', g.full_name, 'attending', g.attending)
            order by g.is_plus_one, g.full_name
          ) as members
   from public.guests g
-  where g.party_key in (
-    select g2.party_key from public.guests g2
-    where lower(g2.full_name) like '%' || lower(btrim(q)) || '%'
-  )
+  where (select length(raw) from term) >= 2          -- ignore empty / 1-char probes
+    and g.party_key in (
+      select g2.party_key from public.guests g2
+      where lower(g2.full_name) like '%' || (select t from term) || '%' escape '\'
+    )
   group by g.party_key
   limit 10;
 $$;

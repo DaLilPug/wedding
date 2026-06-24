@@ -7,8 +7,8 @@ window.WEDDING_CONFIG = {
   coupleNames: "Austin & Anastasiia",
 
   // Ceremony date & time, ISO 8601 with timezone offset.
-  // April is EDT (-04:00) on the US East Coast. Change the time/offset to match.
-  weddingDateISO: "2027-04-23T16:00:00-04:00",
+  // April in Chicago is CDT (-05:00). Change the time to your real ceremony start.
+  weddingDateISO: "2027-04-23T16:00:00-05:00",
 
   // Supabase (leave blank to run in local demo mode) ----------------------
   // Project Settings -> API -> Project URL and "anon public" key.

@@ -118,13 +118,14 @@
 
   function renderTable() {
     var rows = currentRows();
-    var head = '<thead><tr>' +
-      ['Name', 'Party', 'Status', 'Email', 'Phone', 'Note', 'Responded']
-        .map(function (h) { return '<th>' + h + '</th>'; }).join('') +
-      '</tr></thead>';
+    var showMeal = guests.some(function (g) { return g.meal; });
+    var cols = ['Name', 'Party', 'Status', 'Email', 'Phone'];
+    if (showMeal) cols.push('Meal');
+    cols.push('Note', 'Responded');
+    var head = '<thead><tr>' + cols.map(function (h) { return '<th>' + h + '</th>'; }).join('') + '</tr></thead>';
     if (!rows.length) {
       document.getElementById('admTable').innerHTML = head +
-        '<tbody><tr><td colspan="7" class="admin-cell-muted">No guests to show.</td></tr></tbody>';
+        '<tbody><tr><td colspan="' + cols.length + '" class="admin-cell-muted">No guests to show.</td></tr></tbody>';
       return;
     }
     var body = rows.map(function (g) {
@@ -134,6 +135,7 @@
         '<td>' + statusBadge(g.attending) + '</td>' +
         '<td class="admin-cell-muted">' + esc(g.email) + '</td>' +
         '<td class="admin-cell-muted">' + esc(g.phone) + '</td>' +
+        (showMeal ? '<td class="admin-cell-muted">' + esc(g.meal) + '</td>' : '') +
         '<td class="admin-cell-muted">' + esc(g.note) + '</td>' +
         '<td class="admin-cell-muted">' + fmtDate(g.responded_at) + '</td>' +
         '</tr>';
@@ -172,7 +174,7 @@
 
   function downloadCsv() {
     var rows = currentRows();
-    var cols = ['party_key', 'full_name', 'is_plus_one', 'attending', 'email', 'phone', 'note', 'responded_at'];
+    var cols = ['party_key', 'full_name', 'is_plus_one', 'attending', 'email', 'phone', 'meal', 'note', 'responded_at'];
     function cell(v) {
       if (v === null || v === undefined) v = '';
       v = String(v);
