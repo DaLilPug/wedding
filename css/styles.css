@@ -63,7 +63,8 @@ a { color: inherit; }
   margin: 0;
   letter-spacing: 0.01em;
 }
-.section__rule { width: 64px; height: 1px; background: var(--gold); margin: 22px auto 0; }
+.ornament { display: block; width: 200px; max-width: 62%; height: 34px; margin: 22px auto 0; color: var(--gold); }
+.ornament--light { color: var(--gold); opacity: 0.92; }
 .section__head { text-align: center; margin-bottom: 64px; }
 
 .link {
@@ -207,13 +208,11 @@ a { color: inherit; }
 .rsvp { background: var(--ivory); }
 .faq { background: var(--cream); }
 
-/* ---------- STORY ---------- */
-.story__row { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(36px, 6vw, 88px); align-items: center; margin-bottom: clamp(56px, 8vw, 104px); }
-.story__row:last-child { margin-bottom: 0; }
-.story__media { aspect-ratio: var(--ratio, 4/5); border: 1px solid var(--line); }
-.story__body h3 { font-family: var(--serif); font-weight: 500; font-size: clamp(28px, 3.6vw, 40px); margin: 0 0 18px; }
-.story__body p { margin: 0 0 18px; color: #4a463f; }
-.story__row--reverse .story__media { order: 2; }
+/* ---------- STORY (photo-forward) ---------- */
+.story__intro { font-style: italic; font-size: clamp(20px, 2.6vw, 26px); color: #4a463f; max-width: 600px; margin: 18px auto 0; }
+.story__feature { aspect-ratio: var(--ratio, 16/9); border: 1px solid var(--line); margin-bottom: 16px; }
+.story__trio { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; }
+.story__trio .photo { aspect-ratio: var(--ratio, 1); border: 1px solid var(--line); }
 
 /* ---------- BANNER ---------- */
 .banner {
@@ -358,9 +357,7 @@ a { color: inherit; }
   body.nav-open .nav__toggle span:nth-child(2) { opacity: 0; }
   body.nav-open .nav__toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-  .story__row { grid-template-columns: 1fr; gap: 28px; }
-  .story__row--reverse .story__media { order: 0; }
-  .story__media { max-width: 460px; margin: 0 auto; width: 100%; }
+  .story__feature { aspect-ratio: 4/3; }
 
   .details__grid { grid-template-columns: 1fr; }
   .cols { grid-template-columns: 1fr; }

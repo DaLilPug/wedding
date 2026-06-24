@@ -79,17 +79,9 @@ or export the table to CSV from there.
 
 ---
 
-## 3. Buy your domain
+## 3. Domain
 
-All of these were available when I checked. Shortlist (`.com`):
-
-- `austinandana.com` (short, easy to type and say)
-- `austinandanastasiia.com` (full names, classic)
-- `anaandaustin.com`
-- `sabellawedding.com`
-
-Buy at **Cloudflare** (at-cost, ~$10/yr, no upsells) or **Namecheap**. Then
-point it at GitHub Pages in step 4.
+Domain purchased: **sabellawedding.com**. Point it at GitHub Pages in step 4.
 
 ---
 
@@ -112,7 +104,7 @@ In the repo on GitHub: **Settings → Pages → Build from a branch → `main` /
 
 1. **Settings → Pages → Custom domain**: enter your domain, Save. This creates a
    `CNAME` file in the repo.
-2. At your registrar's DNS, for an apex domain (e.g. `austinandana.com`) add:
+2. At your registrar's DNS, for the apex domain `sabellawedding.com` add:
    ```
    A     @   185.199.108.153
    A     @   185.199.109.153
@@ -141,3 +133,28 @@ Re-deploy any change with:
 ```bash
 git add . && git commit -m "Update" && git push
 ```
+
+---
+
+## 6. Your RSVP dashboard (admin)
+
+A private dashboard lives at `sabellawedding.com/admin.html`. It shows every
+guest, who's attending, their email and phone, and lets you copy all phone
+numbers or download a CSV for reminders. The page is public, but the guest data
+is only returned to a signed-in, allow-listed account, so a stray visitor sees
+only a login box.
+
+One-time setup in Supabase:
+1. **Authentication → Users → Add user**: create a login (email + password) for
+   you and one for Anastasiia. Tick **Auto Confirm User**.
+2. **SQL Editor**, run with your real addresses (this keeps emails out of the
+   public repo):
+   ```sql
+   insert into public.admins (email) values
+     ('austin@uptown.com'),
+     ('anastasiia@example.com');
+   ```
+
+Then visit `/admin.html`, sign in, and you're looking at live RSVPs. Use the
+filter box to narrow by name or party; "Copy phone numbers" and "Download CSV"
+act on whatever is currently shown.

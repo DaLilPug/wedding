@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Austin &amp; Anastasiia | April 23, 2027</title>
-  <meta name="description" content="Austin Sabella and Anastasiia Oliinyk are getting married on April 23, 2027. Join us." />
+  <meta name="description" content="Austin Sabella and Anastasiia Oliinyk are getting married on April 23, 2027 at Promontory Point in Chicago. Join us." />
 
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%237E8C75'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='15' fill='%23F7F3EC' text-anchor='middle'%3EA%26A%3C/text%3E%3C/svg%3E" />
 
@@ -20,6 +20,26 @@
   <script defer src="js/rsvp.js"></script>
 </head>
 <body>
+
+  <!-- Reusable wheat ornament (a subtle nod to Anastasiia's Ukraine) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="wheat" viewBox="0 0 220 40">
+      <g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round">
+        <line x1="6" y1="20" x2="78" y2="20" />
+        <line x1="142" y1="20" x2="214" y2="20" />
+        <circle cx="78" cy="20" r="1.6" fill="currentColor" stroke="none" />
+        <circle cx="142" cy="20" r="1.6" fill="currentColor" stroke="none" />
+        <g stroke-width="1.4">
+          <line x1="110" y1="37" x2="110" y2="5" />
+          <line x1="110" y1="34" x2="101" y2="28" /><line x1="110" y1="34" x2="119" y2="28" />
+          <line x1="110" y1="29" x2="102" y2="23.5" /><line x1="110" y1="29" x2="118" y2="23.5" />
+          <line x1="110" y1="24" x2="103" y2="19" /><line x1="110" y1="24" x2="117" y2="19" />
+          <line x1="110" y1="19" x2="104" y2="14.5" /><line x1="110" y1="19" x2="116" y2="14.5" />
+          <line x1="110" y1="14" x2="105.5" y2="10.5" /><line x1="110" y1="14" x2="114.5" y2="10.5" />
+        </g>
+      </g>
+    </symbol>
+  </svg>
 
   <!-- ===== NAV ===== -->
   <header class="nav" id="nav">
@@ -52,7 +72,7 @@
       <p class="hero__eyebrow">We're getting married</p>
       <h1 class="hero__names">Austin <span>&amp;</span> Anastasiia</h1>
       <p class="hero__meta" id="heroDate">Friday, April 23, 2027</p>
-      <p class="hero__place">[City, State]</p>
+      <p class="hero__place">Chicago, Illinois</p>
 
       <div class="countdown" id="countdown" aria-label="Countdown to the wedding">
         <div class="countdown__unit"><span id="cdDays">--</span><label>Days</label></div>
@@ -66,36 +86,34 @@
     <a href="#story" class="hero__scroll" aria-label="Scroll down">scroll</a>
   </section>
 
-  <!-- ===== OUR STORY ===== -->
+  <!-- ===== OUR STORY (photo-forward, minimal text) ===== -->
   <section class="section story" id="story">
     <div class="container">
       <div class="section__head reveal">
-        <p class="section__label">The beginning</p>
+        <p class="section__label">The two of us</p>
         <h2 class="section__title">Our Story</h2>
-        <div class="section__rule"></div>
+        <svg class="ornament" aria-hidden="true"><use href="#wheat"></use></svg>
+        <p class="story__intro">Our story, in pictures.</p>
       </div>
 
-      <div class="story__row reveal">
-        <div class="story__media photo" data-photo style="--ratio: 4/5">
+      <div class="story__collage reveal">
+        <div class="story__feature photo" data-photo style="--ratio: 16/9">
           <img src="assets/photos/story-1.jpg" alt="" onerror="photoMissing(this)" />
-          <span class="photo__hint">assets/photos/story-1.jpg<small>a photo of you two</small></span>
+          <span class="photo__hint">assets/photos/story-1.jpg<small>a favorite of the two of you</small></span>
         </div>
-        <div class="story__body">
-          <h3>How we met</h3>
-          <p>This is where your story begins. Share how the two of you met, the moment you knew, and the little things that make you, you. Keep it warm and a few sentences long.</p>
-          <p>You can edit every word of this on the page anytime. Replace the brackets and this paragraph with your real story.</p>
-        </div>
-      </div>
-
-      <div class="story__row story__row--reverse reveal">
-        <div class="story__media photo" data-photo style="--ratio: 4/5">
-          <img src="assets/photos/story-2.jpg" alt="" onerror="photoMissing(this)" />
-          <span class="photo__hint">assets/photos/story-2.jpg<small>the proposal</small></span>
-        </div>
-        <div class="story__body">
-          <h3>The proposal</h3>
-          <p>Tell everyone about the proposal. Where it happened, how it felt, and who was there to share it. A short, heartfelt paragraph is perfect.</p>
-          <p>And now, we would love to celebrate with the people we love most.</p>
+        <div class="story__trio">
+          <div class="photo" data-photo style="--ratio: 1">
+            <img src="assets/photos/story-2.jpg" alt="" onerror="photoMissing(this)" />
+            <span class="photo__hint">story-2.jpg</span>
+          </div>
+          <div class="photo" data-photo style="--ratio: 1">
+            <img src="assets/photos/story-3.jpg" alt="" onerror="photoMissing(this)" />
+            <span class="photo__hint">story-3.jpg</span>
+          </div>
+          <div class="photo" data-photo style="--ratio: 1">
+            <img src="assets/photos/story-4.jpg" alt="" onerror="photoMissing(this)" />
+            <span class="photo__hint">story-4.jpg</span>
+          </div>
         </div>
       </div>
     </div>
@@ -114,7 +132,7 @@
       <div class="section__head reveal">
         <p class="section__label">Join us</p>
         <h2 class="section__title">The Day</h2>
-        <div class="section__rule"></div>
+        <svg class="ornament" aria-hidden="true"><use href="#wheat"></use></svg>
       </div>
 
       <div class="details__grid reveal">
@@ -125,9 +143,9 @@
         </div>
         <div class="detail-card">
           <p class="detail-card__label">Where</p>
-          <p class="detail-card__big">[Venue Name]</p>
-          <p class="detail-card__sub">[123 Street, City, State]</p>
-          <a class="link" href="[GOOGLE MAPS LINK]" target="_blank" rel="noopener">View map</a>
+          <p class="detail-card__big">Promontory Point</p>
+          <p class="detail-card__sub">Burnham Park, on the Chicago lakefront<br />5491 S. DuSable Lake Shore Dr, Chicago, IL 60615</p>
+          <a class="link" href="https://www.google.com/maps/search/?api=1&amp;query=Promontory+Point+Burnham+Park+Chicago" target="_blank" rel="noopener">View map</a>
         </div>
         <div class="detail-card">
           <p class="detail-card__label">Dress code</p>
@@ -153,7 +171,7 @@
       <div class="section__head reveal">
         <p class="section__label">A few of our favorites</p>
         <h2 class="section__title">Gallery</h2>
-        <div class="section__rule"></div>
+        <svg class="ornament" aria-hidden="true"><use href="#wheat"></use></svg>
       </div>
       <div class="gallery__grid reveal">
         <div class="gallery__item photo" data-photo><img src="assets/photos/gallery-1.jpg" alt="" onerror="photoMissing(this)" /><span class="photo__hint">gallery-1.jpg</span></div>
@@ -162,6 +180,9 @@
         <div class="gallery__item photo" data-photo><img src="assets/photos/gallery-4.jpg" alt="" onerror="photoMissing(this)" /><span class="photo__hint">gallery-4.jpg</span></div>
         <div class="gallery__item photo" data-photo><img src="assets/photos/gallery-5.jpg" alt="" onerror="photoMissing(this)" /><span class="photo__hint">gallery-5.jpg</span></div>
         <div class="gallery__item photo" data-photo><img src="assets/photos/gallery-6.jpg" alt="" onerror="photoMissing(this)" /><span class="photo__hint">gallery-6.jpg</span></div>
+        <div class="gallery__item photo" data-photo><img src="assets/photos/gallery-7.jpg" alt="" onerror="photoMissing(this)" /><span class="photo__hint">gallery-7.jpg</span></div>
+        <div class="gallery__item photo" data-photo><img src="assets/photos/gallery-8.jpg" alt="" onerror="photoMissing(this)" /><span class="photo__hint">gallery-8.jpg</span></div>
+        <div class="gallery__item photo" data-photo><img src="assets/photos/gallery-9.jpg" alt="" onerror="photoMissing(this)" /><span class="photo__hint">gallery-9.jpg</span></div>
       </div>
     </div>
   </section>
@@ -172,7 +193,7 @@
       <div class="section__head reveal">
         <p class="section__label">Plan your trip</p>
         <h2 class="section__title">Travel &amp; Stay</h2>
-        <div class="section__rule"></div>
+        <svg class="ornament" aria-hidden="true"><use href="#wheat"></use></svg>
       </div>
       <div class="cols reveal">
         <div class="card">
@@ -182,7 +203,7 @@
         </div>
         <div class="card">
           <h3>Getting there</h3>
-          <p>The nearest airport is <strong>[Airport]</strong>, about [XX] minutes from the venue. [Parking / shuttle / rideshare notes go here.]</p>
+          <p>The Point sits in Hyde Park on the lakefront. Flying in? <strong>Midway (MDW)</strong> is about 25 minutes away and <strong>O'Hare (ORD)</strong> about 40. Rideshare drops you right at 55th Street.</p>
         </div>
         <div class="card">
           <h3>Things to do</h3>
@@ -197,7 +218,7 @@
     <div class="container reveal">
       <p class="section__label">If you wish</p>
       <h2 class="section__title">Registry</h2>
-      <div class="section__rule"></div>
+      <svg class="ornament" aria-hidden="true"><use href="#wheat"></use></svg>
       <p class="registry__lead">Your presence is the greatest gift. For those who have asked, we've put together a few things here.</p>
       <div class="registry__links">
         <a class="btn btn--outline" href="[REGISTRY LINK 1]" target="_blank" rel="noopener">[Registry name]</a>
@@ -212,7 +233,7 @@
       <div class="section__head reveal">
         <p class="section__label">We hope you'll join us</p>
         <h2 class="section__title">RSVP</h2>
-        <div class="section__rule"></div>
+        <svg class="ornament" aria-hidden="true"><use href="#wheat"></use></svg>
         <p class="rsvp__lead">Kindly respond by <strong>[March 23, 2027]</strong>. Search your name (or your partner's) to find your invitation.</p>
       </div>
 
@@ -242,15 +263,15 @@
       <div class="section__head reveal">
         <p class="section__label">Good to know</p>
         <h2 class="section__title">FAQ</h2>
-        <div class="section__rule"></div>
+        <svg class="ornament" aria-hidden="true"><use href="#wheat"></use></svg>
       </div>
       <div class="faq__list reveal">
         <details class="faq__item"><summary>When should I RSVP by?</summary><p>Please RSVP by [March 23, 2027] so we can finalize numbers with our venue.</p></details>
         <details class="faq__item"><summary>What is the dress code?</summary><p>[Black tie optional]. Think [a description of the vibe here].</p></details>
         <details class="faq__item"><summary>Can I bring a guest?</summary><p>We've reserved seats for the names listed on your invitation. When you search your name in the RSVP, you'll see everyone included in your party.</p></details>
         <details class="faq__item"><summary>Are kids welcome?</summary><p>[We love your little ones, but our celebration is adults only. / Children are welcome.]</p></details>
-        <details class="faq__item"><summary>Where do I park?</summary><p>[Parking and transportation details for the venue go here.]</p></details>
-        <details class="faq__item"><summary>Is the ceremony indoors or outdoors?</summary><p>[Ceremony location and weather notes go here.]</p></details>
+        <details class="faq__item"><summary>Where do I park, and how do I get to the ceremony?</summary><p>Promontory Point is a short walk from parking. [Exact parking location and details to come.] We'll have a golf cart shuttling guests to and from the parking area throughout the day, so the walk is covered if you'd rather ride.</p></details>
+        <details class="faq__item"><summary>Is the ceremony indoors or outdoors?</summary><p>We'll be celebrating outdoors at Promontory Point, right on the Chicago lakefront. [Add any weather or backup-plan notes here.]</p></details>
       </div>
     </div>
   </section>
@@ -259,6 +280,7 @@
   <footer class="footer">
     <p class="footer__names">Austin <span>&amp;</span> Anastasiia</p>
     <p class="footer__date">Friday, April 23, 2027</p>
+    <svg class="ornament ornament--light" aria-hidden="true"><use href="#wheat"></use></svg>
     <p class="footer__thanks">We can't wait to celebrate with you.</p>
   </footer>
 

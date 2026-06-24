@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>RSVP Dashboard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+
+  <script defer src="js/config.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="js/admin.js"></script>
+</head>
+<body class="admin-body">
+
+  <!-- LOGIN -->
+  <div class="admin-login" id="adminLogin">
+    <div class="rsvp__card">
+      <h1 class="admin-title">RSVP Dashboard</h1>
+      <p class="admin-sub">Sign in to view responses for Austin &amp; Anastasiia.</p>
+      <div class="field">
+        <label class="field__label" for="admEmail">Email</label>
+        <input id="admEmail" type="email" autocomplete="username" placeholder="you@email.com" />
+      </div>
+      <div class="field">
+        <label class="field__label" for="admPass">Password</label>
+        <input id="admPass" type="password" autocomplete="current-password" placeholder="Password" />
+      </div>
+      <button class="btn btn--primary" id="admLoginBtn">Sign in</button>
+      <p class="admin-msg" id="admMsg" role="status"></p>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="admin-wrap" id="adminDash" hidden>
+    <div class="admin-head">
+      <h1>RSVPs</h1>
+      <div class="admin-head__actions">
+        <button class="rsvp__back" id="admRefresh">Refresh</button>
+        <button class="rsvp__back" id="admSignout">Sign out</button>
+      </div>
+    </div>
+
+    <div class="admin-metrics" id="admMetrics"></div>
+
+    <div class="admin-controls">
+      <input id="admSearch" type="search" placeholder="Filter by name or party..." />
+      <button class="btn btn--outline" id="admCopyPhones">Copy phone numbers</button>
+      <button class="btn btn--outline" id="admCsv">Download CSV</button>
+    </div>
+
+    <div class="admin-tablewrap">
+      <table class="admin-table" id="admTable"></table>
+    </div>
+    <p class="admin-msg" id="admDashMsg" role="status"></p>
+  </div>
+
+</body>
+</html>

@@ -100,6 +100,46 @@ $$;
 grant execute on function public.search_party(text) to anon, authenticated;
 grant execute on function public.submit_rsvp(text, jsonb, text, text, text) to anon, authenticated;
 
+-- =========================================================
+--  ADMIN ACCESS  (for the RSVP dashboard at /admin.html)
+--
+--  Setup, both steps done in Supabase (not in any committed file):
+--   1. Authentication -> Users -> Add user. Create a login (email +
+--      password) for you and for Anastasiia. Tick "Auto Confirm User".
+--   2. Allowlist those SAME emails by running, here in the SQL editor,
+--      with your real addresses:
+--         insert into public.admins (email) values
+--           ('austin@uptown.com'), ('anastasiia@example.com');
+--
+--  Only an allow-listed, signed-in user can read the guest list. The
+--  public anon key cannot reach it.
+-- =========================================================
+create table if not exists public.admins ( email text primary key );
+alter table public.admins enable row level security;   -- locked; manage via SQL editor
+
+create or replace function public.admin_list_guests()
+returns setof public.guests
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if not exists (
+    select 1 from public.admins
+    where lower(email) = lower(coalesce(auth.jwt() ->> 'email', ''))
+  ) then
+    raise exception 'Not authorized';
+  end if;
+
+  return query
+    select * from public.guests
+    order by party_key, is_plus_one, full_name;
+end;
+$$;
+
+-- Only signed-in users may call it; the function itself enforces the allowlist.
+grant execute on function public.admin_list_guests() to authenticated;
+
 -- ---------------------------------------------------------
 -- Sample party so you can test search immediately. Delete it,
 -- then import your real list (see supabase/guests_template.csv).
