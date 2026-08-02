@@ -896,3 +896,24 @@ body{
   color:var(--cream);
   border-color:var(--gold);
 }
+
+/* ==========================================================
+   GOLD PUG ICON - ornaments and timeline markers (raster art)
+   ========================================================== */
+img.ornament--pug{width:auto;height:48px;display:block;margin:16px auto 0}
+.footer img.ornament--pug{margin:0 auto 8px}
+img.wheat--pug{width:auto;height:44px;display:block;margin:0 auto}
+.hero--painted .hero__rule{margin:12px 0 0}
+.timeline__dot{
+  background:var(--cream) url("../assets/photos/pug-icon.png?v=22") center/76% no-repeat;
+  border:1px solid rgba(183,154,91,.5);border-radius:50%;
+  box-shadow:0 0 0 4px var(--cream);
+  width:32px;height:32px;left:-44px;top:-2px;
+}
+@media (min-width:861px){
+  .timeline__dot{width:34px;height:34px;left:-53px}
+}
+
+/* hero pug: win the sizing cascade over legacy .wheat rules */
+.hero--painted .hero__rule .wheat,
+.hero--painted .hero__rule img.wheat--pug{width:auto;height:48px;opacity:1}
