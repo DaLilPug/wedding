@@ -1004,3 +1004,46 @@ body.nav-open .nav__cta:hover{background:var(--gold-bright);color:var(--sage-dar
 .nav{left:0;right:0;transform:none;margin:0 auto}
 body.nav-open{overflow:hidden}
 .hero__scroll{display:none}
+
+/* ==========================================================
+   LIVING WATERCOLOR - ambient blooms in every section
+   (pseudo-element washes on slow drift loops; content unaffected)
+   ========================================================== */
+.section,.band,.footer{position:relative;overflow:hidden}
+.section::before,.section::after,
+.band::before,.band::after,
+.footer::before{
+  content:"";position:absolute;z-index:-1;pointer-events:none;
+  width:62%;aspect-ratio:1;border-radius:55% 45% 60% 40%/50% 58% 42% 50%;
+  filter:blur(clamp(28px,5vw,52px));
+}
+.band::before{left:-18%;top:-20%;background:radial-gradient(closest-side,rgba(158,208,196,.5),transparent 72%);mix-blend-mode:multiply;animation:blobA 30s ease-in-out infinite alternate}
+.band::after{right:-16%;bottom:-24%;background:radial-gradient(closest-side,rgba(233,178,172,.45),transparent 72%);mix-blend-mode:multiply;animation:blobB 38s ease-in-out -9s infinite alternate}
+.story::before{right:-16%;top:-10%;background:radial-gradient(closest-side,rgba(233,178,172,.4),transparent 72%);mix-blend-mode:multiply;animation:blobB 34s ease-in-out infinite alternate}
+.story::after{left:-18%;bottom:-14%;background:radial-gradient(closest-side,rgba(139,172,214,.38),transparent 72%);mix-blend-mode:multiply;animation:blobC 27s ease-in-out -12s infinite alternate}
+.day::before{left:-16%;top:-8%;background:radial-gradient(closest-side,rgba(139,172,214,.36),transparent 72%);mix-blend-mode:multiply;animation:blobA 36s ease-in-out -6s infinite alternate}
+.day::after{right:-14%;bottom:-16%;background:radial-gradient(closest-side,rgba(229,200,123,.3),transparent 70%);mix-blend-mode:multiply;animation:blobD 44s ease-in-out infinite alternate}
+.colors::before{left:14%;top:-22%;background:radial-gradient(closest-side,rgba(229,200,123,.32),transparent 70%);mix-blend-mode:multiply;animation:blobC 32s ease-in-out infinite alternate}
+.colors::after{right:-14%;bottom:-18%;background:radial-gradient(closest-side,rgba(158,208,196,.4),transparent 72%);mix-blend-mode:multiply;animation:blobB 40s ease-in-out -15s infinite alternate}
+.gallery::before{right:-18%;top:-12%;background:radial-gradient(closest-side,rgba(233,178,172,.4),transparent 72%);mix-blend-mode:multiply;animation:blobD 30s ease-in-out -4s infinite alternate}
+.gallery::after{left:-16%;bottom:-14%;background:radial-gradient(closest-side,rgba(158,208,196,.42),transparent 72%);mix-blend-mode:multiply;animation:blobA 26s ease-in-out -18s infinite alternate}
+.faq::before{left:-16%;top:-6%;background:radial-gradient(closest-side,rgba(139,172,214,.34),transparent 72%);mix-blend-mode:multiply;animation:blobB 33s ease-in-out -7s infinite alternate}
+.faq::after{right:-18%;bottom:-18%;background:radial-gradient(closest-side,rgba(233,178,172,.36),transparent 72%);mix-blend-mode:multiply;animation:blobC 41s ease-in-out infinite alternate}
+.rsvp::before{left:-14%;top:-10%;background:radial-gradient(closest-side,rgba(139,172,214,.5),transparent 72%);mix-blend-mode:screen;animation:blobA 34s ease-in-out infinite alternate}
+.rsvp::after{right:-16%;bottom:-14%;background:radial-gradient(closest-side,rgba(216,140,150,.34),transparent 72%);mix-blend-mode:screen;animation:blobC 42s ease-in-out -11s infinite alternate}
+.footer::before{right:-14%;top:-18%;background:radial-gradient(closest-side,rgba(139,172,214,.44),transparent 72%);mix-blend-mode:screen;animation:blobB 36s ease-in-out -5s infinite alternate}
+/* venue stays pure white for the illustration - no blooms there */
+.venue::before,.venue::after{content:none}
+
+/* parallax layers */
+[data-plx]{will-change:transform}
+.hero__art img[data-plx]{transform:scale(1.12)}
+.story__art img[data-plx],.venue__art img[data-plx]{transform:scale(1.08)}
+
+@media (prefers-reduced-motion:reduce){
+  .section::before,.section::after,.band::before,.band::after,.footer::before{animation:none !important}
+  [data-plx]{will-change:auto}
+}
+
+/* clip the scaled parallax layers to their frames */
+.hero__art,.story__art,.venue__art{overflow:hidden}

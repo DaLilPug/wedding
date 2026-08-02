@@ -82,6 +82,32 @@
       reveals.forEach(function (r) { r.classList.add('in-view'); });
     }
 
+    /* ---- parallax paintings ---- */
+    var plxEls = [].slice.call(document.querySelectorAll('[data-plx]'));
+    var plxTick = false;
+    function plx() {
+      plxTick = false;
+      if (reduced) return;
+      var vh = window.innerHeight || document.documentElement.clientHeight;
+      plxEls.forEach(function (el) {
+        var host = el.parentNode; // measure the untransformed figure
+        var r = host.getBoundingClientRect();
+        if (r.bottom < -80 || r.top > vh + 80) return;
+        var mid = r.top + r.height / 2 - vh / 2;
+        var speed = parseFloat(el.getAttribute('data-plx')) || 0.08;
+        var scale = el.closest('.hero__art') ? 1.12 : 1.08;
+        el.style.transform = 'translate3d(0,' + (-mid * speed).toFixed(1) + 'px,0) scale(' + scale + ')';
+      });
+    }
+    function plxQueue() {
+      if (!plxTick) { plxTick = true; requestAnimationFrame(plx); }
+    }
+    if (plxEls.length && !reduced) {
+      window.addEventListener('scroll', plxQueue, { passive: true });
+      window.addEventListener('resize', plxQueue, { passive: true });
+      plx();
+    }
+
     /* ---- timeline rail fill ---- */
     var rail = document.getElementById('railFill');
     var tl = document.getElementById('timeline');
