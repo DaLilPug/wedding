@@ -962,3 +962,24 @@ body.nav-open .nav__cta:hover{background:var(--gold-bright);color:var(--sage-dar
 @media (min-width:861px){
   .timeline__dot{width:28px;height:28px;left:-50px}
 }
+
+/* ==========================================================
+   MOBILE HERO: tighter stack so the painting clears the fold
+   ========================================================== */
+@media (max-width:860px){
+  .hero--painted .hero__content{margin-top:calc(var(--nav-h) + 4px);padding:0 18px}
+  .hero--painted .hero__names{margin-top:4px}
+  .hero--painted .hero__name{font-size:min(13.5vw,58px)}
+  .hero--painted .hero__amp{font-size:min(6vw,26px)}
+  .hero--painted .hero__rule{margin:6px 0 0}
+  .ornament--set-hero .ornament__pug{height:20px}
+  .hero--painted .hero__date{font-size:min(5.8vw,23px);margin-top:6px}
+  .hero--painted .hero__place{font-size:10.5px;margin-top:4px}
+  .hero--painted .countdown{margin:14px 0 16px;gap:min(3vw,14px)}
+  .hero--painted .countdown__unit{min-width:46px}
+  .hero--painted .countdown__unit span{font-size:min(8.6vw,34px)}
+  .hero--painted .countdown__unit label{font-size:8.5px;margin-top:5px}
+  .hero--painted .countdown__sep{height:26px}
+  .hero--painted .btn--primary{padding:12px 30px;font-size:11.5px}
+  .hero--painted .hero__art{margin-top:10px;min-height:24svh}
+}
