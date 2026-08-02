@@ -1283,3 +1283,39 @@ b,strong{font-weight:500}
 @media (min-width:861px){
   .loveline{margin:18px 0 10px}
 }
+
+/* ==========================================================
+   LOVELINE v2: vertical on phones (no collisions), and a
+   tighter seam under the Our Story title everywhere
+   ========================================================== */
+#story .section__head{margin-bottom:4px}
+.loveline{margin:4px 0 4px}
+@media (min-width:861px){
+  .loveline{margin:8px 0 10px}
+}
+@media (max-width:860px){
+  .loveline{display:block;padding:0 0 0 12px}
+  .loveline::before{
+    left:100.5px;right:auto;top:22px;width:1px;height:176px;
+    background:linear-gradient(180deg,rgba(160,136,80,0),var(--gold) 12%);
+  }
+  .loveline::after{
+    left:100.5px;top:198px;width:1px;height:44px;
+    background:repeating-linear-gradient(180deg,var(--gold) 0 4px,rgba(160,136,80,0) 4px 9px);
+  }
+  .loveline li{display:flex;align-items:center;height:44px;position:static}
+  .loveline li .loveline__date{
+    position:static;transform:none;flex:0 0 74px;text-align:right;margin-right:14px;
+  }
+  .loveline li .loveline__dot{
+    position:static;transform:none;flex:0 0 9px;margin-right:14px;
+  }
+  .loveline li .loveline__dot--wed{flex-basis:13px;margin-left:-2px;margin-right:12px}
+  .loveline li .loveline__dot--pug{
+    flex-basis:26px;width:26px;height:19px;margin-left:-8.5px;margin-right:5.5px;
+  }
+  .loveline__dot--pug img{width:26px}
+  .loveline li .loveline__label{
+    position:static;transform:none;width:auto;text-align:left;font-size:17.5px;
+  }
+}
