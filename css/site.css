@@ -156,7 +156,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 @keyframes heroDrift{from{transform:scale(1.02) translateY(0)}to{transform:scale(1.1) translateY(-1.6%)}}
 .hero__media.photo--missing{background:
   radial-gradient(130% 100% at 50% 0%, #77846C 0%, #5D6954 48%, #46503F 100%)}
-.hero .photo__hint{color:rgba(247,240,220,.5);z-index:1}
+/* the hero placeholder stays invisible to guests — the gradient stands alone */
+.hero .photo__hint,.hero .photo--missing .photo__hint{display:none}
 .hero__veil{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(40,38,33,.44) 0%,rgba(40,38,33,.22) 45%,rgba(40,38,33,.52) 100%)}
 .hero__content{position:relative;z-index:2;max-width:820px;display:flex;flex-direction:column;align-items:center}
 .hero__eyebrow{font-family:var(--sans);text-transform:uppercase;letter-spacing:.42em;font-size:12.5px;margin:0 0 6px;opacity:.95}
