@@ -95,8 +95,7 @@
         if (r.bottom < -80 || r.top > vh + 80) return;
         var mid = r.top + r.height / 2 - vh / 2;
         var speed = parseFloat(el.getAttribute('data-plx')) || 0.08;
-        var scale = el.closest('.hero__art') ? 1.12 : 1.08;
-        el.style.transform = 'translate3d(0,' + (-mid * speed).toFixed(1) + 'px,0) scale(' + scale + ')';
+        el.style.transform = 'translate3d(0,' + (-mid * speed).toFixed(1) + 'px,0)';
       });
     }
     function plxQueue() {

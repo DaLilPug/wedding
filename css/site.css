@@ -1047,3 +1047,8 @@ body.nav-open{overflow:hidden}
 
 /* clip the scaled parallax layers to their frames */
 .hero__art,.story__art,.venue__art{overflow:hidden}
+
+/* paintings breathe again: no crop, no pre-scale - soft edges blend
+   into the page and simply drift with the parallax */
+.hero__art,.story__art,.venue__art{overflow:visible}
+.hero__art img[data-plx],.story__art img[data-plx],.venue__art img[data-plx]{transform:none}
