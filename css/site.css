@@ -1184,3 +1184,35 @@ body{font-size:16px;line-height:1.6}
   .gallery__grid--four{grid-template-columns:1fr 1fr;gap:24px}
   .gallery__grid--four .photo{padding:12px 12px 16px}
 }
+
+/* ==========================================================
+   TYPE SYSTEM, FINAL: two voices only
+   Jenna Sue = titles + script accents. Jost = everything else.
+   (--script had pointed at Tangerine, which is no longer
+   loaded - those accents were falling back to system cursive)
+   ========================================================== */
+:root{
+  --display:'Jenna Sue','Jost',cursive;
+  --script:'Jenna Sue','Jost',cursive;
+  --serif:'Jost','Helvetica Neue',Arial,sans-serif;
+  --sans:'Jost','Helvetica Neue',Arial,sans-serif;
+}
+body{font-family:var(--serif);font-size:15.5px;line-height:1.7;font-weight:300;letter-spacing:.01em}
+b,strong{font-weight:500}
+
+/* pieces sized for serifs, retuned for Jost */
+.hero__date{font-weight:400;letter-spacing:.06em}
+.timeline__name{font-size:19px;font-weight:500;letter-spacing:.02em}
+.ticket__cell b{font-size:16.5px;font-weight:500}
+.faq__item summary{font-weight:400}
+.footer__thanks{font-weight:300}
+.rsvp__search input,.party-choice button{font-size:16px;font-weight:300}
+
+/* script accents sized for Jenna Sue's proportions */
+.rsvp__found{font-family:var(--display);font-size:34px;font-weight:400}
+.rsvp__done h3{font-size:52px}
+.story__script,.venue__script{font-size:min(9vw,38px)}
+@media (min-width:861px){
+  body{font-size:16px}
+  .hero--painted .hero__date{font-size:24px}
+}
