@@ -10,7 +10,7 @@
   --ink:#30374A; --ink-soft:#68708A;
   --sage:#6E93C2; --sage-deep:#4E5F82; --sage-dark:#39445E; /* legacy token names; values are the blues */
   --rose:#C08279; --rose-soft:#E9C4BD; --rose-deep:#9E6058;
-  --gold:#B79A5B; --gold-bright:#E5C87B; --gold-deep:#8A6F33;
+  --gold:#A08850; --gold-bright:#C9B075; --gold-deep:#78643A;
   --line:rgba(48,55,74,.14); --line-strong:rgba(48,55,74,.26);
   --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;
   --script:'Tangerine','Snell Roundhand',cursive;
@@ -995,3 +995,12 @@ body.nav-open .nav__cta:hover{background:var(--gold-bright);color:var(--sage-dar
 @media (max-width:860px){
   .ornament--set-hero .ornament__pug{height:17px}
 }
+
+/* ==========================================================
+   FIXES: nav centering without transform (mobile menu was
+   trapping its fixed overlay inside the transformed navbar),
+   scroll cue removed
+   ========================================================== */
+.nav{left:0;right:0;transform:none;margin:0 auto}
+body.nav-open{overflow:hidden}
+.hero__scroll{display:none}
