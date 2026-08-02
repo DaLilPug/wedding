@@ -665,3 +665,8 @@ body{
   radial-gradient(64% 50% at 82% 12%,rgba(110,147,194,.34),transparent 72%),
   radial-gradient(58% 46% at 12% 90%,rgba(192,130,121,.2),transparent 70%),
   var(--sage-dark)}
+
+/* venue: pure white paper so the watercolor illustration blends seamlessly */
+.venue{background:#FFFFFF}
+.venue__art{margin-top:-8px}
+.venue__art img{mix-blend-mode:normal}
