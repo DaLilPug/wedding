@@ -15,13 +15,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500&family=Tangerine:wght@400;700&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/site.css?v=4" />
+  <link rel="stylesheet" href="css/site.css?v=5" />
 
   <script>function photoMissing(img){var b=img.closest('[data-photo]');if(b)b.classList.add('photo--missing');}</script>
-  <script defer src="js/config.js?v=4"></script>
+  <script defer src="js/config.js?v=5"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script defer src="js/site.js?v=4"></script>
-  <script defer src="js/rsvp.js?v=4"></script>
+  <script defer src="js/site.js?v=5"></script>
+  <script defer src="js/rsvp.js?v=5"></script>
 </head>
 <body class="is-sealed">
 
@@ -87,6 +87,8 @@
     </div>
   </div>
 
+  <div class="sheet">
+
   <!-- ============ NAV ============ -->
   <header class="nav" id="nav">
     <div class="nav__inner container">
@@ -112,6 +114,88 @@
       <span class="photo__hint" aria-hidden="true">assets/photos/hero.jpg</span>
     </div>
     <div class="hero__veil"></div>
+
+    <svg class="bloom bloom--tl" viewBox="0 0 110 150" aria-hidden="true">
+      <g class="sprig">
+        <path class="stem" d="M20 2 C22 40 28 64 26 92"/>
+        <path class="leaf" d="M22 40 Q10 46 8 58"/><path class="leaf" d="M24 62 Q36 66 40 78"/>
+        <circle class="petal-rose" cx="26" cy="100" r="5.5"/><circle class="petal-rose" cx="33" cy="95" r="5.5"/>
+        <circle class="petal-rose" cx="31" cy="106" r="5.5"/><circle class="petal-rose" cx="19" cy="106" r="5.5"/>
+        <circle class="petal-rose" cx="18" cy="95" r="5.5"/><circle class="bud" cx="25.5" cy="100.5" r="3"/>
+      </g>
+      <g class="sprig sprig--2">
+        <path class="stem" d="M58 2 C56 30 52 50 54 74"/>
+        <path class="leaf" d="M55 34 Q66 38 69 48"/>
+        <circle class="petal-blue" cx="54" cy="80" r="4.4"/><circle class="petal-blue" cx="60" cy="72" r="4"/>
+        <circle class="petal-blue" cx="49" cy="68" r="3.6"/>
+      </g>
+      <g class="sprig sprig--3">
+        <path class="stem" d="M92 2 C90 26 86 40 88 58"/>
+        <circle class="bud" cx="88" cy="62" r="2.6"/><circle class="bud" cx="93" cy="52" r="2.6"/>
+        <circle class="bud" cx="85" cy="44" r="2.6"/><circle class="bud" cx="91" cy="35" r="2.4"/>
+      </g>
+    </svg>
+    <svg class="bloom bloom--tr" viewBox="0 0 110 150" aria-hidden="true">
+      <g class="sprig">
+        <path class="stem" d="M20 2 C22 40 28 64 26 92"/>
+        <path class="leaf" d="M22 40 Q10 46 8 58"/><path class="leaf" d="M24 62 Q36 66 40 78"/>
+        <circle class="petal-rose" cx="26" cy="100" r="5.5"/><circle class="petal-rose" cx="33" cy="95" r="5.5"/>
+        <circle class="petal-rose" cx="31" cy="106" r="5.5"/><circle class="petal-rose" cx="19" cy="106" r="5.5"/>
+        <circle class="petal-rose" cx="18" cy="95" r="5.5"/><circle class="bud" cx="25.5" cy="100.5" r="3"/>
+      </g>
+      <g class="sprig sprig--2">
+        <path class="stem" d="M58 2 C56 30 52 50 54 74"/>
+        <path class="leaf" d="M55 34 Q66 38 69 48"/>
+        <circle class="petal-blue" cx="54" cy="80" r="4.4"/><circle class="petal-blue" cx="60" cy="72" r="4"/>
+        <circle class="petal-blue" cx="49" cy="68" r="3.6"/>
+      </g>
+      <g class="sprig sprig--3">
+        <path class="stem" d="M92 2 C90 26 86 40 88 58"/>
+        <circle class="bud" cx="88" cy="62" r="2.6"/><circle class="bud" cx="93" cy="52" r="2.6"/>
+        <circle class="bud" cx="85" cy="44" r="2.6"/><circle class="bud" cx="91" cy="35" r="2.4"/>
+      </g>
+    </svg>
+    <svg class="bloom bloom--bl" viewBox="0 0 120 150" aria-hidden="true">
+      <g class="sprig">
+        <path class="stem" d="M18 148 C20 110 26 86 24 62"/>
+        <path class="leaf" d="M20 120 Q8 112 6 100"/><path class="leaf" d="M22 98 Q34 92 38 82"/>
+        <circle class="petal-rose" cx="24" cy="54" r="5.5"/><circle class="petal-rose" cx="31" cy="49" r="5.5"/>
+        <circle class="petal-rose" cx="29" cy="60" r="5.5"/><circle class="petal-rose" cx="17" cy="60" r="5.5"/>
+        <circle class="petal-rose" cx="16" cy="49" r="5.5"/><circle class="bud" cx="23.5" cy="54.5" r="3"/>
+      </g>
+      <g class="sprig sprig--2">
+        <path class="stem" d="M52 148 C50 124 46 108 48 88"/>
+        <path class="leaf" d="M49 118 Q60 112 63 102"/>
+        <circle class="petal-blue" cx="48" cy="84" r="4.4"/><circle class="petal-blue" cx="54" cy="76" r="4"/>
+        <circle class="petal-blue" cx="45" cy="70" r="3.6"/>
+      </g>
+      <g class="sprig sprig--3">
+        <path class="stem" d="M86 148 C88 124 92 106 90 90"/>
+        <circle class="bud" cx="90" cy="86" r="2.6"/><circle class="bud" cx="95" cy="76" r="2.6"/>
+        <circle class="bud" cx="87" cy="68" r="2.6"/><circle class="bud" cx="93" cy="59" r="2.4"/>
+      </g>
+    </svg>
+    <svg class="bloom bloom--br" viewBox="0 0 120 150" aria-hidden="true">
+      <g class="sprig">
+        <path class="stem" d="M18 148 C20 110 26 86 24 62"/>
+        <path class="leaf" d="M20 120 Q8 112 6 100"/><path class="leaf" d="M22 98 Q34 92 38 82"/>
+        <circle class="petal-rose" cx="24" cy="54" r="5.5"/><circle class="petal-rose" cx="31" cy="49" r="5.5"/>
+        <circle class="petal-rose" cx="29" cy="60" r="5.5"/><circle class="petal-rose" cx="17" cy="60" r="5.5"/>
+        <circle class="petal-rose" cx="16" cy="49" r="5.5"/><circle class="bud" cx="23.5" cy="54.5" r="3"/>
+      </g>
+      <g class="sprig sprig--2">
+        <path class="stem" d="M52 148 C50 124 46 108 48 88"/>
+        <path class="leaf" d="M49 118 Q60 112 63 102"/>
+        <circle class="petal-blue" cx="48" cy="84" r="4.4"/><circle class="petal-blue" cx="54" cy="76" r="4"/>
+        <circle class="petal-blue" cx="45" cy="70" r="3.6"/>
+      </g>
+      <g class="sprig sprig--3">
+        <path class="stem" d="M86 148 C88 124 92 106 90 90"/>
+        <circle class="bud" cx="90" cy="86" r="2.6"/><circle class="bud" cx="95" cy="76" r="2.6"/>
+        <circle class="bud" cx="87" cy="68" r="2.6"/><circle class="bud" cx="93" cy="59" r="2.4"/>
+      </g>
+    </svg>
+
     <div class="hero__content">
       <p class="hero__eyebrow" data-enter>Together with their families</p>
       <h1 class="hero__names" data-enter>
@@ -268,6 +352,26 @@
     </div>
   </section>
 
+  <!-- ============ COLORS OF THE DAY ============ -->
+  <section class="section colors" id="colors">
+    <div class="container">
+      <header class="section__head" data-reveal>
+        <p class="section__label">The palette</p>
+        <h2 class="section__title">Colors of the Day</h2>
+        <svg class="ornament" viewBox="0 0 220 40" aria-hidden="true"><use href="#wheatSym"/></svg>
+      </header>
+      <p class="colors__lead" data-reveal>A guide, never a rule. Wear what makes you feel wonderful.</p>
+      <div class="swatches" data-reveal>
+        <div class="swatch"><i style="background:#4E5F82"></i><span>Slate</span></div>
+        <div class="swatch"><i style="background:#6E93C2"></i><span>French blue</span></div>
+        <div class="swatch"><i style="background:#8FA9BE"></i><span>Dusty blue</span></div>
+        <div class="swatch"><i style="background:#C08279"></i><span>Dusty rose</span></div>
+        <div class="swatch"><i style="background:#F3E0DC"></i><span>Blush</span></div>
+      </div>
+      <p class="colors__note" data-reveal>Formal dress details will follow with the invitation.</p>
+    </div>
+  </section>
+
   <!-- ============ GALLERY ============ -->
   <section class="section gallery" id="gallery">
     <div class="container">
@@ -308,6 +412,35 @@
     </div>
   </section>
 
+  <!-- ============ BOARDING PASS ============ -->
+  <section class="section ticket-scene">
+    <div class="container">
+      <header class="section__head" data-reveal>
+        <p class="section__label">Keep this</p>
+        <h2 class="section__title">Your Pass to the Point</h2>
+        <svg class="ornament" viewBox="0 0 220 40" aria-hidden="true"><use href="#wheatSym"/></svg>
+      </header>
+      <div class="ticket" data-reveal>
+        <div class="ticket__head"><b>PROMONTORY EXPRESS</b><span>A &amp; A</span></div>
+        <div class="ticket__body">
+          <div class="ticket__cell ticket__cell--wide"><label>Destination</label><b>Promontory Point, Chicago</b></div>
+          <div class="ticket__cell"><label>Gate</label><b>A &#9825; A</b></div>
+          <div class="ticket__cell"><label>Seat</label><b>23.04</b></div>
+          <div class="ticket__cell"><label>Row</label><b>2027</b></div>
+          <div class="ticket__cell"><label>Flight</label><b>SAB&#183;OLI</b></div>
+          <div class="ticket__cell"><label>Boarding</label><b>3:00 PM</b></div>
+          <div class="ticket__cell"><label>Class</label><b>With love</b></div>
+        </div>
+        <div class="ticket__tear"></div>
+        <div class="ticket__stub">
+          <div class="ticket__code" aria-hidden="true"></div>
+          <span>CHI &#183; 23 &#183; 04 &#183; 2027</span>
+        </div>
+      </div>
+      <p class="day__note" data-reveal>No printing needed. Your name at the door is all it takes.</p>
+    </div>
+  </section>
+
   <!-- ============ RSVP ============ -->
   <section class="section rsvp" id="rsvp">
     <div class="container container--narrow">
@@ -339,6 +472,8 @@
     <p class="footer__date">April 23, 2027 · Promontory Point, Chicago</p>
     <p class="footer__thanks">We can't wait to celebrate with you.</p>
   </footer>
+
+  </div><!-- /.sheet -->
 
 </body>
 </html>
