@@ -1129,8 +1129,6 @@ body.nav-open{overflow:hidden}
   .hero--painted .hero__amp{font-size:min(4.5vw,64px)}
 }
 
-/* parallax paintings composite on their own layer */
-.hero__art img,.story__art img,.venue__art img{will-change:transform}
 
 /* band title joins the display face */
 .band__script{font-family:var(--display);font-size:min(13vw,58px)}
@@ -1142,3 +1140,23 @@ body.nav-open{overflow:hidden}
   .countdown__unit span{font-size:48px}
   .footer__names{font-size:min(8vw,68px)}
 }
+
+/* ==========================================================
+   HERO BLEND, MADE BULLETPROOF
+   The cream page color is baked into the painting itself, so
+   no browser blending is needed. Hero backdrop is uniform
+   cream - no tint boundaries around the art on any GPU.
+   ========================================================== */
+.hero--painted{background:var(--cream)}
+.hero--painted .hero__wash{display:none}
+.hero--painted .hero__art img{mix-blend-mode:normal;filter:none}
+
+/* Helvetica replaces Cormorant everywhere */
+:root{
+  --serif:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  --display:'Jenna Sue','Helvetica Neue',Helvetica,Arial,sans-serif;
+}
+body{font-size:16px;line-height:1.6}
+
+/* nav brand joins the display face */
+.nav__brand{font-family:var(--display);font-size:27px;letter-spacing:.04em}
