@@ -1075,3 +1075,22 @@ body.nav-open{overflow:hidden}
     transform:scale(1.06);
   }
 }
+
+/* ==========================================================
+   DISPLAY FACE: Moelania for the main headlines
+   (demo covers A-Z a-z , . only; Cormorant fills the rest)
+   ========================================================== */
+@font-face{
+  font-family:'Moelania';
+  src:url("../assets/fonts/Moelania.woff2?v=39") format("woff2");
+  font-weight:400;font-style:normal;font-display:swap;
+}
+:root{--display:'Moelania','Cormorant Garamond',Georgia,serif}
+.hero__name{font-family:var(--display)}
+.section__title{font-family:var(--display);font-weight:400}
+/* Moelania reads larger than the Tangerine script it replaces */
+.hero--painted .hero__name{font-size:min(12.5vw,58px)}
+.section__title{font-size:min(9vw,38px);line-height:1.12}
+@media (min-width:861px){
+  .hero--painted .hero__name{font-size:min(7vw,88px)}
+}
