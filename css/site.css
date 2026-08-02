@@ -917,3 +917,22 @@ img.wheat--pug{width:auto;height:44px;display:block;margin:0 auto}
 /* hero pug: win the sizing cascade over legacy .wheat rules */
 .hero--painted .hero__rule .wheat,
 .hero--painted .hero__rule img.wheat--pug{width:auto;height:48px;opacity:1}
+
+/* ==========================================================
+   ORNAMENT SET: line - dot - pug - dot - line
+   ========================================================== */
+.ornament--set{
+  display:flex;align-items:center;justify-content:center;gap:13px;
+  width:min(250px,72%);height:auto;margin:16px auto 0;color:var(--gold);
+}
+.ornament--set i{flex:1;height:1px;background:currentColor;position:relative;opacity:.85}
+.ornament--set i::after{
+  content:"";position:absolute;top:-1.6px;width:4px;height:4px;border-radius:50%;background:currentColor;
+}
+.ornament--set i:first-child::after{right:-1px}
+.ornament--set i:last-child::after{left:-1px}
+.ornament--set .ornament__pug{height:42px;width:auto;display:block}
+.rsvp .ornament--set{color:var(--gold-bright)}
+.footer .ornament--set{color:var(--gold-bright);margin:0 auto 8px}
+.ornament--set-hero{width:min(320px,82%);margin:12px auto 0}
+.ornament--set-hero .ornament__pug{height:48px}
