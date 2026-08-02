@@ -817,3 +817,7 @@ body{
 @media (prefers-reduced-motion:reduce){
   .hero--painted .wash-blob{animation:none !important}
 }
+
+/* story: the painting stands alone */
+.story__art{margin:0}
+.story__cap{font-family:var(--script);font-size:min(9vw,40px);color:var(--sage-deep);text-align:center;margin-top:10px;line-height:1}
