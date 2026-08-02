@@ -435,3 +435,112 @@ body.nav-open .nav__links{transform:translateY(0);visibility:visible;transition:
   .bloom circle{opacity:1;transition:none}
   .hero__scroll::after{animation:none}
 }
+
+/* ==========================================================
+   DESKTOP — the keepsake sheet widens into a full invitation
+   (appended last so these rules win the cascade at >=861px)
+   ========================================================== */
+@media (min-width:861px){
+  :root{--colw:960px;--nav-h:72px}
+  body{font-size:19.5px}
+  .container{max-width:880px;margin:0 auto;padding:0 40px}
+  .container--narrow{max-width:680px;margin:0 auto}
+
+  /* nav: inline links, no hamburger */
+  .nav__inner{padding:0 30px}
+  .nav__brand{font-size:24px}
+  .nav__toggle{display:none}
+  .nav__links{
+    position:static;inset:auto;width:auto;height:auto;z-index:auto;
+    flex-direction:row;gap:26px;background:transparent;
+    transform:none;visibility:visible;transition:none;
+  }
+  .nav__links a{font-size:12.5px;letter-spacing:.16em}
+  .nav--solid .nav__links a{color:var(--ink);opacity:.85}
+  .nav--solid .nav__links a:hover{color:var(--sage-deep);opacity:1}
+  .nav--solid .nav__cta{border-color:var(--sage)}
+
+  /* hero scales up */
+  .hero{padding:calc(var(--nav-h) + 30px) 40px 70px}
+  .hero__eyebrow{font-size:13px;letter-spacing:.42em}
+  .hero__name{font-size:min(11vw,148px)}
+  .hero__amp{font-size:34px;margin:6px 0}
+  .hero__rule .wheat{width:180px;height:32px}
+  .hero__date{font-size:29px}
+  .hero__place{font-size:13px}
+  .countdown{gap:30px;margin:36px 0}
+  .countdown__unit{min-width:70px}
+  .countdown__unit span{font-size:50px}
+  .countdown__unit label{font-size:11px}
+  .countdown__sep{height:42px}
+  .bloom--tl{top:calc(var(--nav-h) + 10px);left:14px;width:150px;height:205px}
+  .bloom--tr{top:calc(var(--nav-h) + 10px);right:14px;width:150px;height:205px}
+  .bloom--bl{bottom:10px;left:14px;width:165px;height:205px}
+  .bloom--br{bottom:10px;right:14px;width:165px;height:205px}
+
+  /* sections breathe */
+  .section{padding:110px 0}
+  .section__head{margin-bottom:56px}
+  .section__title{font-size:56px}
+  .section__label{font-size:12px}
+  .ornament{width:200px}
+  .band{padding:96px 40px}
+  .band__script{font-size:78px}
+  .band__text{max-width:520px;font-size:19px}
+
+  /* story collage: three columns */
+  .story__grid{grid-template-columns:repeat(3,1fr);grid-auto-rows:225px;gap:16px}
+  .story__card{aspect-ratio:auto}
+  .story__card--tall{grid-row:span 2}
+  .story__card--wide{grid-column:span 2;aspect-ratio:auto}
+  .story__script{font-size:40px}
+  .story__note p:last-child{font-size:15.5px}
+
+  /* timeline centered, roomier */
+  .timeline{max-width:600px;margin:0 auto;padding-left:46px}
+  .timeline__rail{left:9px}
+  .timeline__dot{left:-33px}
+  .timeline__item{padding-bottom:48px}
+  .timeline__name{font-size:30px}
+  .timeline__desc{font-size:17.5px;max-width:52ch}
+  .timeline__time{font-size:11.5px}
+
+  /* venue: side by side */
+  .venue__grid{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:stretch}
+  .venue__script{font-size:46px}
+  .venue__info>p{font-size:18px}
+  .venue__map{min-height:440px}
+  .venue__map iframe{height:100%;min-height:440px}
+
+  /* swatches larger */
+  .swatches{gap:22px}
+  .swatch i{width:68px;height:68px}
+  .swatch span{font-size:10.5px}
+  .colors__lead{max-width:420px;font-size:18px}
+
+  /* gallery: three columns */
+  .gallery__grid{grid-template-columns:repeat(3,1fr);gap:14px}
+  .gallery__grid .photo:nth-child(1),.gallery__grid .photo:nth-child(6){grid-column:span 2;aspect-ratio:auto}
+
+  /* faq */
+  .faq__item summary{font-size:22px;padding:22px 40px 22px 4px}
+  .faq__item p{font-size:17.5px}
+
+  /* ticket + rsvp centered cards */
+  .ticket{max-width:560px;margin:0 auto}
+  .ticket__body{padding:22px 24px;gap:16px 12px}
+  .ticket__cell b{font-size:21px}
+  .ticket__cell--wide b{font-size:25px}
+  .ticket-scene .day__note{margin-top:26px}
+  .rsvp__lead{max-width:480px;font-size:18px}
+  .rsvp__card{max-width:580px;padding:46px 48px}
+  .rsvp__done h3{font-size:64px}
+
+  .footer{padding:76px 24px 84px}
+  .footer__names{font-size:min(9vw,74px)}
+  .footer__thanks{font-size:20px}
+
+  /* envelope slightly grander on big screens */
+  .envelope__paper{width:min(80vw,520px)}
+  .envelope__letter-script{font-size:56px}
+}
