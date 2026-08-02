@@ -1052,3 +1052,12 @@ body.nav-open{overflow:hidden}
    into the page and simply drift with the parallax */
 .hero__art,.story__art,.venue__art{overflow:visible}
 .hero__art img[data-plx],.story__art img[data-plx],.venue__art img[data-plx]{transform:none}
+
+/* hero art: fixed cream dissolve at the frame bottom so the parallax
+   never shows a hard crop against the next section */
+.hero__art{position:relative}
+.hero__art::after{
+  content:"";position:absolute;left:0;right:0;bottom:-1px;height:130px;
+  background:linear-gradient(180deg,rgba(252,249,245,0) 0%,var(--cream) 92%);
+  pointer-events:none;z-index:2;
+}
