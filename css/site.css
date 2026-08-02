@@ -1269,3 +1269,17 @@ b,strong{font-weight:500}
   .loveline__dot--pug{width:36px;height:26px}
   .loveline__dot--pug img{width:36px}
 }
+
+/* loveline sits above the painting now; last leg dotted (still to come) */
+.loveline{margin:10px 0 4px}
+.loveline::before{
+  left:2%;right:auto;width:73%;
+  background:linear-gradient(90deg,rgba(160,136,80,0),var(--gold) 10%);
+}
+.loveline::after{
+  content:"";position:absolute;top:50%;left:75%;width:16.67%;height:1px;
+  background:repeating-linear-gradient(90deg,var(--gold) 0 4px,rgba(160,136,80,0) 4px 9px);
+}
+@media (min-width:861px){
+  .loveline{margin:18px 0 10px}
+}
