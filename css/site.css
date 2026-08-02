@@ -953,3 +953,12 @@ img.wheat--pug{width:auto;height:44px;display:block;margin:0 auto}
 .nav__cta:hover{background:var(--gold);color:var(--cream) !important;opacity:1 !important}
 body.nav-open .nav__cta{color:var(--gold-bright) !important;border-color:var(--gold-bright) !important}
 body.nav-open .nav__cta:hover{background:var(--gold-bright);color:var(--sage-dark) !important}
+
+/* pug icons: smaller, daintier */
+.ornament--set .ornament__pug{height:20px}
+.ornament--set{gap:11px}
+.ornament--set-hero .ornament__pug{height:24px}
+.timeline__dot{width:26px;height:26px;left:-41px;top:0;background-size:72%}
+@media (min-width:861px){
+  .timeline__dot{width:28px;height:28px;left:-50px}
+}
