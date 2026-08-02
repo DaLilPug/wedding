@@ -16,36 +16,11 @@
     });
   }
 
-  /* ---- envelope ---- */
-  var envelope = document.getElementById('envelope');
-  var opened = false;
-  function openEnvelope() {
-    if (opened) return;
-    opened = true;
-    if (reduced) {
-      envelope.classList.add('is-open');
-      document.body.classList.remove('is-sealed');
-      document.body.classList.add('is-entered');
-      return;
-    }
-    envelope.classList.add('is-opening');
-    setTimeout(function () {
-      envelope.classList.add('is-open');
-      document.body.classList.remove('is-sealed');
-    }, 2250);
-    setTimeout(function () {
-      document.body.classList.add('is-entered');
-    }, 2500);
-  }
-  if (envelope) {
-    envelope.addEventListener('click', openEnvelope);
-    envelope.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openEnvelope(); }
-    });
-  }
-
   document.addEventListener('DOMContentLoaded', function () {
     sweepPhotos();
+
+    /* entrance choreography plays right after first paint */
+    setTimeout(function () { document.body.classList.add('is-entered'); }, reduced ? 0 : 180);
 
     /* ---- nav ---- */
     var nav = document.getElementById('nav');
