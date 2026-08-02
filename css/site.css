@@ -1319,3 +1319,40 @@ b,strong{font-weight:500}
     position:static;transform:none;width:auto;text-align:left;font-size:17.5px;
   }
 }
+
+/* ==========================================================
+   LOVELINE v3: horizontal on mobile too.
+   One date row above the line; labels below in two staggered
+   tiers so six stops fit a phone without collisions.
+   ========================================================== */
+@media (max-width:860px){
+  .loveline{display:flex;padding:0;margin:6px 0 0}
+  .loveline::before{
+    left:2%;top:34px;width:73%;height:1px;
+    background:linear-gradient(90deg,rgba(160,136,80,0),var(--gold) 10%);
+  }
+  .loveline::after{
+    left:75%;top:34px;width:16.67%;height:1px;
+    background:repeating-linear-gradient(90deg,var(--gold) 0 4px,rgba(160,136,80,0) 4px 9px);
+  }
+  .loveline li{position:relative;flex:1;height:126px;display:block}
+  /* faint tick tying lower-tier labels to their dot */
+  .loveline li:nth-child(even)::after{
+    content:"";position:absolute;left:50%;top:40px;width:1px;height:44px;
+    background:linear-gradient(180deg,rgba(160,136,80,.5),rgba(160,136,80,.12));
+  }
+  .loveline li:nth-child(n) .loveline__date{
+    position:absolute;top:14px;bottom:auto;left:50%;transform:translateX(-50%);
+    margin:0;text-align:center;font-size:7.5px;letter-spacing:.14em;white-space:nowrap;
+  }
+  .loveline li:nth-child(n) .loveline__dot{
+    position:absolute;top:34px;left:50%;transform:translate(-50%,-50%);margin:0;
+  }
+  .loveline li:nth-child(n) .loveline__dot--pug{width:26px;height:19px}
+  .loveline li:nth-child(n) .loveline__dot--pug img{width:26px}
+  .loveline li:nth-child(n) .loveline__label{
+    position:absolute;top:48px;bottom:auto;left:50%;transform:translateX(-50%);
+    margin:0;width:96px;text-align:center;font-size:14.5px;line-height:1.12;
+  }
+  .loveline li:nth-child(even) .loveline__label{top:88px;bottom:auto}
+}
