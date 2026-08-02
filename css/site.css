@@ -940,3 +940,10 @@ img.wheat--pug{width:auto;height:44px;display:block;margin:0 auto}
 /* hero rule must span so the ornament lines can stretch */
 .hero--painted .hero__rule{width:100%;display:flex;justify-content:center}
 .ornament--set-hero{width:min(320px,82%)}
+
+/* RSVP buttons: gold pill to match the hero CTA */
+.rsvp .btn--primary{
+  background:transparent;color:var(--gold-deep);
+  border:1.5px solid var(--gold);border-radius:999px;padding:15px 40px;
+}
+.rsvp .btn--primary:hover{background:var(--gold);color:var(--cream);border-color:var(--gold)}
