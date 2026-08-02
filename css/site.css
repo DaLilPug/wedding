@@ -936,3 +936,7 @@ img.wheat--pug{width:auto;height:44px;display:block;margin:0 auto}
 .footer .ornament--set{color:var(--gold-bright);margin:0 auto 8px}
 .ornament--set-hero{width:min(320px,82%);margin:12px auto 0}
 .ornament--set-hero .ornament__pug{height:48px}
+
+/* hero rule must span so the ornament lines can stretch */
+.hero--painted .hero__rule{width:100%;display:flex;justify-content:center}
+.ornament--set-hero{width:min(320px,82%)}
