@@ -983,3 +983,15 @@ body.nav-open .nav__cta:hover{background:var(--gold-bright);color:var(--sage-dar
   .hero--painted .btn--primary{padding:12px 30px;font-size:11.5px}
   .hero--painted .hero__art{margin-top:10px;min-height:24svh}
 }
+
+/* pug icons: one notch smaller */
+.ornament--set .ornament__pug{height:16px}
+.ornament--set{gap:10px}
+.ornament--set-hero .ornament__pug{height:20px}
+.timeline__dot{width:24px;height:24px;left:-40px}
+@media (min-width:861px){
+  .timeline__dot{width:25px;height:25px;left:-48px}
+}
+@media (max-width:860px){
+  .ornament--set-hero .ornament__pug{height:17px}
+}
