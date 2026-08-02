@@ -1094,3 +1094,15 @@ body.nav-open{overflow:hidden}
 @media (min-width:861px){
   .hero--painted .hero__name{font-size:min(7vw,88px)}
 }
+
+/* ==========================================================
+   HERO PARALLAX = OUR STORY PARALLAX
+   whole painting at natural aspect, soft watercolor edges,
+   no crop box, no mask, no overlay gradient
+   ========================================================== */
+.hero--painted .hero__art{height:auto;min-height:0;overflow:visible}
+.hero--painted .hero__art::after{content:none}
+.hero--painted .hero__art img{
+  height:auto;object-fit:unset;object-position:center;
+  -webkit-mask-image:none;mask-image:none;
+}
