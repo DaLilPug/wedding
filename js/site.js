@@ -93,9 +93,16 @@
         var host = el.parentNode; // measure the untransformed figure
         var r = host.getBoundingClientRect();
         if (r.bottom < -80 || r.top > vh + 80) return;
-        var mid = r.top + r.height / 2 - vh / 2;
         var speed = parseFloat(el.getAttribute('data-plx')) || 0.08;
-        el.style.transform = 'translate3d(0,' + (-mid * speed).toFixed(1) + 'px,0)';
+        var y;
+        if (el.hasAttribute('data-plx-top')) {
+          /* first-fold art: rest at 0 on load, recede as the page scrolls */
+          y = (window.scrollY || document.documentElement.scrollTop || 0) * speed;
+        } else {
+          var mid = r.top + r.height / 2 - vh / 2;
+          y = -mid * speed;
+        }
+        el.style.transform = 'translate3d(0,' + y.toFixed(1) + 'px,0)';
       });
     }
     function plxQueue() {

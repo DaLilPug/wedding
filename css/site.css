@@ -1106,3 +1106,39 @@ body.nav-open{overflow:hidden}
   height:auto;object-fit:unset;object-position:center;
   -webkit-mask-image:none;mask-image:none;
 }
+
+/* ==========================================================
+   DISPLAY FACE v2: Jenna Sue for headlines and titles
+   (full charset incl. digits and ampersand)
+   ========================================================== */
+@font-face{
+  font-family:'Jenna Sue';
+  src:url("../assets/fonts/JennaSue.woff2?v=41") format("woff2");
+  font-weight:400;font-style:normal;font-display:swap;
+}
+:root{--display:'Jenna Sue','Cormorant Garamond',Georgia,serif}
+/* narrow, thin script reads smaller: scale headlines back up */
+.hero--painted .hero__name{font-size:min(17vw,80px)}
+.hero--painted .hero__amp{
+  font-family:var(--display);font-style:normal;
+  font-size:min(9.5vw,46px);
+}
+.section__title{font-size:min(11vw,50px);line-height:1.05}
+@media (min-width:861px){
+  .hero--painted .hero__name{font-size:min(9vw,120px)}
+  .hero--painted .hero__amp{font-size:min(4.5vw,64px)}
+}
+
+/* parallax paintings composite on their own layer */
+.hero__art img,.story__art img,.venue__art img{will-change:transform}
+
+/* band title joins the display face */
+.band__script{font-family:var(--display);font-size:min(13vw,58px)}
+
+/* countdown digits + footer names join the display face */
+.countdown__unit span{font-family:var(--display);font-size:min(10.5vw,46px)}
+.footer__names{font-family:var(--display);font-size:min(13vw,54px);line-height:1.05}
+@media (min-width:861px){
+  .countdown__unit span{font-size:48px}
+  .footer__names{font-size:min(8vw,68px)}
+}
