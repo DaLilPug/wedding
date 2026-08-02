@@ -1219,3 +1219,53 @@ b,strong{font-weight:500}
 
 /* band title color matches section titles */
 .band__script{color:var(--ink)}
+
+/* ==========================================================
+   LOVELINE: horizontal story timeline
+   gold line, alternating labels, Bobby's stop is the pug
+   ========================================================== */
+.loveline{
+  list-style:none;display:flex;margin:26px 0 6px;padding:0;position:relative;
+}
+.loveline::before{
+  content:"";position:absolute;top:50%;left:1%;right:1%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold) 10%,var(--gold) 90%,transparent);
+}
+.loveline li{position:relative;flex:1;height:128px}
+.loveline__dot{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:9px;height:9px;border-radius:50%;background:var(--gold);
+  box-shadow:0 0 0 3px var(--cream),0 0 0 4px rgba(160,136,80,.45);
+}
+.loveline__dot--wed{
+  width:13px;height:13px;background:var(--gold-bright);
+  box-shadow:0 0 0 3px var(--cream),0 0 0 4.5px var(--gold);
+}
+.loveline__dot--pug{
+  width:30px;height:22px;border-radius:0;background:none;box-shadow:none;
+}
+.loveline__dot--pug img{
+  width:30px;height:auto;display:block;
+  filter:drop-shadow(0 0 3px var(--cream)) drop-shadow(0 0 3px var(--cream));
+}
+.loveline__date{
+  position:absolute;left:50%;transform:translateX(-50%);bottom:calc(50% + 16px);
+  font-family:var(--sans);font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold-deep);white-space:nowrap;
+}
+.loveline__label{
+  position:absolute;left:50%;transform:translateX(-50%);top:calc(50% + 15px);
+  width:120px;text-align:center;
+  font-family:var(--display);font-size:16.5px;line-height:1.15;color:var(--ink);
+}
+/* alternate: even stops flip above the line */
+.loveline li:nth-child(even) .loveline__date{bottom:auto;top:calc(50% + 16px)}
+.loveline li:nth-child(even) .loveline__label{top:auto;bottom:calc(50% + 13px)}
+@media (min-width:861px){
+  .loveline{margin:40px 0 10px}
+  .loveline li{height:150px}
+  .loveline__date{font-size:10px}
+  .loveline__label{font-size:21px;width:150px}
+  .loveline__dot--pug{width:36px;height:26px}
+  .loveline__dot--pug img{width:36px}
+}
