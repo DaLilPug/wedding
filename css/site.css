@@ -821,3 +821,38 @@ body{
 /* story: the painting stands alone */
 .story__art{margin:0}
 .story__cap{font-family:var(--script);font-size:min(9vw,40px);color:var(--sage-deep);text-align:center;margin-top:10px;line-height:1}
+
+/* ==========================================================
+   HERO v3 — text above, painting anchored at the bottom;
+   names on a single line. Story art full sheet width.
+   ========================================================== */
+.hero--painted{display:flex;flex-direction:column;justify-content:flex-start;padding:0}
+.hero--painted .hero__content{
+  order:1;margin:calc(var(--nav-h) + 22px) 0 0;padding:0 22px;
+}
+.hero--painted .hero__names{display:flex;flex-direction:row;align-items:baseline;justify-content:center;gap:.16em;line-height:1;margin-top:8px}
+.hero--painted .hero__name{display:inline;font-size:min(15vw,66px)}
+.hero--painted .hero__amp{display:inline;font-size:min(7vw,32px);margin:0}
+.hero--painted .countdown{margin:22px 0 24px}
+.hero--painted .hero__art{
+  order:2;flex:1 1 auto;width:100%;height:auto;min-height:30svh;
+  margin:16px 0 0;
+}
+.hero--painted .hero__art img{
+  object-position:50% 62%;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 24%);
+  mask-image:linear-gradient(180deg,transparent 0%,#000 24%);
+}
+.hero--painted .bloom{display:none}
+.hero--painted .hero__scroll{color:var(--cream);text-shadow:0 1px 10px rgba(31,38,58,.6)}
+.hero--painted .hero__scroll::after{background:var(--cream)}
+
+/* story painting: full sheet width, centered by construction */
+.story__art{width:100%;margin:8px 0 0}
+.story__cap{padding:0 20px}
+@media (min-width:861px){
+  .hero--painted .hero__name{font-size:min(8.5vw,104px)}
+  .hero--painted .hero__amp{font-size:min(3.4vw,44px)}
+  .hero--painted .hero__art{min-height:34svh}
+  .story__art{max-width:none;margin:16px 0 0}
+}
