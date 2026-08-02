@@ -4,45 +4,56 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Austin &amp; Anastasiia | April 23, 2027</title>
-  <meta name="description" content="Austin Sabella and Anastasiia Oliinyk are getting married on April 23, 2027 at Promontory Point in Chicago. Join us." />
+  <meta name="description" content="Austin Sabella and Anastasiia Oliinyk are getting married on April 23, 2027 at Promontory Point in Chicago. Save the date." />
+  <meta property="og:title" content="Austin &amp; Anastasiia — April 23, 2027" />
+  <meta property="og:description" content="Save the date. Promontory Point, Chicago. Find your invitation and RSVP." />
+  <meta property="og:type" content="website" />
 
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%237E8C75'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='15' fill='%23F7F3EC' text-anchor='middle'%3EA%26A%3C/text%3E%3C/svg%3E" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23586350'/%3E%3Ctext x='16' y='21' font-family='Georgia,serif' font-size='13' fill='%23E9DFC8' text-anchor='middle'%3EA%26A%3C/text%3E%3C/svg%3E" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&family=Tangerine:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500&family=Tangerine:wght@400;700&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/site.css" />
 
   <script>function photoMissing(img){var b=img.closest('[data-photo]');if(b)b.classList.add('photo--missing');}</script>
   <script defer src="js/config.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script defer src="js/main.js"></script>
+  <script defer src="js/site.js"></script>
   <script defer src="js/rsvp.js"></script>
 </head>
-<body>
+<body class="is-sealed">
 
-  <!-- Reusable wheat ornament (a subtle nod to Anastasiia's Ukraine) -->
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-    <symbol id="wheat" viewBox="0 0 220 40">
-      <g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round">
-        <line x1="6" y1="20" x2="78" y2="20" />
-        <line x1="142" y1="20" x2="214" y2="20" />
-        <circle cx="78" cy="20" r="1.6" fill="currentColor" stroke="none" />
-        <circle cx="142" cy="20" r="1.6" fill="currentColor" stroke="none" />
-        <g stroke-width="1.4">
-          <line x1="110" y1="37" x2="110" y2="5" />
-          <line x1="110" y1="34" x2="101" y2="28" /><line x1="110" y1="34" x2="119" y2="28" />
-          <line x1="110" y1="29" x2="102" y2="23.5" /><line x1="110" y1="29" x2="118" y2="23.5" />
-          <line x1="110" y1="24" x2="103" y2="19" /><line x1="110" y1="24" x2="117" y2="19" />
-          <line x1="110" y1="19" x2="104" y2="14.5" /><line x1="110" y1="19" x2="116" y2="14.5" />
-          <line x1="110" y1="14" x2="105.5" y2="10.5" /><line x1="110" y1="14" x2="114.5" y2="10.5" />
-        </g>
-      </g>
-    </symbol>
-  </svg>
+  <!-- ============ ENVELOPE ENTRY ============ -->
+  <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Open the invitation">
+    <div class="envelope__scene">
+      <div class="envelope__paper">
+        <div class="envelope__flap"></div>
+        <div class="envelope__pocket"></div>
+        <div class="envelope__letter">
+          <span class="envelope__letter-script">You're invited</span>
+        </div>
+        <button class="envelope__seal" id="sealBtn" aria-label="Break the seal and open">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <defs>
+              <radialGradient id="wax" cx="42%" cy="38%" r="70%">
+                <stop offset="0%" stop-color="#c8a95e"/>
+                <stop offset="55%" stop-color="#a98b47"/>
+                <stop offset="100%" stop-color="#8a6f33"/>
+              </radialGradient>
+            </defs>
+            <path d="M60 6c8 0 12-4 20-2 8 2 10 8 17 12 7 4 13 3 17 10 4 7 0 12 2 20 2 8 6 11 4 19-2 8-8 9-12 16-4 7-2 13-9 17-7 4-12 1-20 3-8 2-11 6-19 4-8-2-9-8-16-12-7-4-13-2-17-9-4-7 0-12-2-20-2-8-7-11-5-19 2-8 9-9 13-16 4-7 1-13 8-17 7-4 12 0 19-2 8-2 12-4 20-4z" fill="url(#wax)"/>
+            <circle cx="60" cy="60" r="38" fill="none" stroke="#F3EAD3" stroke-width="1.2" opacity=".65"/>
+            <text x="60" y="72" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#F7F0DC" letter-spacing="1">A·A</text>
+          </svg>
+        </button>
+      </div>
+      <p class="envelope__hint">Tap the seal to open</p>
+    </div>
+  </div>
 
-  <!-- ===== NAV ===== -->
+  <!-- ============ NAV ============ -->
   <header class="nav" id="nav">
     <div class="nav__inner container">
       <a href="#top" class="nav__brand">A <span>&amp;</span> A</a>
@@ -51,195 +62,228 @@
       </button>
       <nav class="nav__links" id="navLinks">
         <a href="#story">Our Story</a>
-        <a href="#details">The Day</a>
+        <a href="#day">The Day</a>
+        <a href="#venue">Venue</a>
         <a href="#gallery">Gallery</a>
-        <a href="#travel">Travel</a>
-        <a href="#registry">Registry</a>
         <a href="#faq">FAQ</a>
         <a href="#rsvp" class="nav__cta">RSVP</a>
       </nav>
     </div>
   </header>
 
-  <!-- ===== HERO ===== -->
+  <!-- ============ HERO ============ -->
   <section class="hero" id="top">
     <div class="hero__media photo" data-photo>
-      <!-- Replace assets/photos/hero.jpg with your favorite full-width photo (landscape, high-res) -->
-      <img src="assets/photos/hero.jpg" alt="Austin and Anastasiia" onerror="photoMissing(this)" />
-      <span class="photo__hint">assets/photos/hero.jpg<small>your hero photo (wide, high-res)</small></span>
+      <img src="assets/photos/hero.jpg" alt="" onerror="photoMissing(this)" />
+      <span class="photo__hint" aria-hidden="true">assets/photos/hero.jpg</span>
     </div>
-    <div class="hero__overlay"></div>
-    <div class="hero__content reveal">
-      <p class="hero__eyebrow">We're getting married</p>
-      <h1 class="hero__names">Austin <span>&amp;</span> Anastasiia</h1>
-      <p class="hero__meta" id="heroDate">Friday, April 23, 2027</p>
-      <p class="hero__place">Chicago, Illinois</p>
-
-      <div class="countdown" id="countdown" aria-label="Countdown to the wedding">
-        <div class="countdown__unit"><span id="cdDays">--</span><label>Days</label></div>
-        <div class="countdown__unit"><span id="cdHours">--</span><label>Hours</label></div>
-        <div class="countdown__unit"><span id="cdMins">--</span><label>Minutes</label></div>
-        <div class="countdown__unit"><span id="cdSecs">--</span><label>Seconds</label></div>
+    <div class="hero__veil"></div>
+    <div class="hero__content">
+      <p class="hero__eyebrow" data-enter>Together with their families</p>
+      <h1 class="hero__names" data-enter>
+        <span class="hero__name">Austin</span>
+        <span class="hero__amp">&amp;</span>
+        <span class="hero__name">Anastasiia</span>
+      </h1>
+      <div class="hero__rule" data-enter><svg class="wheat" viewBox="0 0 220 40" aria-hidden="true"><use href="#wheatSym"/></svg></div>
+      <p class="hero__date" data-enter>Friday, April 23, 2027</p>
+      <p class="hero__place" data-enter>Promontory Point · Chicago</p>
+      <div class="countdown" id="countdown" data-enter aria-label="Countdown to the wedding">
+        <div class="countdown__unit"><span id="cdDays">—</span><label>days</label></div>
+        <div class="countdown__sep"></div>
+        <div class="countdown__unit"><span id="cdHours">—</span><label>hours</label></div>
+        <div class="countdown__sep"></div>
+        <div class="countdown__unit"><span id="cdMins">—</span><label>minutes</label></div>
+        <div class="countdown__sep"></div>
+        <div class="countdown__unit"><span id="cdSecs">—</span><label>seconds</label></div>
       </div>
-
-      <a href="#rsvp" class="btn btn--primary hero__btn">RSVP</a>
+      <a href="#rsvp" class="btn btn--hero" data-enter>Find your invitation</a>
     </div>
-    <a href="#story" class="hero__scroll" aria-label="Scroll down">scroll</a>
+    <a href="#story" class="hero__scroll" aria-label="Scroll">scroll</a>
   </section>
 
-  <!-- ===== OUR STORY (photo-forward, minimal text) ===== -->
+  <!-- wheat symbol -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="wheatSym" viewBox="0 0 220 40">
+      <g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round">
+        <line x1="6" y1="20" x2="82" y2="20"/><line x1="138" y1="20" x2="214" y2="20"/>
+        <circle cx="82" cy="20" r="1.6" fill="currentColor" stroke="none"/><circle cx="138" cy="20" r="1.6" fill="currentColor" stroke="none"/>
+        <g stroke-width="1.4">
+          <line x1="110" y1="37" x2="110" y2="5"/>
+          <line x1="110" y1="34" x2="101" y2="28"/><line x1="110" y1="34" x2="119" y2="28"/>
+          <line x1="110" y1="29" x2="102" y2="23.5"/><line x1="110" y1="29" x2="118" y2="23.5"/>
+          <line x1="110" y1="24" x2="103" y2="19"/><line x1="110" y1="24" x2="117" y2="19"/>
+          <line x1="110" y1="19" x2="104" y2="14.5"/><line x1="110" y1="19" x2="116" y2="14.5"/>
+          <line x1="110" y1="14" x2="105.5" y2="10.5"/><line x1="110" y1="14" x2="114.5" y2="10.5"/>
+        </g>
+      </g>
+    </symbol>
+  </svg>
+
+  <!-- ============ SAVE THE DATE BAND ============ -->
+  <section class="band">
+    <p class="band__script" data-reveal>Save the date</p>
+    <p class="band__text" data-reveal>Formal details will follow — for now, mark the evening and find your invitation below.</p>
+  </section>
+
+  <!-- ============ OUR STORY ============ -->
   <section class="section story" id="story">
     <div class="container">
-      <div class="section__head reveal">
+      <header class="section__head" data-reveal>
         <p class="section__label">The two of us</p>
         <h2 class="section__title">Our Story</h2>
-        <svg class="ornament" aria-hidden="true"><use href="#wheat"></use></svg>
-        <p class="story__intro">Our story, in pictures.</p>
-      </div>
-
-      <div class="story__collage reveal">
-        <div class="story__feature photo" data-photo style="--ratio: 16/9">
+        <svg class="ornament" viewBox="0 0 220 40" aria-hidden="true"><use href="#wheatSym"/></svg>
+      </header>
+      <div class="story__grid">
+        <figure class="story__card story__card--tall photo" data-photo data-reveal>
           <img src="assets/photos/story-1.jpg" alt="" onerror="photoMissing(this)" />
-          <span class="photo__hint">assets/photos/story-1.jpg<small>a favorite of the two of you</small></span>
+          <span class="photo__hint">story-1.jpg</span>
+        </figure>
+        <figure class="story__card photo" data-photo data-reveal>
+          <img src="assets/photos/story-2.jpg" alt="" onerror="photoMissing(this)" />
+          <span class="photo__hint">story-2.jpg</span>
+        </figure>
+        <div class="story__note" data-reveal>
+          <p class="story__script">From Chicago, with love</p>
+          <p>Our story — in photographs, the way we like to tell it.</p>
         </div>
-        <div class="story__trio">
-          <div class="photo" data-photo style="--ratio: 1">
-            <img src="assets/photos/story-2.jpg" alt="" onerror="photoMissing(this)" />
-            <span class="photo__hint">story-2.jpg</span>
-          </div>
-          <div class="photo" data-photo style="--ratio: 1">
-            <img src="assets/photos/story-3.jpg" alt="" onerror="photoMissing(this)" />
-            <span class="photo__hint">story-3.jpg</span>
-          </div>
-          <div class="photo" data-photo style="--ratio: 1">
-            <img src="assets/photos/story-4.jpg" alt="" onerror="photoMissing(this)" />
-            <span class="photo__hint">story-4.jpg</span>
-          </div>
-        </div>
+        <figure class="story__card photo" data-photo data-reveal>
+          <img src="assets/photos/story-3.jpg" alt="" onerror="photoMissing(this)" />
+          <span class="photo__hint">story-3.jpg</span>
+        </figure>
+        <figure class="story__card story__card--wide photo" data-photo data-reveal>
+          <img src="assets/photos/story-4.jpg" alt="" onerror="photoMissing(this)" />
+          <span class="photo__hint">story-4.jpg</span>
+        </figure>
       </div>
     </div>
   </section>
 
-  <!-- ===== INTERLUDE BANNER ===== -->
-  <section class="banner photo" data-photo>
-    <img src="assets/photos/banner.jpg" alt="" onerror="photoMissing(this)" />
-    <span class="photo__hint" aria-hidden="true">assets/photos/banner.jpg<small>a wide, atmospheric photo</small></span>
-    <p class="banner__quote">"[A favorite line, a lyric, or a vow you both love.]"</p>
-  </section>
-
-  <!-- ===== THE DAY / DETAILS ===== -->
-  <section class="section details" id="details">
+  <!-- ============ THE DAY ============ -->
+  <section class="section day" id="day">
     <div class="container">
-      <div class="section__head reveal">
-        <p class="section__label">Join us</p>
+      <header class="section__head" data-reveal>
+        <p class="section__label">April 23, 2027</p>
         <h2 class="section__title">The Day</h2>
-        <svg class="ornament" aria-hidden="true"><use href="#wheat"></use></svg>
+        <svg class="ornament" viewBox="0 0 220 40" aria-hidden="true"><use href="#wheatSym"/></svg>
+      </header>
+      <div class="timeline" id="timeline">
+        <div class="timeline__rail" aria-hidden="true"><span class="timeline__rail-fill" id="railFill"></span></div>
+        <div class="timeline__item" data-reveal>
+          <div class="timeline__dot"></div>
+          <p class="timeline__time">3:00 in the afternoon</p>
+          <h3 class="timeline__name">Welcome</h3>
+          <p class="timeline__desc">Arrive at the Point, find a glass of something cold, and take in the lake.</p>
+        </div>
+        <div class="timeline__item" data-reveal>
+          <div class="timeline__dot"></div>
+          <p class="timeline__time">Ceremony</p>
+          <h3 class="timeline__name">We say “I do”</h3>
+          <p class="timeline__desc">Outdoors, with the skyline across the water.</p>
+        </div>
+        <div class="timeline__item" data-reveal>
+          <div class="timeline__dot"></div>
+          <p class="timeline__time">Golden hour</p>
+          <h3 class="timeline__name">Cocktails on the patio</h3>
+          <p class="timeline__desc">Drinks and hors d'oeuvres while we steal away for photos.</p>
+        </div>
+        <div class="timeline__item" data-reveal>
+          <div class="timeline__dot"></div>
+          <p class="timeline__time">Evening</p>
+          <h3 class="timeline__name">Dinner &amp; toasts</h3>
+          <p class="timeline__desc">Buffet dinner in the historic Promontory Point building.</p>
+        </div>
+        <div class="timeline__item" data-reveal>
+          <div class="timeline__dot"></div>
+          <p class="timeline__time">Until 10</p>
+          <h3 class="timeline__name">Dancing</h3>
+          <p class="timeline__desc">Shoes optional. The lakefront at night does the rest.</p>
+        </div>
       </div>
+      <p class="day__note" data-reveal>Exact timings will be on this page as the day approaches.</p>
+    </div>
+  </section>
 
-      <div class="details__grid reveal">
-        <div class="detail-card">
-          <p class="detail-card__label">When</p>
-          <p class="detail-card__big" id="detailsDate">Friday, April 23, 2027</p>
-          <p class="detail-card__sub">Ceremony begins at 4:00 PM</p>
+  <!-- ============ VENUE ============ -->
+  <section class="section venue" id="venue">
+    <div class="container">
+      <header class="section__head" data-reveal>
+        <p class="section__label">Where</p>
+        <h2 class="section__title">Promontory Point</h2>
+        <svg class="ornament" viewBox="0 0 220 40" aria-hidden="true"><use href="#wheatSym"/></svg>
+      </header>
+      <div class="venue__grid">
+        <div class="venue__info" data-reveal>
+          <p class="venue__script">A peninsula on Lake Michigan</p>
+          <p>A 1930s lakefront park jutting into Lake Michigan, with the Chicago skyline floating across the water. The ceremony and reception are both here — one place, all evening.</p>
+          <address>
+            5491 S. DuSable Lake Shore Drive<br />
+            Chicago, IL 60615
+          </address>
+          <div class="venue__points">
+            <div><strong>Getting there</strong><span>15 minutes from the Loop. Rideshare drops at 55th Street; the underpass walk takes 5 minutes.</span></div>
+            <div><strong>Parking</strong><span>Lot at 55th Street (pay-to-park). A golf cart will shuttle anyone who'd rather ride than walk.</span></div>
+            <div><strong>Dress</strong><span>It's April on the lake — bring a layer for the evening breeze.</span></div>
+          </div>
+          <a class="link" href="https://www.google.com/maps/search/?api=1&query=Promontory+Point+Burnham+Park+Chicago" target="_blank" rel="noopener">Open in Google Maps</a>
         </div>
-        <div class="detail-card">
-          <p class="detail-card__label">Where</p>
-          <p class="detail-card__big">Promontory Point</p>
-          <p class="detail-card__sub">Burnham Park, on the Chicago lakefront<br />5491 S. DuSable Lake Shore Dr, Chicago, IL 60615</p>
-          <a class="link" href="https://www.google.com/maps/search/?api=1&amp;query=Promontory+Point+Burnham+Park+Chicago" target="_blank" rel="noopener">View map</a>
+        <div class="venue__map" data-reveal>
+          <iframe title="Map to Promontory Point" src="https://maps.google.com/maps?q=Promontory%20Point%2C%20Chicago&t=&z=14&ie=UTF8&iwloc=&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
-        <div class="detail-card">
-          <p class="detail-card__label">Dress code</p>
-          <p class="detail-card__big">[Black tie optional]</p>
-          <p class="detail-card__sub">We can't wait to see you dressed up.</p>
-        </div>
-      </div>
-
-      <div class="timeline reveal">
-        <h3 class="timeline__title">Schedule</h3>
-        <div class="timeline__item"><span class="timeline__time">4:00 PM</span><span class="timeline__desc">Ceremony</span></div>
-        <div class="timeline__item"><span class="timeline__time">4:30 PM</span><span class="timeline__desc">Cocktail hour</span></div>
-        <div class="timeline__item"><span class="timeline__time">6:00 PM</span><span class="timeline__desc">Dinner &amp; toasts</span></div>
-        <div class="timeline__item"><span class="timeline__time">8:00 PM</span><span class="timeline__desc">Dancing</span></div>
-        <div class="timeline__item"><span class="timeline__time">11:00 PM</span><span class="timeline__desc">Send-off</span></div>
       </div>
     </div>
   </section>
 
-  <!-- ===== GALLERY ===== -->
+  <!-- ============ GALLERY ============ -->
   <section class="section gallery" id="gallery">
     <div class="container">
-      <div class="section__head reveal">
-        <p class="section__label">A few of our favorites</p>
+      <header class="section__head" data-reveal>
+        <p class="section__label">A few favorites</p>
         <h2 class="section__title">Gallery</h2>
-        <svg class="ornament" aria-hidden="true"><use href="#wheat"></use></svg>
-      </div>
-      <div class="gallery__grid reveal">
-        <div class="gallery__item photo" data-photo><img src="assets/photos/gallery-1.jpg" alt="" onerror="photoMissing(this)" /><span class="photo__hint">gallery-1.jpg</span></div>
-        <div class="gallery__item photo" data-photo><img src="assets/photos/gallery-2.jpg" alt="" onerror="photoMissing(this)" /><span class="photo__hint">gallery-2.jpg</span></div>
-        <div class="gallery__item photo" data-photo><img src="assets/photos/gallery-3.jpg" alt="" onerror="photoMissing(this)" /><span class="photo__hint">gallery-3.jpg</span></div>
-        <div class="gallery__item photo" data-photo><img src="assets/photos/gallery-4.jpg" alt="" onerror="photoMissing(this)" /><span class="photo__hint">gallery-4.jpg</span></div>
-        <div class="gallery__item photo" data-photo><img src="assets/photos/gallery-5.jpg" alt="" onerror="photoMissing(this)" /><span class="photo__hint">gallery-5.jpg</span></div>
-        <div class="gallery__item photo" data-photo><img src="assets/photos/gallery-6.jpg" alt="" onerror="photoMissing(this)" /><span class="photo__hint">gallery-6.jpg</span></div>
-        <div class="gallery__item photo" data-photo><img src="assets/photos/gallery-7.jpg" alt="" onerror="photoMissing(this)" /><span class="photo__hint">gallery-7.jpg</span></div>
-        <div class="gallery__item photo" data-photo><img src="assets/photos/gallery-8.jpg" alt="" onerror="photoMissing(this)" /><span class="photo__hint">gallery-8.jpg</span></div>
-        <div class="gallery__item photo" data-photo><img src="assets/photos/gallery-9.jpg" alt="" onerror="photoMissing(this)" /><span class="photo__hint">gallery-9.jpg</span></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== TRAVEL & STAY ===== -->
-  <section class="section travel" id="travel">
-    <div class="container">
-      <div class="section__head reveal">
-        <p class="section__label">Plan your trip</p>
-        <h2 class="section__title">Travel &amp; Stay</h2>
-        <svg class="ornament" aria-hidden="true"><use href="#wheat"></use></svg>
-      </div>
-      <div class="cols reveal">
-        <div class="card">
-          <h3>Where to stay</h3>
-          <p>We've reserved a room block at <strong>[Hotel Name]</strong>. Mention "[Sabella-Oliinyk Wedding]" when booking by [date] for our group rate.</p>
-          <a class="link" href="[HOTEL LINK]" target="_blank" rel="noopener">Book your room</a>
-        </div>
-        <div class="card">
-          <h3>Getting there</h3>
-          <p>The Point sits in Hyde Park on the lakefront. Flying in? <strong>Midway (MDW)</strong> is about 25 minutes away and <strong>O'Hare (ORD)</strong> about 40. Rideshare drops you right at 55th Street.</p>
-        </div>
-        <div class="card">
-          <h3>Things to do</h3>
-          <p>Making a weekend of it? A few of our favorite spots nearby: [restaurant], [coffee], [thing to do].</p>
-        </div>
+        <svg class="ornament" viewBox="0 0 220 40" aria-hidden="true"><use href="#wheatSym"/></svg>
+      </header>
+      <div class="gallery__grid">
+        <figure class="photo" data-photo data-reveal><img src="assets/photos/gallery-1.jpg" alt="" onerror="photoMissing(this)"/><span class="photo__hint">gallery-1.jpg</span></figure>
+        <figure class="photo" data-photo data-reveal><img src="assets/photos/gallery-2.jpg" alt="" onerror="photoMissing(this)"/><span class="photo__hint">gallery-2.jpg</span></figure>
+        <figure class="photo" data-photo data-reveal><img src="assets/photos/gallery-3.jpg" alt="" onerror="photoMissing(this)"/><span class="photo__hint">gallery-3.jpg</span></figure>
+        <figure class="photo" data-photo data-reveal><img src="assets/photos/gallery-4.jpg" alt="" onerror="photoMissing(this)"/><span class="photo__hint">gallery-4.jpg</span></figure>
+        <figure class="photo" data-photo data-reveal><img src="assets/photos/gallery-5.jpg" alt="" onerror="photoMissing(this)"/><span class="photo__hint">gallery-5.jpg</span></figure>
+        <figure class="photo" data-photo data-reveal><img src="assets/photos/gallery-6.jpg" alt="" onerror="photoMissing(this)"/><span class="photo__hint">gallery-6.jpg</span></figure>
+        <figure class="photo" data-photo data-reveal><img src="assets/photos/gallery-7.jpg" alt="" onerror="photoMissing(this)"/><span class="photo__hint">gallery-7.jpg</span></figure>
+        <figure class="photo" data-photo data-reveal><img src="assets/photos/gallery-8.jpg" alt="" onerror="photoMissing(this)"/><span class="photo__hint">gallery-8.jpg</span></figure>
       </div>
     </div>
   </section>
 
-  <!-- ===== REGISTRY ===== -->
-  <section class="section registry" id="registry">
-    <div class="container reveal">
-      <p class="section__label">If you wish</p>
-      <h2 class="section__title">Registry</h2>
-      <svg class="ornament" aria-hidden="true"><use href="#wheat"></use></svg>
-      <p class="registry__lead">Your presence is the greatest gift. For those who have asked, we've put together a few things here.</p>
-      <div class="registry__links">
-        <a class="btn btn--outline" href="[REGISTRY LINK 1]" target="_blank" rel="noopener">[Registry name]</a>
-        <a class="btn btn--outline" href="[REGISTRY LINK 2]" target="_blank" rel="noopener">[Registry name]</a>
+  <!-- ============ FAQ ============ -->
+  <section class="section faq" id="faq">
+    <div class="container container--narrow">
+      <header class="section__head" data-reveal>
+        <p class="section__label">Good to know</p>
+        <h2 class="section__title">Questions</h2>
+        <svg class="ornament" viewBox="0 0 220 40" aria-hidden="true"><use href="#wheatSym"/></svg>
+      </header>
+      <div class="faq__list" data-reveal>
+        <details class="faq__item"><summary>When should I RSVP?</summary><p>As soon as you can — it truly helps us plan. Search your name below; your whole party appears together.</p></details>
+        <details class="faq__item"><summary>Can I bring a guest?</summary><p>Your invitation covers everyone listed in your party when you search your name. If you have a question about a plus-one, just text us.</p></details>
+        <details class="faq__item"><summary>Where do I park?</summary><p>The lot at 55th Street is closest (pay-to-park). From there it's a short walk through the underpass — or catch the golf cart we'll have running all evening.</p></details>
+        <details class="faq__item"><summary>Indoors or outdoors?</summary><p>The ceremony is outdoors on the lakefront; dinner and dancing are inside the historic field house. April evenings by the lake run cool — bring a layer.</p></details>
+        <details class="faq__item"><summary>What should I wear?</summary><p>Dress code details will follow with the formal invitation. Think festive and comfortable enough to dance.</p></details>
+        <details class="faq__item"><summary>Are kids invited?</summary><p>Details to follow with the formal invitation — reach out if it changes your plans.</p></details>
       </div>
     </div>
   </section>
 
-  <!-- ===== RSVP ===== -->
+  <!-- ============ RSVP ============ -->
   <section class="section rsvp" id="rsvp">
-    <div class="container">
-      <div class="section__head reveal">
+    <div class="container container--narrow">
+      <header class="section__head" data-reveal>
         <p class="section__label">We hope you'll join us</p>
         <h2 class="section__title">RSVP</h2>
-        <svg class="ornament" aria-hidden="true"><use href="#wheat"></use></svg>
-        <p class="rsvp__lead">Kindly respond by <strong>[March 23, 2027]</strong>. Search your name (or your partner's) to find your invitation.</p>
-      </div>
-
-      <div class="rsvp__card reveal">
-        <!-- Step 1: search -->
+        <svg class="ornament" viewBox="0 0 220 40" aria-hidden="true"><use href="#wheatSym"/></svg>
+        <p class="rsvp__lead">Search your name — or your partner's — to find your invitation. Add your email and phone so reminders and updates reach you.</p>
+      </header>
+      <div class="rsvp__card" data-reveal>
         <div class="rsvp__step" id="rsvpStepSearch">
           <div class="field">
             <label class="field__label" for="rsvpName">Your name</label>
@@ -248,40 +292,17 @@
           <button class="btn btn--primary" id="rsvpSearchBtn">Find my invitation</button>
           <p class="rsvp__msg" id="rsvpSearchMsg" role="status"></p>
         </div>
-
-        <!-- Step 2: respond (built by js/rsvp.js) -->
         <div class="rsvp__step" id="rsvpStepRespond" hidden></div>
-
-        <!-- Step 3: done (built by js/rsvp.js) -->
         <div class="rsvp__step" id="rsvpStepDone" hidden></div>
       </div>
     </div>
   </section>
 
-  <!-- ===== FAQ ===== -->
-  <section class="section faq" id="faq">
-    <div class="container">
-      <div class="section__head reveal">
-        <p class="section__label">Good to know</p>
-        <h2 class="section__title">FAQ</h2>
-        <svg class="ornament" aria-hidden="true"><use href="#wheat"></use></svg>
-      </div>
-      <div class="faq__list reveal">
-        <details class="faq__item"><summary>When should I RSVP by?</summary><p>Please RSVP by [March 23, 2027] so we can finalize numbers with our venue.</p></details>
-        <details class="faq__item"><summary>What is the dress code?</summary><p>[Black tie optional]. Think [a description of the vibe here].</p></details>
-        <details class="faq__item"><summary>Can I bring a guest?</summary><p>We've reserved seats for the names listed on your invitation. When you search your name in the RSVP, you'll see everyone included in your party.</p></details>
-        <details class="faq__item"><summary>Are kids welcome?</summary><p>[We love your little ones, but our celebration is adults only. / Children are welcome.]</p></details>
-        <details class="faq__item"><summary>Where do I park, and how do I get to the ceremony?</summary><p>Promontory Point is a short walk from parking. [Exact parking location and details to come.] We'll have a golf cart shuttling guests to and from the parking area throughout the day, so the walk is covered if you'd rather ride.</p></details>
-        <details class="faq__item"><summary>Is the ceremony indoors or outdoors?</summary><p>We'll be celebrating outdoors at Promontory Point, right on the Chicago lakefront. [Add any weather or backup-plan notes here.]</p></details>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== FOOTER ===== -->
+  <!-- ============ FOOTER ============ -->
   <footer class="footer">
+    <svg class="ornament ornament--footer" viewBox="0 0 220 40" aria-hidden="true"><use href="#wheatSym"/></svg>
     <p class="footer__names">Austin <span>&amp;</span> Anastasiia</p>
-    <p class="footer__date">Friday, April 23, 2027</p>
-    <svg class="ornament ornament--light" aria-hidden="true"><use href="#wheat"></use></svg>
+    <p class="footer__date">April 23, 2027 · Promontory Point, Chicago</p>
     <p class="footer__thanks">We can't wait to celebrate with you.</p>
   </footer>
 
