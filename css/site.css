@@ -947,3 +947,9 @@ img.wheat--pug{width:auto;height:44px;display:block;margin:0 auto}
   border:1.5px solid var(--gold);border-radius:999px;padding:15px 40px;
 }
 .rsvp .btn--primary:hover{background:var(--gold);color:var(--cream);border-color:var(--gold)}
+
+/* nav RSVP: gold pill outline */
+.nav__cta{border:1.5px solid var(--gold) !important;border-radius:999px;padding:9px 24px;color:var(--gold-deep) !important}
+.nav__cta:hover{background:var(--gold);color:var(--cream) !important;opacity:1 !important}
+body.nav-open .nav__cta{color:var(--gold-bright) !important;border-color:var(--gold-bright) !important}
+body.nav-open .nav__cta:hover{background:var(--gold-bright);color:var(--sage-dark) !important}
