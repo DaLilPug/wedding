@@ -905,7 +905,7 @@ img.ornament--pug{width:auto;height:48px;display:block;margin:16px auto 0}
 img.wheat--pug{width:auto;height:44px;display:block;margin:0 auto}
 .hero--painted .hero__rule{margin:12px 0 0}
 .timeline__dot{
-  background:var(--cream) url("../assets/photos/pug-icon.png?v=22") center/76% no-repeat;
+  background:var(--cream) url("../assets/photos/pug-icon.png?v=27") center/76% no-repeat;
   border:1px solid rgba(183,154,91,.5);border-radius:50%;
   box-shadow:0 0 0 4px var(--cream);
   width:32px;height:32px;left:-44px;top:-2px;
