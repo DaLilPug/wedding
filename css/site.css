@@ -882,3 +882,17 @@ body{
 @media (min-width:861px){
   .timeline__dot{width:32px;height:32px;left:-51px}
 }
+
+/* hero CTA: rounded, transparent, gold outline + gold text */
+.hero--painted .btn--primary{
+  background:transparent;
+  color:var(--gold-deep);
+  border:1.5px solid var(--gold);
+  border-radius:999px;
+  padding:15px 40px;
+}
+.hero--painted .btn--primary:hover{
+  background:var(--gold);
+  color:var(--cream);
+  border-color:var(--gold);
+}
