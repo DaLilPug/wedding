@@ -1061,3 +1061,17 @@ body.nav-open{overflow:hidden}
   background:linear-gradient(180deg,rgba(252,249,245,0) 0%,var(--cream) 92%);
   pointer-events:none;z-index:2;
 }
+
+/* ==========================================================
+   DESKTOP BACKDROP: the aurora painting, dream-blurred,
+   filling the space beside the sheet
+   ========================================================== */
+@media (min-width:861px){
+  body::before{
+    content:"";position:fixed;inset:-48px;z-index:-1;pointer-events:none;
+    background:url("../assets/photos/hero-illustration.jpg?v=38") center 32%/cover no-repeat;
+    filter:blur(36px) saturate(1.05) brightness(1.04);
+    opacity:.5;
+    transform:scale(1.06);
+  }
+}
