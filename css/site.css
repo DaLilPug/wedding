@@ -856,3 +856,19 @@ body{
   .hero--painted .hero__art{min-height:34svh}
   .story__art{max-width:none;margin:16px 0 0}
 }
+
+/* ==========================================================
+   TIMELINE MARKERS - little pug faces, centered on the rail
+   (rail center mobile = 6px from timeline edge; item is inset
+   34px, so marker center sits at -28px; desktop 10px/46px = -36)
+   ========================================================== */
+.timeline__dot{
+  left:-41px;top:0;width:26px;height:26px;
+  border-radius:50%;transform:none;
+  background:var(--cream) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M8 10 Q6 4 11 3 Q15 5 15.5 8 Z' fill='%237D6329'/%3E%3Cpath d='M24 10 Q26 4 21 3 Q17 5 16.5 8 Z' fill='%237D6329'/%3E%3Ccircle cx='16' cy='17' r='11' fill='%23C9AF74' stroke='%236E5626' stroke-width='1.6'/%3E%3Ccircle cx='11.8' cy='14.8' r='2' fill='%234E3D17'/%3E%3Ccircle cx='20.2' cy='14.8' r='2' fill='%234E3D17'/%3E%3Ccircle cx='12.5' cy='14.1' r='.6' fill='%23F3EAD3'/%3E%3Ccircle cx='20.9' cy='14.1' r='.6' fill='%23F3EAD3'/%3E%3Cellipse cx='16' cy='21' rx='5.2' ry='4' fill='%23A98B47'/%3E%3Cpath d='M14 19.2 Q16 18 18 19.2 Q17.6 21.4 16 21.5 Q14.4 21.4 14 19.2 Z' fill='%234E3D17'/%3E%3Cpath d='M16 21.5 L16 23.2 M13.6 24.4 Q16 26 18.4 24.4' stroke='%234E3D17' stroke-width='1.1' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") center/82% no-repeat;
+  border:1.5px solid rgba(183,154,91,.65);
+  box-shadow:0 0 0 4px var(--cream);
+}
+@media (min-width:861px){
+  .timeline__dot{left:-49px;width:28px;height:28px}
+}
