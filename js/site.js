@@ -32,10 +32,10 @@
     setTimeout(function () {
       envelope.classList.add('is-open');
       document.body.classList.remove('is-sealed');
-    }, 1450);
+    }, 2250);
     setTimeout(function () {
       document.body.classList.add('is-entered');
-    }, 1700);
+    }, 2500);
   }
   if (envelope) {
     envelope.addEventListener('click', openEnvelope);
