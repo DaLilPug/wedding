@@ -743,3 +743,77 @@ body{
 @media (min-width:861px){
   .story__art{max-width:720px;margin:34px auto 0}
 }
+
+/* ==========================================================
+   HERO: THE PAINTED SKY - light, editorial, art-led
+   (final override layer)
+   ========================================================== */
+.hero--painted{
+  background:
+    radial-gradient(70% 40% at 50% 100%,rgba(240,223,218,.5),transparent 75%),
+    var(--cream);
+  color:var(--ink);
+  justify-content:flex-start;
+  padding:0 0 52px;
+}
+.hero--painted .hero__media,.hero--painted .hero__veil{display:none}
+.hero__art{
+  position:relative;z-index:1;width:100%;margin:0;
+  height:44svh;min-height:280px;
+}
+.hero__art img{
+  width:100%;height:100%;object-fit:cover;object-position:50% 72%;
+  mix-blend-mode:multiply;filter:saturate(1.06);
+  -webkit-mask-image:linear-gradient(180deg,#000 76%,transparent 100%);
+  mask-image:linear-gradient(180deg,#000 76%,transparent 100%);
+}
+.hero--painted .hero__content{position:relative;z-index:2;margin-top:-1svh;padding:0 22px}
+.hero--painted .hero__eyebrow{color:var(--sage-deep);opacity:1}
+.hero--painted .hero__name{color:var(--ink);text-shadow:0 2px 26px rgba(252,249,245,.9);font-size:min(17.5vw,78px)}
+.hero--painted .hero__amp{color:var(--gold-deep);text-shadow:none}
+.hero--painted .hero__rule .wheat{color:var(--gold)}
+.hero--painted .hero__date,.hero--painted .hero__place{color:var(--ink)}
+.hero--painted .hero__place{color:var(--ink-soft)}
+.hero--painted .countdown{color:var(--ink);margin:24px 0 26px}
+.hero--painted .countdown__unit label{color:var(--ink-soft);opacity:1}
+.hero--painted .countdown__sep{background:linear-gradient(180deg,transparent,rgba(48,55,74,.45),transparent)}
+.hero--painted .hero__scroll{color:var(--ink-soft)}
+.hero--painted .hero__scroll::after{background:var(--ink-soft)}
+/* washes drift on the paper, behind everything */
+.hero--painted .hero__wash{z-index:0}
+.wash-blob--mint{
+  width:70%;aspect-ratio:1;left:-16%;top:6%;
+  background:radial-gradient(closest-side,rgba(158,208,196,.5),rgba(158,208,196,0) 72%);
+  mix-blend-mode:multiply;border-radius:55% 45% 60% 40%/50% 58% 42% 50%;
+  animation:blobA 28s ease-in-out infinite alternate;
+}
+.hero--painted .wash-blob--rose{
+  width:58%;right:-14%;top:34%;
+  background:radial-gradient(closest-side,rgba(233,178,172,.42),rgba(233,178,172,0) 72%);
+  mix-blend-mode:multiply;animation-duration:36s;
+}
+.hero--painted .wash-blob--gold{
+  width:52%;left:-6%;bottom:-10%;
+  background:radial-gradient(closest-side,rgba(229,200,123,.34),rgba(229,200,123,0) 70%);
+  mix-blend-mode:multiply;animation-duration:24s;
+}
+/* florals sit on the paper zone */
+.hero--painted .bloom{z-index:2;color:#B9C6DC}
+.hero--painted .bloom--bl{bottom:6px;left:6px}
+.hero--painted .bloom--br{bottom:6px;right:6px}
+/* nav over the light sky: ink from the start */
+.nav__brand{color:var(--ink)}
+.nav__brand span{color:var(--gold)}
+.nav__links a{color:var(--cream)}
+.nav__toggle span{background:var(--ink)}
+@media (min-width:861px){
+  .nav__links a{color:var(--ink);opacity:.85}
+  .nav__links a:hover{color:var(--sage-deep);opacity:1}
+  .nav__cta{border-color:var(--sage)}
+  .hero__art{height:54svh;min-height:420px}
+  .hero--painted .hero__content{margin-top:-2svh}
+  .hero--painted .hero__name{font-size:min(10.5vw,124px)}
+}
+@media (prefers-reduced-motion:reduce){
+  .hero--painted .wash-blob{animation:none !important}
+}

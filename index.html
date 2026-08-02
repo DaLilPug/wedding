@@ -15,13 +15,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500&family=Tangerine:wght@400;700&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/site.css?v=12" />
+  <link rel="stylesheet" href="css/site.css?v=13" />
 
   <script>function photoMissing(img){var b=img.closest('[data-photo]');if(b)b.classList.add('photo--missing');}</script>
-  <script defer src="js/config.js?v=12"></script>
+  <script defer src="js/config.js?v=13"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script defer src="js/site.js?v=12"></script>
-  <script defer src="js/rsvp.js?v=12"></script>
+  <script defer src="js/site.js?v=13"></script>
+  <script defer src="js/rsvp.js?v=13"></script>
 </head>
 <body class="is-sealed">
 
@@ -107,60 +107,40 @@
     </div>
   </header>
 
-  <!-- ============ HERO ============ -->
-  <section class="hero" id="top">
-    <div class="hero__media photo" data-photo>
-      <img src="assets/photos/hero.jpg" alt="" onerror="photoMissing(this)" />
-      <span class="photo__hint" aria-hidden="true">assets/photos/hero.jpg</span>
-    </div>
+  <!-- ============ HERO: the painted sky ============ -->
+  <section class="hero hero--painted" id="top">
     <div class="hero__wash" aria-hidden="true">
-      <i class="wash-blob wash-blob--blue"></i>
+      <i class="wash-blob wash-blob--mint"></i>
       <i class="wash-blob wash-blob--rose"></i>
       <i class="wash-blob wash-blob--gold"></i>
-      <i class="wash-blob wash-blob--deep"></i>
     </div>
-    <div class="hero__veil"></div>
 
-    <svg class="bloom bloom--tl" viewBox="0 0 110 150" aria-hidden="true">
-      <g class="sprig">
-        <path class="stem" d="M20 2 C22 40 28 64 26 92"/>
-        <path class="leaf" d="M22 40 Q10 46 8 58"/><path class="leaf" d="M24 62 Q36 66 40 78"/>
-        <circle class="petal-rose" cx="26" cy="100" r="5.5"/><circle class="petal-rose" cx="33" cy="95" r="5.5"/>
-        <circle class="petal-rose" cx="31" cy="106" r="5.5"/><circle class="petal-rose" cx="19" cy="106" r="5.5"/>
-        <circle class="petal-rose" cx="18" cy="95" r="5.5"/><circle class="bud" cx="25.5" cy="100.5" r="3"/>
-      </g>
-      <g class="sprig sprig--2">
-        <path class="stem" d="M58 2 C56 30 52 50 54 74"/>
-        <path class="leaf" d="M55 34 Q66 38 69 48"/>
-        <circle class="petal-blue" cx="54" cy="80" r="4.4"/><circle class="petal-blue" cx="60" cy="72" r="4"/>
-        <circle class="petal-blue" cx="49" cy="68" r="3.6"/>
-      </g>
-      <g class="sprig sprig--3">
-        <path class="stem" d="M92 2 C90 26 86 40 88 58"/>
-        <circle class="bud" cx="88" cy="62" r="2.6"/><circle class="bud" cx="93" cy="52" r="2.6"/>
-        <circle class="bud" cx="85" cy="44" r="2.6"/><circle class="bud" cx="91" cy="35" r="2.4"/>
-      </g>
-    </svg>
-    <svg class="bloom bloom--tr" viewBox="0 0 110 150" aria-hidden="true">
-      <g class="sprig">
-        <path class="stem" d="M20 2 C22 40 28 64 26 92"/>
-        <path class="leaf" d="M22 40 Q10 46 8 58"/><path class="leaf" d="M24 62 Q36 66 40 78"/>
-        <circle class="petal-rose" cx="26" cy="100" r="5.5"/><circle class="petal-rose" cx="33" cy="95" r="5.5"/>
-        <circle class="petal-rose" cx="31" cy="106" r="5.5"/><circle class="petal-rose" cx="19" cy="106" r="5.5"/>
-        <circle class="petal-rose" cx="18" cy="95" r="5.5"/><circle class="bud" cx="25.5" cy="100.5" r="3"/>
-      </g>
-      <g class="sprig sprig--2">
-        <path class="stem" d="M58 2 C56 30 52 50 54 74"/>
-        <path class="leaf" d="M55 34 Q66 38 69 48"/>
-        <circle class="petal-blue" cx="54" cy="80" r="4.4"/><circle class="petal-blue" cx="60" cy="72" r="4"/>
-        <circle class="petal-blue" cx="49" cy="68" r="3.6"/>
-      </g>
-      <g class="sprig sprig--3">
-        <path class="stem" d="M92 2 C90 26 86 40 88 58"/>
-        <circle class="bud" cx="88" cy="62" r="2.6"/><circle class="bud" cx="93" cy="52" r="2.6"/>
-        <circle class="bud" cx="85" cy="44" r="2.6"/><circle class="bud" cx="91" cy="35" r="2.4"/>
-      </g>
-    </svg>
+    <figure class="hero__art" data-enter>
+      <img src="assets/photos/hero-illustration.jpg?v=13" alt="Watercolor of Austin and Ana kissing beneath the northern lights" />
+    </figure>
+
+    <div class="hero__content">
+      <p class="hero__eyebrow" data-enter>Together with their families</p>
+      <h1 class="hero__names" data-enter>
+        <span class="hero__name">Austin</span>
+        <span class="hero__amp">&amp;</span>
+        <span class="hero__name">Ana</span>
+      </h1>
+      <div class="hero__rule" data-enter><svg class="wheat" viewBox="0 0 220 40" aria-hidden="true"><use href="#wheatSym"/></svg></div>
+      <p class="hero__date" data-enter>Friday, April 23, 2027</p>
+      <p class="hero__place" data-enter>Promontory Point &#183; Chicago</p>
+      <div class="countdown" id="countdown" data-enter aria-label="Countdown to the wedding">
+        <div class="countdown__unit"><span id="cdDays">&#8212;</span><label>days</label></div>
+        <div class="countdown__sep"></div>
+        <div class="countdown__unit"><span id="cdHours">&#8212;</span><label>hours</label></div>
+        <div class="countdown__sep"></div>
+        <div class="countdown__unit"><span id="cdMins">&#8212;</span><label>minutes</label></div>
+        <div class="countdown__sep"></div>
+        <div class="countdown__unit"><span id="cdSecs">&#8212;</span><label>seconds</label></div>
+      </div>
+      <a href="#rsvp" class="btn btn--primary" data-enter>Find your invitation</a>
+    </div>
+
     <svg class="bloom bloom--bl" viewBox="0 0 120 150" aria-hidden="true">
       <g class="sprig">
         <path class="stem" d="M18 148 C20 110 26 86 24 62"/>
@@ -202,27 +182,6 @@
       </g>
     </svg>
 
-    <div class="hero__content">
-      <p class="hero__eyebrow" data-enter>Together with their families</p>
-      <h1 class="hero__names" data-enter>
-        <span class="hero__name">Austin</span>
-        <span class="hero__amp">&amp;</span>
-        <span class="hero__name">Ana</span>
-      </h1>
-      <div class="hero__rule" data-enter><svg class="wheat" viewBox="0 0 220 40" aria-hidden="true"><use href="#wheatSym"/></svg></div>
-      <p class="hero__date" data-enter>Friday, April 23, 2027</p>
-      <p class="hero__place" data-enter>Promontory Point · Chicago</p>
-      <div class="countdown" id="countdown" data-enter aria-label="Countdown to the wedding">
-        <div class="countdown__unit"><span id="cdDays">—</span><label>days</label></div>
-        <div class="countdown__sep"></div>
-        <div class="countdown__unit"><span id="cdHours">—</span><label>hours</label></div>
-        <div class="countdown__sep"></div>
-        <div class="countdown__unit"><span id="cdMins">—</span><label>minutes</label></div>
-        <div class="countdown__sep"></div>
-        <div class="countdown__unit"><span id="cdSecs">—</span><label>seconds</label></div>
-      </div>
-      <a href="#rsvp" class="btn btn--hero" data-enter>Find your invitation</a>
-    </div>
     <a href="#story" class="hero__scroll" aria-label="Scroll">scroll</a>
   </section>
 
@@ -281,7 +240,7 @@
         </figure>
       </div>
       <figure class="story__art" data-reveal>
-        <img src="assets/photos/story-illustration.jpg?v=12" alt="Watercolor illustration of Austin and Ana on the lakeshore" loading="lazy" />
+        <img src="assets/photos/story-illustration.jpg?v=13" alt="Watercolor illustration of Austin and Ana on the lakeshore" loading="lazy" />
       </figure>
     </div>
   </section>
@@ -340,7 +299,7 @@
         <svg class="ornament" viewBox="0 0 220 40" aria-hidden="true"><use href="#wheatSym"/></svg>
       </header>
       <figure class="venue__art" data-reveal>
-        <img src="assets/photos/venue-illustration.jpg?v=12" alt="Watercolor illustration of Promontory Point with the Chicago skyline behind it" loading="lazy" />
+        <img src="assets/photos/venue-illustration.jpg?v=13" alt="Watercolor illustration of Promontory Point with the Chicago skyline behind it" loading="lazy" />
       </figure>
       <div class="venue__grid">
         <div class="venue__info" data-reveal>
