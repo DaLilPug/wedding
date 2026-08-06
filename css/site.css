@@ -1433,3 +1433,12 @@ body{font-size:15.5px;line-height:1.7;font-weight:400}
 
 /* Friday PTO note atop The Day timeline */
 .day__note--pto{margin:-14px 0 30px;color:var(--gold-deep)}
+
+/* the logo: A squared */
+.nav__brand sup{
+  font-size:.6em;color:var(--gold);line-height:0;
+  position:relative;top:-.42em;margin-left:2px;
+}
+
+/* logo, a touch bigger */
+.nav__brand{font-size:33px}
