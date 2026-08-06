@@ -105,10 +105,15 @@ begin
 
   update public.guests
      set email   = coalesce(nullif(btrim(p_email), ''), email),
-         phone   = coalesce(nullif(btrim(p_phone), ''), phone),
          note    = coalesce(nullif(btrim(p_note),  ''), note),
          address = coalesce(nullif(btrim(p_address), ''), address)
    where party_key = p_party_key;
+
+  -- phone applies to the primary guest only (never clobbers a +1's number)
+  update public.guests
+     set phone = coalesce(nullif(btrim(p_phone), ''), phone)
+   where party_key = p_party_key
+     and is_plus_one = false;
 end;
 $$;
 
