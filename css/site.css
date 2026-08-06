@@ -1485,3 +1485,19 @@ body{font-size:15.5px;line-height:1.7;font-weight:400}
   width:44px;height:34px;border-radius:50%;z-index:-1;
   background:radial-gradient(closest-side,var(--cream) 55%,rgba(252,249,245,0));
 }
+
+/* ==========================================================
+   LOVELINE GAPS v2: no painted halos (they glowed on tinted
+   backgrounds). The line itself is masked out around Bobby,
+   and the dotted leg stops short of the Married dot.
+   Bobby = stop 3 of 6: ol center 41.667%; line box starts at
+   2% and is 73% wide -> window center (41.667-2)/73 = 54.33%.
+   ========================================================== */
+.loveline__dot--pug,
+.loveline li:nth-child(n) .loveline__dot--pug{background:none}
+.loveline__dot--wed::before{content:none}
+.loveline::before{
+  -webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(54.33% - 17px),transparent calc(54.33% - 17px),transparent calc(54.33% + 17px),#000 calc(54.33% + 17px),#000 100%);
+  mask-image:linear-gradient(90deg,#000 0,#000 calc(54.33% - 17px),transparent calc(54.33% - 17px),transparent calc(54.33% + 17px),#000 calc(54.33% + 17px),#000 100%);
+}
+.loveline::after{width:calc(16.67% - 13px)}
