@@ -1455,3 +1455,25 @@ body{font-size:15.5px;line-height:1.7;font-weight:400}
   .loveline li:nth-child(even) .loveline__label{top:104px;bottom:auto}
   .loveline li:nth-child(even)::after{top:40px;height:60px}
 }
+
+/* RSVP pill lives in the mobile bar, not just the menu */
+.nav__cta--bar{display:none}
+@media (max-width:860px){
+  .nav__cta--bar{
+    display:inline-block;margin-left:auto;margin-right:12px;
+    font-family:var(--sans);text-transform:uppercase;letter-spacing:.18em;
+    font-size:10.5px;text-decoration:none;padding:7px 16px !important;
+  }
+  body.nav-open .nav__cta--bar{visibility:hidden}
+}
+
+/* the pug stop: soft cream disc masks the line behind Bobby */
+.loveline li:nth-child(n) .loveline__dot--pug{
+  width:48px;height:34px;border-radius:50%;
+  background:radial-gradient(closest-side,var(--cream) 62%,rgba(252,249,245,0));
+  box-shadow:none;display:flex;align-items:center;justify-content:center;
+}
+.loveline__dot--pug img{filter:none}
+@media (max-width:860px){
+  .loveline li:nth-child(n) .loveline__dot--pug{width:42px;height:30px}
+}
