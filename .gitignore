@@ -2,3 +2,7 @@
 Thumbs.db
 *.log
 err.txt
+
+# never commit guest data
+supabase/guest_reload*.sql
+supabase/*guest*data*.sql
