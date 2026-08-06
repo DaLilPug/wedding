@@ -90,3 +90,12 @@
 .grow-role { flex: 1 1 120px; }
 .grow-address { flex: 1 1 58%; }
 .grow-note { flex: 1 1 32%; }
+
+/* reminders panel */
+.rem-row { align-items: center; }
+.rem-date { flex: 0 0 150px; }
+.rem-aud { flex: 0 0 170px; }
+.rem-subject { flex: 1 1 220px; }
+.rem-body { flex: 1 1 100%; min-height: 84px; resize: vertical; }
+.rem-status { flex: 0 0 auto; font-size: 12px; letter-spacing: .06em; color: #6b7280; text-transform: uppercase; }
+.rem-row--sent { opacity: .65; }

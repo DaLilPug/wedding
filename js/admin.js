@@ -34,10 +34,74 @@
   function showDashboard() { loginEl.hidden = true; dashEl.hidden = false; }
   function showLogin() { dashEl.hidden = true; loginEl.hidden = false; }
 
+  /* ---- reminders ---- */
+  var reminders = [];
+  var AUDIENCES = [['all','Everyone'],['attending','Attending'],['declined','Declined'],['not_responded','Not yet responded']];
+
+  async function loadReminders() {
+    var res = await sb.rpc('admin_list_reminders');
+    if (res.error) { setMsg(document.getElementById('admRemMsg'), 'Could not load reminders: ' + res.error.message, 'err'); return; }
+    reminders = res.data || [];
+    renderReminders();
+  }
+
+  function reminderRowHtml(r) {
+    var id = r ? r.id : '';
+    var sent = r && r.sent_at;
+    var opts = AUDIENCES.map(function (a) {
+      return '<option value="' + a[0] + '"' + ((r && r.audience) === a[0] ? ' selected' : '') + '>' + a[1] + '</option>';
+    }).join('');
+    return '<div class="grow rem-row' + (sent ? ' rem-row--sent' : '') + '" data-id="' + esc(id) + '">' +
+      '<input class="rem-date" type="date" value="' + esc(r ? r.send_on : '') + '"' + (sent ? ' disabled' : '') + ' />' +
+      '<select class="rem-aud"' + (sent ? ' disabled' : '') + '>' + opts + '</select>' +
+      '<input class="rem-subject" type="text" value="' + esc(r ? r.subject : '') + '" placeholder="Subject"' + (sent ? ' disabled' : '') + ' />' +
+      (sent
+        ? '<span class="rem-status">Sent to ' + (r.sent_count || 0) + '</span>'
+        : '<button class="grow-save rem-save" type="button">Save</button>' +
+          '<button class="grow-del rem-del" type="button" title="Remove" aria-label="Remove">&#10005;</button>') +
+      '<textarea class="rem-body" placeholder="Message... (blank line = new paragraph)"' + (sent ? ' disabled' : '') + '>' + esc(r ? r.body : '') + '</textarea>' +
+      '</div>';
+  }
+
+  function renderReminders() {
+    var el = document.getElementById('admReminders');
+    el.innerHTML = reminders.map(function (r) { return reminderRowHtml(r); }).join('') ||
+      '<p class="admin-cell-muted" style="padding:18px">No reminders yet. Add one above.</p>';
+    el.querySelectorAll('.rem-save').forEach(function (b) { b.onclick = function () { saveReminder(b.closest('.rem-row')); }; });
+    el.querySelectorAll('.rem-del').forEach(function (b) { b.onclick = function () { deleteReminder(b.closest('.rem-row')); }; });
+  }
+
+  async function saveReminder(row) {
+    var msg = document.getElementById('admRemMsg');
+    var id = row.getAttribute('data-id') || null;
+    var sendOn = row.querySelector('.rem-date').value;
+    var subject = row.querySelector('.rem-subject').value.trim();
+    var body = row.querySelector('.rem-body').value.trim();
+    if (!sendOn || !subject || !body) { setMsg(msg, 'A reminder needs a date, subject, and message.', 'err'); return; }
+    var res = await sb.rpc('admin_save_reminder', {
+      p_id: id, p_send_on: sendOn,
+      p_audience: row.querySelector('.rem-aud').value,
+      p_subject: subject, p_body: body
+    });
+    if (res.error) { setMsg(msg, 'Could not save: ' + res.error.message, 'err'); return; }
+    setMsg(msg, 'Reminder saved for ' + sendOn + '.', 'ok');
+    loadReminders();
+  }
+
+  async function deleteReminder(row) {
+    var id = row.getAttribute('data-id');
+    if (!id) { row.remove(); return; }
+    if (!confirm('Remove this reminder?')) return;
+    var res = await sb.rpc('admin_delete_reminder', { p_id: id });
+    if (res.error) { setMsg(document.getElementById('admRemMsg'), 'Could not remove: ' + res.error.message, 'err'); return; }
+    loadReminders();
+  }
+
   /* ---- auth ---- */
+
   async function init() {
     var s = await sb.auth.getSession();
-    if (s.data && s.data.session) { showDashboard(); loadGuests(); } else { showLogin(); }
+    if (s.data && s.data.session) { showDashboard(); loadGuests(); loadReminders(); } else { showLogin(); }
   }
   async function login() {
     var email = document.getElementById('admEmail').value.trim();
@@ -48,7 +112,7 @@
     var res = await sb.auth.signInWithPassword({ email: email, password: pass });
     btn.disabled = false;
     if (res.error) { setMsg(msgEl, 'Could not sign in. Check your email and password.', 'err'); return; }
-    setMsg(msgEl, ''); showDashboard(); loadGuests();
+    setMsg(msgEl, ''); showDashboard(); loadGuests(); loadReminders();
   }
   async function signout() {
     await sb.auth.signOut(); guests = [];
@@ -286,4 +350,14 @@
   document.getElementById('admCsv').addEventListener('click', downloadCsv);
 
   init();
+
+  var admAddRem = document.getElementById('admAddReminder');
+  if (admAddRem) admAddRem.addEventListener('click', function () {
+    var el = document.getElementById('admReminders');
+    if (el.querySelector('.admin-cell-muted')) el.innerHTML = '';
+    el.insertAdjacentHTML('afterbegin', reminderRowHtml(null));
+    el.querySelectorAll('.rem-save').forEach(function (b) { b.onclick = function () { saveReminder(b.closest('.rem-row')); }; });
+    el.querySelectorAll('.rem-del').forEach(function (b) { b.onclick = function () { deleteReminder(b.closest('.rem-row')); }; });
+  });
+
 })();
