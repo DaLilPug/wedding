@@ -1477,3 +1477,11 @@ body{font-size:15.5px;line-height:1.7;font-weight:400}
 @media (max-width:860px){
   .loveline li:nth-child(n) .loveline__dot--pug{width:42px;height:30px}
 }
+
+/* same cream halo behind the Married dot: dotted leg stops short */
+.loveline__dot--wed{position:relative}
+.loveline__dot--wed::before{
+  content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:44px;height:34px;border-radius:50%;z-index:-1;
+  background:radial-gradient(closest-side,var(--cream) 55%,rgba(252,249,245,0));
+}
