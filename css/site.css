@@ -1356,3 +1356,18 @@ b,strong{font-weight:500}
   }
   .loveline li:nth-child(even) .loveline__label{top:88px;bottom:auto}
 }
+
+/* ==========================================================
+   BODY FACE v3: Nunito Sans - warm and soft next to Jenna Sue
+   (replaces Jost; no more Helvetica Neue in any stack)
+   ========================================================== */
+:root{
+  --serif:'Nunito Sans','Segoe UI',Arial,sans-serif;
+  --sans:'Nunito Sans','Segoe UI',Arial,sans-serif;
+  --display:'Jenna Sue','Nunito Sans',cursive;
+  --script:'Jenna Sue','Nunito Sans',cursive;
+}
+body{font-weight:400;font-size:15px;line-height:1.7}
+@media (min-width:861px){
+  body{font-size:15.5px}
+}
