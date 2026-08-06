@@ -1430,3 +1430,6 @@ body{font-size:15.5px;line-height:1.7;font-weight:400}
   margin:8px auto 0;animation:scrollPulse 2.2s ease-in-out infinite;transform-origin:top;
 }
 @media (prefers-reduced-motion:reduce){.band__scroll::after{animation:none}}
+
+/* Friday PTO note atop The Day timeline */
+.day__note--pto{margin:-14px 0 30px;color:var(--gold-deep)}
