@@ -118,6 +118,8 @@
     var phone = g ? (g.phone || '') : '';
     var email = g ? (g.email || '') : '';
     var note = g ? (g.note || '') : '';
+    var role = g ? (g.role || '') : '';
+    var address = g ? (g.address || '') : '';
     var plus = g ? g.is_plus_one : false;
     var att = g ? g.attending : null;
     return '<div class="grow' + (plus ? ' grow--plus' : '') + '" data-id="' + esc(id) + '" data-party="' + esc(partyKey) + '">' +
@@ -125,9 +127,11 @@
       '<label class="grow-plus-tog"><input type="checkbox"' + (plus ? ' checked' : '') + ' /> +1</label>' +
       '<input class="grow-phone" type="tel" value="' + esc(phone) + '" placeholder="Phone" />' +
       '<input class="grow-emailf" type="email" value="' + esc(email) + '" placeholder="Email" />' +
+      '<input class="grow-role" type="text" value="' + esc(role) + '" placeholder="Role (optional)" />' +
       rsvpSelect(att) +
       '<button class="grow-save" type="button">Save</button>' +
       '<button class="grow-del" type="button" title="Remove" aria-label="Remove">&#10005;</button>' +
+      '<input class="grow-address" type="text" value="' + esc(address) + '" placeholder="Mailing address" />' +
       '<input class="grow-note" type="text" value="' + esc(note) + '" placeholder="Note for us (optional)" />' +
       '</div>';
   }
@@ -166,6 +170,8 @@
     var phone = row.querySelector('.grow-phone').value.trim();
     var email = row.querySelector('.grow-emailf').value.trim();
     var note = row.querySelector('.grow-note').value.trim();
+    var role = row.querySelector('.grow-role').value.trim();
+    var address = row.querySelector('.grow-address').value.trim();
     var rv = row.querySelector('.grow-rsvp').value;
     var attending = rv === 'yes' ? true : rv === 'no' ? false : null;
     var plus = row.querySelector('.grow-plus-tog input').checked;
@@ -173,8 +179,15 @@
     var btn = row.querySelector('.grow-save'); btn.disabled = true;
     var res = await sb.rpc('admin_save_guest', {
       p_id: id, p_party_key: party, p_full_name: name, p_is_plus_one: plus,
-      p_phone: phone, p_email: email, p_attending: attending, p_note: note
+      p_phone: phone, p_email: email, p_attending: attending, p_note: note,
+      p_role: role, p_address: address
     });
+    if (res.error && res.error.code === 'PGRST202') {
+      res = await sb.rpc('admin_save_guest', {
+        p_id: id, p_party_key: party, p_full_name: name, p_is_plus_one: plus,
+        p_phone: phone, p_email: email, p_attending: attending, p_note: note
+      });
+    }
     btn.disabled = false;
     if (res.error) { setMsg(dashMsg, 'Could not save: ' + res.error.message, 'err'); return; }
     var saved = res.data;
@@ -184,6 +197,7 @@
         g.full_name = saved.full_name; g.phone = saved.phone; g.email = saved.email;
         g.is_plus_one = saved.is_plus_one; g.party_key = saved.party_key;
         g.attending = saved.attending; g.note = saved.note; g.responded_at = saved.responded_at;
+        g.role = saved.role; g.address = saved.address;
       }
     } else {
       guests.push(saved); row.setAttribute('data-id', saved.id);
@@ -252,7 +266,7 @@
     copyText(phones.join('\n'), phones.length + ' phone number(s) copied.');
   }
   function downloadCsv() {
-    var cols = ['party_key', 'full_name', 'is_plus_one', 'attending', 'email', 'phone', 'note', 'responded_at'];
+    var cols = ['party_key', 'full_name', 'is_plus_one', 'attending', 'email', 'phone', 'address', 'role', 'note', 'responded_at'];
     function cell(v) { if (v == null) v = ''; v = String(v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
     var csv = cols.join(',') + '\n' + guests.map(function (g) { return cols.map(function (c) { return cell(g[c]); }).join(','); }).join('\n');
     var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });

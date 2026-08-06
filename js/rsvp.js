@@ -13,12 +13,12 @@
   /* ---- Demo data (used only when Supabase is not configured) ---- */
   var DEMO = [
     { party_key: 'austin-anastasiia', members: [
-      { id: 'demo-1', name: 'Austin Sabella', attending: null },
-      { id: 'demo-2', name: 'Anastasiia Oliinyk', attending: null }
+      { id: 'demo-1', name: 'Austin Sabella', attending: null, role: 'Groom', phone_hint: '5396', has_email: false, has_address: false },
+      { id: 'demo-2', name: 'Anastasiia Oliinyk', attending: null, role: null, phone_hint: null, has_email: false, has_address: false }
     ]},
     { party_key: 'demo-smith', members: [
-      { id: 'demo-3', name: 'Jordan Smith', attending: null },
-      { id: 'demo-4', name: 'Guest of Jordan Smith', attending: null }
+      { id: 'demo-3', name: 'Jordan Smith', attending: null, role: null, phone_hint: null, has_email: false, has_address: false },
+      { id: 'demo-4', name: 'Guest of Jordan Smith', attending: null, role: null, phone_hint: null, has_email: false, has_address: false }
     ]}
   ];
 
@@ -37,16 +37,24 @@
     });
   }
 
-  async function submitRsvp(partyKey, responses, email, phone, note) {
+  async function submitRsvp(partyKey, responses, email, phone, note, address) {
     if (sb) {
       var res = await sb.rpc('submit_rsvp', {
         p_party_key: partyKey, p_responses: responses,
-        p_email: email || '', p_phone: phone || '', p_note: note || ''
+        p_email: email || '', p_phone: phone || '', p_note: note || '',
+        p_address: address || ''
       });
+      if (res.error && res.error.code === 'PGRST202') {
+        // database not migrated yet: fall back to the older signature
+        res = await sb.rpc('submit_rsvp', {
+          p_party_key: partyKey, p_responses: responses,
+          p_email: email || '', p_phone: phone || '', p_note: note || ''
+        });
+      }
       if (res.error) { console.error(res.error); throw res.error; }
       return;
     }
-    console.log('[DEMO] RSVP submitted:', { partyKey: partyKey, responses: responses, email: email, phone: phone, note: note });
+    console.log('[DEMO] RSVP submitted:', { partyKey: partyKey, responses: responses, email: email, phone: phone, note: note, address: address });
     await new Promise(function (r) { setTimeout(r, 600); });
   }
 
@@ -117,17 +125,43 @@
   }
 
   /* ---- Step 2: respond ---- */
+  var ROLE_LINES = {
+    'default': "You're not just a guest - you're on the crew running this thing.",
+    'Officiant': 'No pressure, but the whole "married" part runs through you.',
+    'Master of Ceremony': 'The microphone will find you. Be ready.',
+    'Man of Honor': 'Chief of staff, hype captain, keeper of the rings vibe.',
+    'Mother of the Groom': 'VIP seating, first hugs, zero chores that day.',
+    'Father of the Groom': 'VIP seating, first hugs, zero chores that day.',
+    'Mother of the Bride': 'VIP seating, first hugs, zero chores that day.',
+    'Father of the Bride': 'VIP seating, first hugs, zero chores that day.',
+    'Sister of the Bride': 'Front row, on call for happy tears.',
+    'Brother of the Groom': 'Front row, on call for high fives.'
+  };
+
   function renderRespond(party) {
     var names = party.members.map(function (m) { return esc(m.name); }).join(' & ');
     var meals = Array.isArray(cfg.mealOptions) ? cfg.mealOptions : [];
+    var roles = party.members.filter(function (m) { return m.role; });
+    var phoneHint = null, hasEmail = false, hasAddress = false;
+    party.members.forEach(function (m) {
+      if (m.phone_hint && !phoneHint) phoneHint = m.phone_hint;
+      if (m.has_email) hasEmail = true;
+      if (m.has_address) hasAddress = true;
+    });
 
     var html = '<p class="rsvp__found">We found you</p>' +
       '<p class="rsvp__sub">' + names + '</p>';
 
     party.members.forEach(function (m) {
       html += '<div class="guest-row" data-id="' + esc(m.id) + '">' +
-        '<p class="guest-row__name">' + esc(m.name) + '</p>' +
-        '<div class="attend">' +
+        '<p class="guest-row__name">' + esc(m.name) +
+        (m.role ? ' <span class="guest-row__role">' + esc(m.role) + '</span>' : '') +
+        '</p>';
+      if (m.role) {
+        var line = ROLE_LINES[m.role] || ROLE_LINES['default'];
+        html += '<p class="guest-row__roleline">' + esc(line) + '</p>';
+      }
+      html += '<div class="attend">' +
         '<button type="button" data-v="yes">Joyfully accepts</button>' +
         '<button type="button" data-v="no">Regretfully declines</button>' +
         '</div>';
@@ -141,20 +175,40 @@
       html += '</div>';
     });
 
-    html += '<div class="field" style="margin-top:26px">' +
-      '<label class="field__label" for="rsvpEmail">Email</label>' +
-      '<input id="rsvpEmail" type="email" autocomplete="email" placeholder="you@email.com" />' +
-      '<p class="field__hint">So we can send you wedding reminders and updates.</p></div>';
+    /* contact details reveal once everyone has answered */
+    html += '<div class="rsvp__contact" id="rsvpContact" hidden>' +
+      '<p class="rsvp__contact-head">One last thing - where do we reach you?</p>';
 
     html += '<div class="field">' +
-      '<label class="field__label" for="rsvpPhone">Mobile number <span style="opacity:.6">(optional)</span></label>' +
-      '<input id="rsvpPhone" type="tel" autocomplete="tel" placeholder="(555) 555-5555" /></div>';
+      '<label class="field__label" for="rsvpPhone">Mobile number</label>' +
+      '<input id="rsvpPhone" type="tel" autocomplete="tel" placeholder="(555) 555-5555" />' +
+      (phoneHint
+        ? '<p class="field__hint">We have a number ending in ' + esc(phoneHint) + ' - only fill this in if it changed.</p>'
+        : '<p class="field__hint">So wedding-day updates can reach you by text.</p>') +
+      '</div>';
+
+    html += '<div class="field">' +
+      '<label class="field__label" for="rsvpEmail">Email</label>' +
+      '<input id="rsvpEmail" type="email" autocomplete="email" placeholder="you@email.com" />' +
+      (hasEmail
+        ? '<p class="field__hint">We have an email on file - only fill this in to update it.</p>'
+        : '<p class="field__hint">For reminders and details as the day gets closer.</p>') +
+      '</div>';
+
+    html += '<div class="field">' +
+      '<label class="field__label" for="rsvpAddress">Mailing address</label>' +
+      '<input id="rsvpAddress" type="text" autocomplete="street-address" placeholder="Street, city, state, zip" />' +
+      (hasAddress
+        ? '<p class="field__hint">We have an address on file - only fill this in if you moved.</p>'
+        : '<p class="field__hint">For the formal invitation. No junk mail, promise.</p>') +
+      '</div>';
 
     if (cfg.askNote) {
       html += '<div class="field">' +
         '<label class="field__label" for="rsvpNote">A note for us <span style="opacity:.6">(optional)</span></label>' +
         '<textarea id="rsvpNote" placeholder="Song requests, dietary needs, or just say hi..."></textarea></div>';
     }
+    html += '</div>';
 
     html += '<p class="rsvp__msg" id="rsvpRespondMsg" role="status"></p>' +
       '<div class="rsvp__actions">' +
@@ -163,7 +217,21 @@
 
     stepRespond.innerHTML = html;
 
-    // attend toggle behavior
+    party._hasEmail = hasEmail;
+    party._hasAddress = hasAddress;
+
+    // attend toggle behavior + progressive contact reveal
+    var contact = document.getElementById('rsvpContact');
+    function maybeReveal() {
+      var rows = stepRespond.querySelectorAll('.guest-row');
+      var all = true;
+      rows.forEach(function (r) { if (!r.getAttribute('data-attending')) all = false; });
+      if (all && contact.hidden) {
+        contact.hidden = false;
+        contact.classList.add('is-in');
+        contact.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
     stepRespond.querySelectorAll('.guest-row').forEach(function (row) {
       var meal = row.querySelector('.guest-meal');
       row.querySelectorAll('.attend button').forEach(function (btn) {
@@ -173,6 +241,7 @@
           row.querySelectorAll('.attend button').forEach(function (b) { b.classList.remove('is-yes', 'is-no'); });
           btn.classList.add(v === 'yes' ? 'is-yes' : 'is-no');
           if (meal) meal.hidden = (v !== 'yes');
+          maybeReveal();
         });
       });
     });
@@ -214,12 +283,23 @@
 
     var email = (document.getElementById('rsvpEmail') || {}).value || '';
     var phone = (document.getElementById('rsvpPhone') || {}).value || '';
+    var address = (document.getElementById('rsvpAddress') || {}).value || '';
     var noteEl = document.getElementById('rsvpNote');
     var note = noteEl ? noteEl.value : '';
 
     var anyYes = responses.some(function (r) { return r.attending; });
-    if (anyYes && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+    if (anyYes && !party._hasEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
       msg.textContent = 'Please add an email so we can send you reminders.';
+      msg.classList.add('rsvp__msg--err');
+      return;
+    }
+    if (email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      msg.textContent = 'That email does not look quite right - mind checking it?';
+      msg.classList.add('rsvp__msg--err');
+      return;
+    }
+    if (anyYes && !party._hasAddress && address.trim().length < 8) {
+      msg.textContent = 'Please add your mailing address so the formal invitation can find you.';
       msg.classList.add('rsvp__msg--err');
       return;
     }
@@ -227,7 +307,7 @@
     btn.disabled = true;
     msg.textContent = 'Sending...';
     try {
-      await submitRsvp(party.party_key, responses, email.trim(), phone.trim(), note.trim());
+      await submitRsvp(party.party_key, responses, email.trim(), phone.trim(), note.trim(), address.trim());
       renderDone(party, responses);
     } catch (e) {
       msg.textContent = 'Something went wrong sending your RSVP. Please try again.';

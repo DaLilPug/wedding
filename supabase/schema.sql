@@ -23,6 +23,8 @@ create table if not exists public.guests (
   attending     boolean,              -- null = has not responded yet
   meal          text,
   note          text,
+  role          text,                 -- wedding-party role (shown on their invitation)
+  address       text,                 -- mailing address captured at RSVP time
   responded_at  timestamptz,
   created_at    timestamptz not null default now()
 );
@@ -45,16 +47,24 @@ set search_path = public
 as $$
   with term as (
     select btrim(q) as raw,
-           -- escape LIKE wildcards so % and _ are treated literally
            replace(replace(replace(lower(btrim(q)), '\', '\\'), '%', '\%'), '_', '\_') as t
   )
   select g.party_key,
          jsonb_agg(
-           jsonb_build_object('id', g.id, 'name', g.full_name, 'attending', g.attending)
+           jsonb_build_object(
+             'id', g.id,
+             'name', g.full_name,
+             'attending', g.attending,
+             'role', g.role,
+             'phone_hint', case when g.phone is not null and length(g.phone) >= 4
+                                then right(g.phone, 4) else null end,
+             'has_email', (g.email is not null),
+             'has_address', (g.address is not null)
+           )
            order by g.is_plus_one, g.full_name
          ) as members
   from public.guests g
-  where (select length(raw) from term) >= 2          -- ignore empty / 1-char probes
+  where (select length(raw) from term) >= 2
     and g.party_key in (
       select g2.party_key from public.guests g2
       where lower(g2.full_name) like '%' || (select t from term) || '%' escape '\'
@@ -73,7 +83,8 @@ create or replace function public.submit_rsvp(
   p_responses jsonb,
   p_email text,
   p_phone text,
-  p_note text
+  p_note text,
+  p_address text default ''
 ) returns void
 language plpgsql
 security definer
@@ -82,7 +93,6 @@ as $$
 declare
   r jsonb;
 begin
-  -- per-guest attendance + meal
   for r in select * from jsonb_array_elements(p_responses)
   loop
     update public.guests
@@ -93,18 +103,18 @@ begin
        and party_key = p_party_key;
   end loop;
 
-  -- shared contact info + note for the whole party
   update public.guests
-     set email = coalesce(nullif(btrim(p_email), ''), email),
-         phone = coalesce(nullif(btrim(p_phone), ''), phone),
-         note  = coalesce(nullif(btrim(p_note),  ''), note)
+     set email   = coalesce(nullif(btrim(p_email), ''), email),
+         phone   = coalesce(nullif(btrim(p_phone), ''), phone),
+         note    = coalesce(nullif(btrim(p_note),  ''), note),
+         address = coalesce(nullif(btrim(p_address), ''), address)
    where party_key = p_party_key;
 end;
 $$;
 
 -- Let the public site call these two functions (and nothing else).
 grant execute on function public.search_party(text) to anon, authenticated;
-grant execute on function public.submit_rsvp(text, jsonb, text, text, text) to anon, authenticated;
+grant execute on function public.submit_rsvp(text, jsonb, text, text, text, text) to anon, authenticated;
 
 -- =========================================================
 --  ADMIN ACCESS  (for the RSVP dashboard at /admin.html)
@@ -150,10 +160,11 @@ grant execute on function public.admin_list_guests() to authenticated;
 -- phone, email, attending, and note all write to the SAME guests columns that
 -- submit_rsvp updates, so a manual RSVP from the admin and a guest's own RSVP
 -- land in one shared set of fields (no duplicate/parallel data).
-drop function if exists public.admin_save_guest(uuid, text, text, boolean, text, text);
+drop function if exists public.admin_save_guest(uuid, text, text, boolean, text, text, boolean, text);
 create or replace function public.admin_save_guest(
   p_id uuid, p_party_key text, p_full_name text, p_is_plus_one boolean,
-  p_phone text, p_email text, p_attending boolean, p_note text
+  p_phone text, p_email text, p_attending boolean, p_note text,
+  p_role text default null, p_address text default null
 ) returns public.guests
 language plpgsql security definer set search_path = public as $$
 declare result public.guests;
@@ -162,11 +173,11 @@ begin
     raise exception 'Not authorized';
   end if;
   if p_id is null then
-    insert into public.guests (party_key, full_name, is_plus_one, phone, email, attending, note, responded_at)
+    insert into public.guests (party_key, full_name, is_plus_one, phone, email, attending, note, role, address, responded_at)
     values (
       coalesce(nullif(btrim(p_party_key),''), 'party-' || substr(replace(gen_random_uuid()::text,'-',''),1,8)),
       btrim(p_full_name), coalesce(p_is_plus_one,false), nullif(btrim(p_phone),''), nullif(btrim(p_email),''),
-      p_attending, nullif(btrim(p_note),''),
+      p_attending, nullif(btrim(p_note),''), nullif(btrim(p_role),''), nullif(btrim(p_address),''),
       case when p_attending is not null then now() else null end
     ) returning * into result;
   else
@@ -178,6 +189,8 @@ begin
       email        = nullif(btrim(p_email),''),
       attending    = p_attending,
       note         = nullif(btrim(p_note),''),
+      role         = nullif(btrim(p_role),''),
+      address      = nullif(btrim(p_address),''),
       responded_at = case when p_attending is null then null
                           when responded_at is null then now()
                           else responded_at end
@@ -185,7 +198,7 @@ begin
   end if;
   return result;
 end $$;
-grant execute on function public.admin_save_guest(uuid, text, text, boolean, text, text, boolean, text) to authenticated;
+grant execute on function public.admin_save_guest(uuid, text, text, boolean, text, text, boolean, text, text, text) to authenticated;
 
 -- Delete a guest from the admin manager (allow-listed admins only).
 create or replace function public.admin_delete_guest(p_id uuid)
