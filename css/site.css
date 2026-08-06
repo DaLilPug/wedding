@@ -1519,3 +1519,16 @@ body{font-size:15.5px;line-height:1.7;font-weight:400}
   .story__art--img{display:none}
   .story__art--video{display:block}
 }
+
+/* ==========================================================
+   MOBILE STORY: background runs to white behind the video so
+   its paper blends; bottom-left blue wash + bloom retired
+   ========================================================== */
+@media (max-width:860px){
+  .story{
+    background:
+      radial-gradient(66% 40% at 90% 10%,rgba(229,200,123,.2),transparent 70%),
+      linear-gradient(180deg,var(--ivory) 0%,var(--ivory) 28%,#FFFFFF 52%,#FFFFFF 90%,var(--ivory) 100%);
+  }
+  .story::after{display:none}
+}
