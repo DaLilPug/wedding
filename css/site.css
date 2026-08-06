@@ -1581,3 +1581,175 @@ body{font-size:15.5px;line-height:1.7;font-weight:400}
       radial-gradient(70% 46% at 94% 92%,rgba(220,228,240,.55),transparent 74%),var(--cream);
   }
 }
+
+/* ==========================================================
+   HERO SKY: the aurora's glow continues up behind the names,
+   so the section is one painted sky instead of cream + art
+   ========================================================== */
+.hero--painted{
+  background:
+    url("../assets/photos/hero-sky.jpg?v=77") top center/100% 420px no-repeat,
+    var(--cream);
+}
+@media (min-width:861px){
+  .hero--painted{
+    background:
+      url("../assets/photos/hero-sky.jpg?v=77") top center/100% auto no-repeat,
+      var(--cream);
+  }
+}
+
+/* ==========================================================
+   HERO SKY v2: wash height is set by JS to end exactly under
+   the painting's top; the painting's top edge crossfades into
+   it via alpha mask - one continuous sky, no white valley
+   ========================================================== */
+.hero--painted{
+  background:
+    url("../assets/photos/hero-sky.jpg?v=78") top center/100% var(--sky-h,440px) no-repeat,
+    var(--cream);
+}
+.hero--painted .hero__art img{
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 110px);
+  mask-image:linear-gradient(180deg,transparent 0,#000 110px);
+}
+
+/* smoother wash-to-painting handoff + desktop fold lift + descender room */
+.hero--painted .hero__art img{
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 200px);
+  mask-image:linear-gradient(180deg,transparent 0,#000 200px);
+}
+.section__title{padding-bottom:.16em;margin-bottom:-.06em}
+@media (min-width:861px){
+  .hero--painted .hero__content{margin-top:calc(var(--nav-h) + 8px)}
+  .hero--painted .countdown{margin:14px 0 18px}
+  .hero--painted .hero__art{margin-top:-34px}
+}
+
+/* loveline milestone labels, a notch larger */
+.loveline li:nth-child(n) .loveline__label{font-size:16px}
+@media (min-width:861px){
+  .loveline li:nth-child(n) .loveline__label{font-size:23px}
+}
+
+/* footer goes light */
+.footer{
+  background:
+    radial-gradient(70% 60% at 50% 0%,rgba(220,228,240,.4),transparent 70%),
+    var(--ivory);
+  color:var(--ink);
+}
+.footer__names span{color:var(--gold)}
+.footer__date{color:var(--gold-deep);opacity:1}
+.footer__thanks{color:var(--ink-soft)}
+.footer .ornament--set i{background:var(--gold)}
+
+/* ==========================================================
+   GALLERY LIGHTBOX
+   ========================================================== */
+.gallery__grid .photo{cursor:zoom-in}
+.lightbox{
+  position:fixed;inset:0;z-index:3000;display:flex;align-items:center;justify-content:center;
+  background:rgba(31,38,58,.94);opacity:0;visibility:hidden;
+  transition:opacity .35s var(--ease),visibility 0s .35s;
+}
+.lightbox.is-open{opacity:1;visibility:visible;transition:opacity .35s var(--ease)}
+.lightbox__img{
+  max-width:92vw;max-height:86vh;border-radius:4px;
+  background:#fff;padding:8px;box-shadow:0 30px 80px rgba(0,0,0,.4);
+}
+.lightbox__close{
+  position:absolute;top:10px;right:14px;font-size:38px;line-height:1;
+  background:none;border:none;color:var(--cream);cursor:pointer;font-family:var(--sans);
+}
+.lightbox__nav{
+  position:absolute;top:50%;transform:translateY(-50%);font-size:46px;line-height:1;
+  background:none;border:none;color:var(--cream);cursor:pointer;padding:16px;opacity:.8;
+}
+.lightbox__nav:hover{opacity:1}
+.lightbox__nav--prev{left:4px}
+.lightbox__nav--next{right:4px}
+body.lightbox-open{overflow:hidden}
+@media (prefers-reduced-motion:reduce){.lightbox{transition:none}}
+
+/* seam geometry corrected: fade 160px, wash overlaps 220px past img top */
+.hero--painted .hero__art img{
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 160px);
+  mask-image:linear-gradient(180deg,transparent 0,#000 160px);
+}
+@media (min-width:861px){
+  .hero--painted .hero__content{margin-top:calc(var(--nav-h) + 2px)}
+  .hero--painted .countdown{margin:10px 0 14px}
+  .hero--painted .hero__art{margin-top:-70px}
+}
+
+/* ultra-smooth handoff, deeper desktop lift, glow behind hero text */
+.hero--painted .hero__art img{
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 260px);
+  mask-image:linear-gradient(180deg,transparent 0,#000 260px);
+}
+.hero--painted .hero__content::before{
+  content:"";position:absolute;left:-44px;right:-44px;top:-26px;bottom:-30px;z-index:-1;
+  background:radial-gradient(ellipse 74% 62% at 50% 44%,rgba(252,249,245,.74),rgba(252,249,245,0) 74%);
+  pointer-events:none;
+}
+@media (min-width:861px){
+  .hero--painted .hero__art{margin-top:-120px}
+}
+
+/* higher still on desktop; stronger cream pool over countdown + CTA */
+.hero--painted .hero__content::before{
+  left:-56px;right:-56px;top:-24px;bottom:-48px;
+  background:
+    radial-gradient(ellipse 66% 46% at 50% 78%,rgba(252,249,245,.85),rgba(252,249,245,0) 76%),
+    radial-gradient(ellipse 74% 62% at 50% 38%,rgba(252,249,245,.74),rgba(252,249,245,0) 74%);
+}
+@media (min-width:861px){
+  .hero--painted .hero__art{margin-top:-170px}
+}
+
+/* glow pool: taller box, ellipses fade fully inside it (no clip line);
+   painting higher still on desktop */
+.hero--painted .hero__content::before{
+  left:-56px;right:-56px;top:-24px;bottom:-170px;
+  background:
+    radial-gradient(ellipse 66% 30% at 50% 58%,rgba(252,249,245,.85),rgba(252,249,245,0) 72%),
+    radial-gradient(ellipse 74% 46% at 50% 28%,rgba(252,249,245,.74),rgba(252,249,245,0) 74%);
+}
+@media (min-width:861px){
+  .hero--painted .hero__art{margin-top:-230px}
+}
+
+/* CTA readability: frosted cream fill + a tight bright pool behind it */
+.hero--painted .hero__content .btn{
+  background:rgba(252,249,245,.5);
+}
+.hero--painted .hero__content .btn:hover{background:var(--gold)}
+.hero--painted .hero__content::before{
+  background:
+    radial-gradient(ellipse 48% 13% at 50% 64%,rgba(252,249,245,.92),rgba(252,249,245,0) 78%),
+    radial-gradient(ellipse 66% 30% at 50% 56%,rgba(252,249,245,.88),rgba(252,249,245,0) 72%),
+    radial-gradient(ellipse 74% 46% at 50% 28%,rgba(252,249,245,.74),rgba(252,249,245,0) 74%);
+}
+
+/* frosted RSVP pill in the nav (bar + desktop row) */
+.nav__cta{background:rgba(252,249,245,.5) !important}
+.nav__cta:hover{background:var(--gold) !important}
+body.nav-open .nav__links .nav__cta{background:transparent !important}
+
+/* painting sits flush on the hero's bottom edge */
+.hero--painted{padding-bottom:0}
+.hero--painted .hero__art{margin-bottom:0}
+.hero--painted .hero__art img{display:block}
+
+/* no hairline between the painting and the band */
+.band{border-top:none}
+
+/* venue illustration runs the full sheet width */
+.venue__art{margin:-8px -24px 30px;max-width:none}
+@media (min-width:861px){
+  .venue__art{
+    width:min(960px,100vw);max-width:none;
+    margin:-8px 0 44px 50%;transform:translateX(-50%);
+  }
+}

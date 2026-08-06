@@ -114,6 +114,18 @@
       plx();
     }
 
+    /* ---- hero sky wash ends exactly under the painting ---- */
+    var heroSec = document.querySelector('.hero--painted');
+    var heroArt = document.querySelector('.hero__art');
+    function sizeSky() {
+      if (!heroSec || !heroArt) return;
+      var top = heroArt.getBoundingClientRect().top - heroSec.getBoundingClientRect().top;
+      heroSec.style.setProperty('--sky-h', Math.round(top + 330) + 'px');
+    }
+    sizeSky();
+    window.addEventListener('resize', sizeSky, { passive: true });
+    window.addEventListener('load', sizeSky);
+
     /* ---- story video: play only in view, honor reduced motion ---- */
     var vid = document.getElementById('storyVideo');
     if (vid) {
@@ -131,6 +143,49 @@
           });
         }, { threshold: 0.15 }).observe(vid);
       }
+    }
+
+    /* ---- gallery lightbox ---- */
+    var gphotos = [].slice.call(document.querySelectorAll('.gallery__grid .photo img'));
+    if (gphotos.length) {
+      var lb = document.createElement('div');
+      lb.className = 'lightbox';
+      lb.setAttribute('role', 'dialog');
+      lb.setAttribute('aria-label', 'Photo viewer');
+      lb.innerHTML = '<button class="lightbox__close" aria-label="Close">&times;</button>' +
+        '<button class="lightbox__nav lightbox__nav--prev" aria-label="Previous photo">&#8249;</button>' +
+        '<img class="lightbox__img" alt="" />' +
+        '<button class="lightbox__nav lightbox__nav--next" aria-label="Next photo">&#8250;</button>';
+      document.body.appendChild(lb);
+      var lbImg = lb.querySelector('.lightbox__img');
+      var lbCur = 0;
+      function lbShow(i) {
+        lbCur = (i + gphotos.length) % gphotos.length;
+        lbImg.src = gphotos[lbCur].src;
+        lbImg.alt = gphotos[lbCur].alt || '';
+      }
+      function lbClose() {
+        lb.classList.remove('is-open');
+        document.body.classList.remove('lightbox-open');
+      }
+      gphotos.forEach(function (img, i) {
+        img.closest('.photo').addEventListener('click', function () {
+          lbShow(i);
+          document.body.classList.add('lightbox-open');
+          lb.classList.add('is-open');
+          lb.querySelector('.lightbox__close').focus();
+        });
+      });
+      lb.querySelector('.lightbox__close').addEventListener('click', lbClose);
+      lb.querySelector('.lightbox__nav--prev').addEventListener('click', function (e) { e.stopPropagation(); lbShow(lbCur - 1); });
+      lb.querySelector('.lightbox__nav--next').addEventListener('click', function (e) { e.stopPropagation(); lbShow(lbCur + 1); });
+      lb.addEventListener('click', function (e) { if (e.target === lb) lbClose(); });
+      document.addEventListener('keydown', function (e) {
+        if (!lb.classList.contains('is-open')) return;
+        if (e.key === 'Escape') lbClose();
+        if (e.key === 'ArrowLeft') lbShow(lbCur - 1);
+        if (e.key === 'ArrowRight') lbShow(lbCur + 1);
+      });
     }
 
     /* ---- timeline rail fill ---- */
