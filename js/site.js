@@ -114,6 +114,25 @@
       plx();
     }
 
+    /* ---- story video: play only in view, honor reduced motion ---- */
+    var vid = document.getElementById('storyVideo');
+    if (vid) {
+      vid.muted = true;
+      vid.defaultPlaybackRate = 0.5;
+      vid.playbackRate = 0.5;
+      if (reduced) {
+        vid.removeAttribute('autoplay');
+        vid.pause();
+      } else if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { var p = vid.play(); if (p && p.catch) p.catch(function(){}); }
+            else vid.pause();
+          });
+        }, { threshold: 0.15 }).observe(vid);
+      }
+    }
+
     /* ---- timeline rail fill ---- */
     var rail = document.getElementById('railFill');
     var tl = document.getElementById('timeline');
