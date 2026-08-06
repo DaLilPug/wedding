@@ -1442,3 +1442,16 @@ body{font-size:15.5px;line-height:1.7;font-weight:400}
 
 /* logo, a touch bigger */
 .nav__brand{font-size:33px}
+
+/* loveline: more air between the line and its labels */
+.loveline li:nth-child(n) .loveline__date{bottom:calc(50% + 22px)}
+.loveline li:nth-child(even) .loveline__date{top:calc(50% + 22px);bottom:auto}
+.loveline li:nth-child(n) .loveline__label{top:calc(50% + 22px)}
+.loveline li:nth-child(even) .loveline__label{bottom:calc(50% + 20px);top:auto}
+@media (max-width:860px){
+  .loveline li{height:150px}
+  .loveline li:nth-child(n) .loveline__date{top:8px;bottom:auto}
+  .loveline li:nth-child(n) .loveline__label{top:56px;bottom:auto}
+  .loveline li:nth-child(even) .loveline__label{top:104px;bottom:auto}
+  .loveline li:nth-child(even)::after{top:40px;height:60px}
+}
