@@ -1570,3 +1570,14 @@ body{font-size:15.5px;line-height:1.7;font-weight:400}
       radial-gradient(70% 46% at 94% 92%,rgba(220,228,240,.55),transparent 74%),var(--cream);
   }
 }
+
+/* The Day opens with a visible dusty-blue wash so the section
+   boundary reads against the white story bottom */
+@media (max-width:860px){
+  .day{
+    background:
+      linear-gradient(180deg,rgba(196,211,230,.6) 0%,rgba(196,211,230,.22) 11%,rgba(196,211,230,0) 26%),
+      radial-gradient(64% 42% at 8% 8%,rgba(240,223,218,.55),transparent 70%),
+      radial-gradient(70% 46% at 94% 92%,rgba(220,228,240,.55),transparent 74%),var(--cream);
+  }
+}
