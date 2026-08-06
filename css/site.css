@@ -1371,3 +1371,21 @@ body{font-weight:400;font-size:15px;line-height:1.7}
 @media (min-width:861px){
   body{font-size:15.5px}
 }
+
+/* ==========================================================
+   NAV FIX: backdrop-filter on .nav made it the containing
+   block for the fixed menu overlay, clipping it to the bar
+   once scrolled (.nav--solid). The blur now lives on a
+   ::before, so the overlay escapes to the full viewport.
+   ========================================================== */
+.nav--solid{
+  background:transparent;
+  backdrop-filter:none;-webkit-backdrop-filter:none;
+  box-shadow:none;
+}
+.nav--solid::before{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:rgba(252,249,245,.92);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  box-shadow:0 1px 0 var(--line);
+}
