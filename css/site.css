@@ -1418,3 +1418,15 @@ body{font-size:15.5px;line-height:1.7;font-weight:400}
 @media (min-width:861px){
   body{font-size:16px}
 }
+
+/* scroll cue under the Save-the-date band */
+.band__scroll{
+  display:block;width:max-content;margin:26px auto 0;
+  font-family:var(--sans);text-transform:uppercase;letter-spacing:.26em;font-size:10px;
+  color:var(--ink-soft);text-decoration:none;text-align:center;
+}
+.band__scroll::after{
+  content:"";display:block;width:1px;height:30px;background:var(--gold);
+  margin:8px auto 0;animation:scrollPulse 2.2s ease-in-out infinite;transform-origin:top;
+}
+@media (prefers-reduced-motion:reduce){.band__scroll::after{animation:none}}
