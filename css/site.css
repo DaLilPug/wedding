@@ -1389,3 +1389,18 @@ body{font-weight:400;font-size:15px;line-height:1.7}
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   box-shadow:0 1px 0 var(--line);
 }
+
+/* ==========================================================
+   BODY FACE v4: Josefin Sans - vintage invitation geometry
+   (low x-height, so body runs slightly larger)
+   ========================================================== */
+:root{
+  --serif:'Josefin Sans','Segoe UI',Arial,sans-serif;
+  --sans:'Josefin Sans','Segoe UI',Arial,sans-serif;
+  --display:'Jenna Sue','Josefin Sans',cursive;
+  --script:'Jenna Sue','Josefin Sans',cursive;
+}
+body{font-size:16px;line-height:1.75;font-weight:400}
+@media (min-width:861px){
+  body{font-size:16.5px}
+}
