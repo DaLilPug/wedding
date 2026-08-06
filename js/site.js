@@ -120,7 +120,8 @@
     function sizeSky() {
       if (!heroSec || !heroArt) return;
       var top = heroArt.getBoundingClientRect().top - heroSec.getBoundingClientRect().top;
-      heroSec.style.setProperty('--sky-h', Math.round(top + 330) + 'px');
+      var skyOv = window.matchMedia('(min-width:861px)').matches ? 330 : 130;
+      heroSec.style.setProperty('--sky-h', Math.round(top + skyOv) + 'px');
     }
     sizeSky();
     window.addEventListener('resize', sizeSky, { passive: true });
