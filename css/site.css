@@ -1896,3 +1896,18 @@ body.joke-open{overflow:hidden}
 /* hero fills the *visible* viewport: svh stays short when a phone's
    address bar hides, which let the next section peek in */
 .hero--painted{min-height:100vh;min-height:100dvh}
+
+/* joke modal CTA matches the hero/RSVP gold pill */
+.jokebox .btn--primary{
+  background:rgba(252,249,245,.5) !important;
+  color:var(--gold-deep) !important;
+  border:1.5px solid var(--gold) !important;
+  border-radius:999px;
+}
+.jokebox .btn--primary:hover{background:var(--gold) !important;color:var(--cream) !important}
+
+/* mobile: overshoot the fold slightly so the next section can never
+   peek while a phone's toolbars appear/disappear */
+@media (max-width:860px){
+  .hero--painted{min-height:105vh;min-height:105dvh}
+}
