@@ -1820,3 +1820,14 @@ body.nav-open .nav__links .nav__cta{background:transparent !important}
 /* the hero was pinned to 100svh, so leftover viewport height pooled as
    empty cream under the painting - let it hug its content instead */
 .hero--painted{min-height:0;height:auto}
+
+/* ==========================================================
+   HERO = exactly one screen. The painting is anchored to the
+   hero's bottom edge (absolute), so its bottom and the section
+   bottom are the same line: full-height fold, zero gap.
+   ========================================================== */
+.hero--painted{min-height:100svh;height:auto;position:relative;overflow:hidden}
+.hero--painted .hero__art{
+  position:absolute;left:0;right:0;bottom:0;margin:0;width:100%;
+}
+.hero--painted .hero__content{position:relative;z-index:2}
