@@ -1906,8 +1906,25 @@ body.joke-open{overflow:hidden}
 }
 .jokebox .btn--primary:hover{background:var(--gold) !important;color:var(--cream) !important}
 
-/* mobile: overshoot the fold slightly so the next section can never
-   peek while a phone's toolbars appear/disappear */
+/* the frosted nav panel fades out at its bottom edge, so the blur and
+   tint dissolve into the page instead of stopping on a hard line */
+.nav--solid::before{
+  -webkit-mask-image:linear-gradient(180deg,#000 0,#000 calc(100% - 22px),rgba(0,0,0,0) 100%);
+  mask-image:linear-gradient(180deg,#000 0,#000 calc(100% - 22px),rgba(0,0,0,0) 100%);
+}
+
+/* keep the joke CTA on one line on phones */
 @media (max-width:860px){
-  .hero--painted{min-height:105vh;min-height:105dvh}
+  .jokebox__card{padding:32px 20px 28px}
+  .jokebox .btn--primary{
+    white-space:nowrap;padding:12px 16px;font-size:10.5px;letter-spacing:.1em;
+  }
+}
+
+/* mobile crossfade sized to the shallower baked blur */
+@media (max-width:860px){
+  .hero--painted .hero__art img{
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 90px);
+    mask-image:linear-gradient(180deg,transparent 0,#000 90px);
+  }
 }
