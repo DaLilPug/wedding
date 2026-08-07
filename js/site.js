@@ -120,7 +120,7 @@
     function sizeSky() {
       if (!heroSec || !heroArt) return;
       var top = heroArt.getBoundingClientRect().top - heroSec.getBoundingClientRect().top;
-      var skyOv = window.matchMedia('(min-width:861px)').matches ? 330 : 130;
+      var skyOv = window.matchMedia('(min-width:861px)').matches ? 470 : 200;
       heroSec.style.setProperty('--sky-h', Math.round(top + skyOv) + 'px');
     }
     sizeSky();

@@ -1793,3 +1793,15 @@ body.nav-open .nav__links .nav__cta{background:transparent !important}
   font-family:var(--display);font-size:26px;color:var(--ink);margin:0 0 14px;
 }
 @media (prefers-reduced-motion:reduce){.rsvp__contact.is-in{animation:none}}
+
+/* longer hero crossfade to match the deeper baked blur */
+.hero--painted .hero__art img{
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 400px);
+  mask-image:linear-gradient(180deg,transparent 0,#000 400px);
+}
+@media (max-width:860px){
+  .hero--painted .hero__art img{
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 150px);
+    mask-image:linear-gradient(180deg,transparent 0,#000 150px);
+  }
+}
