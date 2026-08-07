@@ -47,6 +47,32 @@
       });
     }
 
+    /* ---- Call Austin (a joke) ---- */
+    var jokeLink = document.getElementById('navCallAustin');
+    var jokeBox = document.getElementById('jokeBox');
+    if (jokeLink && jokeBox) {
+      function jokeOpen(e) {
+        e.preventDefault();
+        document.body.classList.remove('nav-open');
+        if (toggle) toggle.setAttribute('aria-expanded', 'false');
+        jokeBox.hidden = false;
+        document.body.classList.add('joke-open');
+        var c = document.getElementById('jokeClose');
+        if (c) c.focus();
+      }
+      function jokeClose() {
+        jokeBox.hidden = true;
+        document.body.classList.remove('joke-open');
+      }
+      jokeLink.addEventListener('click', jokeOpen);
+      document.getElementById('jokeClose').addEventListener('click', jokeClose);
+      document.getElementById('jokeToFaq').addEventListener('click', jokeClose);
+      jokeBox.addEventListener('click', function (e) { if (e.target === jokeBox) jokeClose(); });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !jokeBox.hidden) jokeClose();
+      });
+    }
+
     /* ---- countdown ---- */
     var target = cfg.weddingDateISO ? new Date(cfg.weddingDateISO).getTime() : null;
     var elD = document.getElementById('cdDays'), elH = document.getElementById('cdHours'),

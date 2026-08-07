@@ -1831,3 +1831,68 @@ body.nav-open .nav__links .nav__cta{background:transparent !important}
   position:absolute;left:0;right:0;bottom:0;margin:0;width:100%;
 }
 .hero--painted .hero__content{position:relative;z-index:2}
+
+/* no hairline under the nav - the frosted blur is separation enough */
+.nav--solid::before{box-shadow:none}
+.nav--solid{box-shadow:none;border-bottom:0}
+
+/* ==========================================================
+   SCROLLED NAV: a floating frosted pill, 95% width, no hairline
+   ========================================================== */
+.nav{transition:padding .35s var(--ease)}
+.nav--solid{padding:8px 0}
+.nav--solid::before{
+  left:2.5%;right:2.5%;
+  background:rgba(252,249,245,.62);
+  border-radius:999px;
+  border:1px solid rgba(160,136,80,.18);
+  box-shadow:0 6px 24px rgba(57,68,94,.10);
+}
+.nav--solid .nav__inner{padding:0 30px}
+@media (max-width:860px){
+  .nav--solid .nav__inner{padding:0 22px}
+}
+
+/* pill edge: shadow only, no border line */
+.nav--solid::before{border:0;box-shadow:0 8px 26px rgba(57,68,94,.12)}
+
+/* ==========================================================
+   CALL AUSTIN: mobile-only menu link + its modal
+   ========================================================== */
+.nav__joke{
+  font-family:var(--sans);text-transform:uppercase;letter-spacing:.22em;font-size:15px;
+  text-decoration:none;color:var(--cream);opacity:.92;
+}
+@media (min-width:861px){ .nav__joke{display:none} }
+
+.jokebox{
+  position:fixed;inset:0;z-index:3200;display:flex;align-items:center;justify-content:center;
+  padding:24px;background:rgba(57,68,94,.55);backdrop-filter:blur(3px);
+}
+.jokebox[hidden]{display:none}
+.jokebox__card{
+  background:var(--cream);border-radius:8px;padding:34px 26px 30px;max-width:400px;width:100%;
+  text-align:center;box-shadow:0 30px 70px rgba(31,38,58,.35);
+  animation:jokeIn .4s var(--ease) both;
+}
+@keyframes jokeIn{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+.jokebox__title{font-family:var(--display);font-size:46px;line-height:1;margin:10px 0 12px;color:var(--ink)}
+.jokebox__text{margin:0 0 22px;color:var(--ink-soft);font-size:15.5px}
+.jokebox__actions{display:flex;flex-direction:column;align-items:center;gap:12px}
+body.joke-open{overflow:hidden}
+@media (prefers-reduced-motion:reduce){.jokebox__card{animation:none}}
+
+/* nav back to full width, square, flush - keep the frosted blur, no line */
+.nav--solid{padding:0}
+.nav--solid::before{
+  left:0;right:0;border-radius:0;border:0;box-shadow:none;
+  background:rgba(252,249,245,.9);
+}
+.nav--solid .nav__inner{padding:0 18px}
+@media (min-width:861px){
+  .nav--solid .nav__inner{padding:0 30px}
+}
+
+/* hero fills the *visible* viewport: svh stays short when a phone's
+   address bar hides, which let the next section peek in */
+.hero--painted{min-height:100vh;min-height:100dvh}
