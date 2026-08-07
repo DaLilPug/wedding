@@ -1921,3 +1921,21 @@ body.joke-open{overflow:hidden}
     mask-image:linear-gradient(180deg,transparent 0,#000 90px);
   }
 }
+
+/* ==========================================================
+   MAP: graceful fallback when the embed is blocked or slow
+   ========================================================== */
+.venue__map{position:relative}
+.venue__map-fallback{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  min-height:300px;padding:28px 20px;text-align:center;background:var(--ivory);
+}
+.venue__map-fallback[hidden]{display:none}
+.venue__map-addr{
+  margin:0;font-family:var(--sans);font-size:14px;line-height:1.8;letter-spacing:.04em;color:var(--ink);
+}
+.venue__map-links{display:flex;flex-direction:column;align-items:center;gap:10px}
+.venue__map--failed iframe{display:none}
+@media (min-width:861px){
+  .venue__map-fallback{min-height:440px}
+}

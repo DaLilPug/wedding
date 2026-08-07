@@ -215,6 +215,21 @@
       });
     }
 
+    /* ---- map: swap in an address card if the embed is blocked ----
+       An aborted iframe still fires `load`, so we probe whether Google
+       Maps is reachable at all (ad/tracker blockers reject the request).
+       Probed on load so it never depends on scroll or observer timing. */
+    var vmap = document.getElementById('venueMap');
+    var vfall = document.getElementById('venueMapFallback');
+    if (vmap && vfall && window.fetch) {
+      fetch('https://www.google.com/maps?output=embed', { mode: 'no-cors', cache: 'no-store' })
+        .catch(function () {
+          var box = vmap.closest('.venue__map');
+          if (box) box.classList.add('venue__map--failed');
+          vfall.hidden = false;
+        });
+    }
+
     /* ---- timeline rail fill ---- */
     var rail = document.getElementById('railFill');
     var tl = document.getElementById('timeline');
