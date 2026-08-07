@@ -1805,3 +1805,18 @@ body.nav-open .nav__links .nav__cta{background:transparent !important}
     mask-image:linear-gradient(180deg,transparent 0,#000 150px);
   }
 }
+
+/* ==========================================================
+   HERO/BAND SEAM: the figure was a stretching flex item, so
+   it grew taller than the painting and left a cream sliver.
+   Hug the image exactly, and trim the band's empty top.
+   ========================================================== */
+.hero--painted .hero__art{flex:0 0 auto;min-height:0;line-height:0}
+.band{padding-top:40px}
+@media (min-width:861px){
+  .band{padding-top:56px}
+}
+
+/* the hero was pinned to 100svh, so leftover viewport height pooled as
+   empty cream under the painting - let it hug its content instead */
+.hero--painted{min-height:0;height:auto}
