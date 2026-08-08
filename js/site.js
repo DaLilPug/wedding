@@ -22,6 +22,26 @@
     /* entrance choreography plays right after first paint */
     setTimeout(function () { document.body.classList.add('is-entered'); }, reduced ? 0 : 180);
 
+    /* ---- freeze the hero height ----
+       Phone toolbars collapse as you scroll, which changes the viewport
+       height. With the hero sized in viewport units it grew mid-scroll
+       and shoved the page down - the "jump". Lock it to the height at
+       load and only recompute when the width changes (rotation). */
+    var lockedWidth = window.innerWidth;
+    function lockHeroHeight() {
+      document.documentElement.style.setProperty('--hero-h', window.innerHeight + 'px');
+    }
+    lockHeroHeight();
+    window.addEventListener('resize', function () {
+      if (window.innerWidth !== lockedWidth) {   // rotation or real resize only
+        lockedWidth = window.innerWidth;
+        lockHeroHeight();
+      }
+    }, { passive: true });
+    window.addEventListener('orientationchange', function () {
+      setTimeout(lockHeroHeight, 120);
+    });
+
     /* ---- nav ---- */
     var nav = document.getElementById('nav');
     var navSolid = null;

@@ -2378,3 +2378,9 @@ body.joke-open{overflow:hidden}
   background:transparent;
 }
 .story__art--video{background:transparent}
+
+/* hero uses the frozen pixel height so a collapsing phone toolbar can
+   never reflow the page mid-scroll (falls back to svh without JS) */
+@media (max-width:860px){
+  .hero--painted{min-height:var(--hero-h,100svh)}
+}
