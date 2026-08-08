@@ -193,6 +193,34 @@
       plx();
     }
 
+    /* ---- colour blooms drift with the scroll ---- */
+    var bloomHosts = [].slice.call(document.querySelectorAll('.section, .band, .hero--painted'));
+    var bloomEls = [].slice.call(document.querySelectorAll('.hero--painted .wash-blob'));
+    function blooms() {
+      if (reduced) return;
+      var vh = window.innerHeight || document.documentElement.clientHeight;
+      bloomHosts.forEach(function (host) {
+        var r = host.getBoundingClientRect();
+        if (r.bottom < -200 || r.top > vh + 200) return;
+        var mid = r.top + r.height / 2 - vh / 2;
+        host.style.setProperty('--bloom-y', (-mid * 0.06).toFixed(1) + 'px');
+      });
+      bloomEls.forEach(function (el) {
+        var r = el.getBoundingClientRect();
+        var mid = r.top + r.height / 2 - vh / 2;
+        el.style.setProperty('--bloom-y', (-mid * 0.05).toFixed(1) + 'px');
+      });
+    }
+    var bloomTick = false;
+    function bloomQueue() {
+      if (!bloomTick) { bloomTick = true; requestAnimationFrame(function () { bloomTick = false; blooms(); }); }
+    }
+    if (!reduced) {
+      window.addEventListener('scroll', bloomQueue, { passive: true });
+      window.addEventListener('resize', bloomQueue, { passive: true });
+      blooms();
+    }
+
     /* ---- hero sky wash ends exactly under the painting ---- */
     var heroSec = document.querySelector('.hero--painted');
     var heroArt = document.querySelector('.hero__art');
@@ -201,6 +229,8 @@
       var top = heroArt.getBoundingClientRect().top - heroSec.getBoundingClientRect().top;
       var skyOv = window.matchMedia('(min-width:861px)').matches ? 470 : 200;
       heroSec.style.setProperty('--sky-h', Math.round(top + skyOv) + 'px');
+      /* colour washes stop where the painting begins */
+      heroSec.style.setProperty('--wash-h', Math.max(0, Math.round(top)) + 'px');
     }
     sizeSky();
     window.addEventListener('resize', sizeSky, { passive: true });

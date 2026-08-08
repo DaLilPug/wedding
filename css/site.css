@@ -2140,3 +2140,111 @@ body.joke-open{overflow:hidden}
     mask-image:linear-gradient(180deg,transparent 0,#000 60px);
   }
 }
+
+/* ==========================================================
+   HERO WASHES on desktop: same ambient colour blooms the story
+   section uses, drifting behind the text
+   ========================================================== */
+@media (min-width:861px){
+  .hero--painted .hero__wash{
+    display:block;position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;
+  }
+  .hero--painted .hero__content{z-index:2}
+  .hero--painted .hero__art{position:relative;z-index:1}
+  .hero--painted .wash-blob{
+    position:absolute;border-radius:50%;filter:blur(46px);mix-blend-mode:multiply;
+  }
+  .hero--painted .wash-blob--mint{
+    width:46%;aspect-ratio:1;left:-8%;top:-6%;
+    background:radial-gradient(closest-side,rgba(158,208,196,.42),rgba(158,208,196,0) 72%);
+    animation:blobA 30s ease-in-out infinite alternate;
+  }
+  .hero--painted .wash-blob--rose{
+    width:40%;aspect-ratio:1;right:-6%;top:8%;
+    background:radial-gradient(closest-side,rgba(233,178,172,.38),rgba(233,178,172,0) 72%);
+    animation:blobB 36s ease-in-out -6s infinite alternate;
+  }
+  .hero--painted .wash-blob--gold{
+    width:44%;aspect-ratio:1;left:22%;top:26%;
+    background:radial-gradient(closest-side,rgba(229,200,123,.3),rgba(229,200,123,0) 70%);
+    animation:blobC 27s ease-in-out -12s infinite alternate;
+  }
+}
+
+/* section blooms take a parallax offset from the scroll engine.
+   `translate` is its own property, so it composes with the drifting
+   `transform` in the blob keyframes instead of overriding it. */
+.section::before,.section::after,
+.band::before,.band::after,
+.footer::before,
+.hero--painted .wash-blob{
+  translate:0 var(--bloom-y, 0px);
+}
+@media (prefers-reduced-motion:reduce){
+  .section::before,.section::after,.band::before,.band::after,
+  .footer::before,.hero--painted .wash-blob{translate:none}
+}
+
+
+/* ==========================================================
+   HERO WASHES, refined: colour lives up top behind the names;
+   around the painting it settles into one calm tone so the art
+   melts into the page.
+   ========================================================== */
+@media (min-width:861px){
+  .hero--painted .hero__wash{
+    inset:0 0 auto 0;
+    height:var(--wash-h, 46%);      /* ends exactly where the painting starts */
+    -webkit-mask-image:linear-gradient(180deg,#000 58%,rgba(0,0,0,0) 100%);
+    mask-image:linear-gradient(180deg,#000 58%,rgba(0,0,0,0) 100%);
+  }
+  .hero--painted .wash-blob--mint{
+    width:52%;left:-10%;top:-14%;
+    background:radial-gradient(closest-side,rgba(158,208,196,.4),rgba(158,208,196,0) 72%);
+  }
+  .hero--painted .wash-blob--rose{
+    width:44%;right:-8%;top:-6%;
+    background:radial-gradient(closest-side,rgba(233,178,172,.34),rgba(233,178,172,0) 72%);
+  }
+  .hero--painted .wash-blob--gold{
+    width:46%;left:26%;top:2%;
+    background:radial-gradient(closest-side,rgba(229,200,123,.26),rgba(229,200,123,0) 70%);
+  }
+  /* one steady tone behind the painting itself */
+  .hero--painted{background:var(--cream)}   /* one flat tone behind the art */
+}
+
+/* ==========================================================
+   HERO WASHES everywhere: flat page colour behind the painting,
+   colour blooms only above it. The old sky-wash JPEG (built from
+   the previous artwork) is no longer used.
+   ========================================================== */
+.hero--painted{background:var(--cream)}
+.hero--painted .hero__wash{
+  display:block;position:absolute;inset:0 0 auto 0;z-index:0;
+  height:var(--wash-h,46%);overflow:hidden;pointer-events:none;
+  -webkit-mask-image:linear-gradient(180deg,#000 58%,rgba(0,0,0,0) 100%);
+  mask-image:linear-gradient(180deg,#000 58%,rgba(0,0,0,0) 100%);
+}
+.hero--painted .wash-blob{
+  position:absolute;aspect-ratio:1;border-radius:50%;
+  filter:blur(46px);mix-blend-mode:multiply;
+}
+.hero--painted .wash-blob--mint{
+  width:62%;left:-14%;top:-12%;
+  background:radial-gradient(closest-side,rgba(158,208,196,.4),rgba(158,208,196,0) 72%);
+  animation:blobA 30s ease-in-out infinite alternate;
+}
+.hero--painted .wash-blob--rose{
+  width:54%;right:-12%;top:-4%;
+  background:radial-gradient(closest-side,rgba(233,178,172,.34),rgba(233,178,172,0) 72%);
+  animation:blobB 36s ease-in-out -6s infinite alternate;
+}
+.hero--painted .wash-blob--gold{
+  width:56%;left:20%;top:6%;
+  background:radial-gradient(closest-side,rgba(229,200,123,.26),rgba(229,200,123,0) 70%);
+  animation:blobC 27s ease-in-out -12s infinite alternate;
+}
+
+/* save-the-date band: matching rule above and below */
+.band{border-top:1px solid var(--line)}
