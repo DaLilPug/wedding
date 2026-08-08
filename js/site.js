@@ -159,6 +159,7 @@
     }
 
     /* ---- parallax paintings ---- */
+    function wideScreen() { return window.matchMedia('(min-width:861px)').matches; }
     var plxEls = [].slice.call(document.querySelectorAll('[data-plx]'));
     var plxTick = false;
     function plx() {
@@ -171,8 +172,10 @@
         if (r.bottom < -80 || r.top > vh + 80) return;
         var speed = parseFloat(el.getAttribute('data-plx')) || 0.08;
         var y;
-        if (el.hasAttribute('data-plx-top')) {
-          /* first-fold art: rest at 0 on load, recede as the page scrolls */
+        /* the anchored mode only applies where the art is pinned to the
+           viewport (mobile hero); in normal flow use the same drift as
+           the story painting so scrolling reads the same everywhere */
+        if (el.hasAttribute('data-plx-top') && !wideScreen()) {
           y = (window.scrollY || document.documentElement.scrollTop || 0) * speed;
         } else {
           var mid = r.top + r.height / 2 - vh / 2;
