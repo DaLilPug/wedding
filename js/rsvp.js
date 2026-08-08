@@ -17,8 +17,8 @@
       { id: 'demo-2', name: 'Anastasiia Oliinyk', attending: null, role: null, phone_hint: null, has_email: false, has_address: false }
     ]},
     { party_key: 'demo-smith', members: [
-      { id: 'demo-3', name: 'Jordan Smith', attending: null, role: null, phone_hint: null, has_email: false, has_address: false },
-      { id: 'demo-4', name: 'Guest of Jordan Smith', attending: null, role: null, phone_hint: null, has_email: false, has_address: false }
+      { id: 'demo-3', name: 'Jordan Smith', attending: true, role: null, phone_hint: '1234', has_email: true, has_address: false, responded_at: '2026-08-01T18:00:00Z' },
+      { id: 'demo-4', name: 'Guest of Jordan Smith', attending: false, role: null, phone_hint: null, has_email: true, has_address: false, responded_at: '2026-08-01T18:00:00Z' }
     ]}
   ];
 
@@ -94,7 +94,7 @@
         searchMsg.textContent = "We couldn't find that name. Try your partner's name, or reach out to us and we'll help.";
         searchMsg.classList.add('rsvp__msg--err');
       } else if (parties.length === 1) {
-        renderRespond(parties[0]);
+        if (hasResponded(parties[0])) renderAlready(parties[0]); else renderRespond(parties[0]);
       } else {
         renderPartyChoice(parties);
       }
@@ -119,7 +119,10 @@
     html += '</div>';
     stepRespond.innerHTML = html;
     stepRespond.querySelectorAll('.party-choice button').forEach(function (b) {
-      b.addEventListener('click', function () { renderRespond(parties[+b.getAttribute('data-i')]); });
+      b.addEventListener('click', function () {
+        var p = parties[+b.getAttribute('data-i')];
+        if (hasResponded(p)) renderAlready(p); else renderRespond(p);
+      });
     });
     show(stepRespond);
   }
@@ -142,7 +145,51 @@
     'Brother of the Groom': 'Front row, on call for high fives.'
   };
 
-  function renderRespond(party) {
+  function hasResponded(party) {
+    return (party.members || []).some(function (m) { return m.attending === true || m.attending === false; });
+  }
+
+  function respondedOn(party) {
+    var stamps = (party.members || []).map(function (m) { return m.responded_at; }).filter(Boolean).sort();
+    if (!stamps.length) return '';
+    var d = new Date(stamps[stamps.length - 1]);
+    if (isNaN(d.getTime())) return '';
+    return d.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' });
+  }
+
+  /* ---- Already answered: show it plainly, offer an edit ---- */
+  function renderAlready(party) {
+    var when = respondedOn(party);
+    var anyYes = party.members.some(function (m) { return m.attending === true; });
+    var html = '<p class="rsvp__found">You already RSVP&#39;d</p>' +
+      '<p class="rsvp__sub">' + (when ? 'Received ' + esc(when) : 'Thank you') + '</p>' +
+      '<div class="rsvp__already">';
+    party.members.forEach(function (m) {
+      var yes = m.attending === true, no = m.attending === false;
+      html += '<div class="rsvp__already-row">' +
+        '<span class="rsvp__already-name">' + esc(m.name) + '</span>' +
+        '<span class="rsvp__already-pill' + (yes ? ' is-yes' : (no ? ' is-no' : '')) + '">' +
+        (yes ? 'Attending' : (no ? 'Not attending' : 'No answer yet')) + '</span>' +
+        '</div>';
+    });
+    html += '</div>' +
+      '<p class="rsvp__already-note">' +
+      (anyYes ? 'We have you down and we cannot wait. Plans change - you can update this any time.'
+              : 'We have your answer. If anything changes, you can update it here.') +
+      '</p>' +
+      '<div class="rsvp__actions">' +
+      '<button class="btn btn--primary" id="rsvpEditBtn">Edit our RSVP</button>' +
+      '<button class="rsvp__back" id="rsvpBackBtn2">Search a different name</button></div>';
+    stepRespond.innerHTML = html;
+    document.getElementById('rsvpEditBtn').addEventListener('click', function () { renderRespond(party, true); });
+    document.getElementById('rsvpBackBtn2').addEventListener('click', function () {
+      nameInput.value = ''; searchMsg.textContent = ''; searchMsg.className = 'rsvp__msg';
+      show(stepSearch);
+    });
+    show(stepRespond);
+  }
+
+  function renderRespond(party, isEdit) {
     var names = party.members.map(function (m) { return esc(m.name); }).join(' & ');
     var meals = Array.isArray(cfg.mealOptions) ? cfg.mealOptions : [];
     var roles = party.members.filter(function (m) { return m.role; });
@@ -211,7 +258,7 @@
 
     html += '<p class="rsvp__msg" id="rsvpRespondMsg" role="status"></p>' +
       '<div class="rsvp__actions">' +
-      '<button class="btn btn--primary" id="rsvpSubmitBtn">Send RSVP</button>' +
+      '<button class="btn btn--primary" id="rsvpSubmitBtn">' + (isEdit ? 'Update RSVP' : 'Send RSVP') + '</button>' +
       '<button class="rsvp__back" id="rsvpBackBtn">Start over</button></div>';
 
     stepRespond.innerHTML = html;
@@ -262,6 +309,18 @@
         });
       });
     });
+
+    if (isEdit) {
+      party.members.forEach(function (m) {
+        if (m.attending === true || m.attending === false) {
+          var row = stepRespond.querySelector('.guest-row[data-id="' + m.id + '"]');
+          if (!row) return;
+          var v = m.attending ? 'yes' : 'no';
+          var btn = row.querySelector('.attend button[data-v="' + v + '"]');
+          if (btn) btn.click();
+        }
+      });
+    }
 
     document.getElementById('rsvpBackBtn').addEventListener('click', function () {
       searchMsg.textContent = ''; searchMsg.className = 'rsvp__msg';
