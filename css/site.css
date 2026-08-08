@@ -2392,8 +2392,15 @@ body.joke-open{overflow:hidden}
    well meant two animations competing for the scroll position on touch */
 html{scroll-behavior:auto}
 
-/* the soft edge is baked into the clip now, so no CSS mask overlay */
+/* back to the CSS fade on the video edges */
 .story__art--video video{
-  -webkit-mask-image:none;mask-image:none;
+  -webkit-mask-image:
+    linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%),
+    linear-gradient(180deg,transparent 0,#000 9%,#000 91%,transparent 100%);
+  -webkit-mask-composite:source-in;
+  mask-image:
+    linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%),
+    linear-gradient(180deg,transparent 0,#000 9%,#000 91%,transparent 100%);
+  mask-composite:intersect;
   background:transparent;
 }
