@@ -2281,7 +2281,7 @@ body.joke-open{overflow:hidden}
    and still sits on the bottom edge when there is room to spare */
 @media (max-width:860px){
   .hero--painted{display:flex;flex-direction:column;justify-content:space-between}
-  .hero--painted .hero__art{position:static;margin:25px 0 0;width:100%}
+  .hero--painted .hero__art{position:static;margin:20px 0 0;width:100%}
   .hero--painted .hero__content{padding-bottom:0}
   .hero--painted .hero__content .btn{margin-bottom:0}
 }
