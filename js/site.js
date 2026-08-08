@@ -176,11 +176,11 @@
            viewport (mobile hero); in normal flow use the same drift as
            the story painting so scrolling reads the same everywhere */
         if (el.hasAttribute('data-plx-top') && !wideScreen()) {
-          /* the mobile hero art is pinned to the bottom of a full-screen
-             section - drifting it just slid the painting under the next
-             section, so it stays put and the whole hero scrolls away */
-          el.style.transform = 'translate3d(0,0,0)';
-          return;
+          /* mobile hero: the art is pinned to the bottom of a full-screen
+             section, so it drifts UP into the hero's own empty space as
+             you scroll. Moving it down slid it under the next section. */
+          var sc = window.scrollY || document.documentElement.scrollTop || 0;
+          y = -Math.min(sc * (speed * 1.6), 90);
         } else {
           var mid = r.top + r.height / 2 - vh / 2;
           y = -mid * speed;
