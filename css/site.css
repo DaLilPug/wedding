@@ -2100,3 +2100,5 @@ body.joke-open{overflow:hidden}
 .rsvp__already-pill.is-yes{border-color:var(--gold);background:rgba(201,176,117,.16);color:var(--gold-deep)}
 .rsvp__already-pill.is-no{border-color:rgba(192,130,121,.5);background:rgba(192,130,121,.1);color:var(--rose)}
 .rsvp__already-note{margin:18px 0 0;color:var(--ink-soft);font-size:15px;text-align:center}
+#rsvpEmail[data-masked]{color:var(--ink-soft);letter-spacing:.02em}
+#rsvpEmail.is-editing{color:var(--ink)}

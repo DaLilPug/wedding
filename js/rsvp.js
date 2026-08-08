@@ -193,9 +193,10 @@
     var names = party.members.map(function (m) { return esc(m.name); }).join(' & ');
     var meals = Array.isArray(cfg.mealOptions) ? cfg.mealOptions : [];
     var roles = party.members.filter(function (m) { return m.role; });
-    var phoneHint = null, hasEmail = false, hasAddress = false;
+    var phoneHint = null, emailHint = null, hasEmail = false, hasAddress = false;
     party.members.forEach(function (m) {
       if (m.phone_hint && !phoneHint) phoneHint = m.phone_hint;
+      if (m.email_hint && !emailHint) emailHint = m.email_hint;
       if (m.has_email) hasEmail = true;
       if (m.has_address) hasAddress = true;
     });
@@ -238,13 +239,20 @@
           ? ' value="' + esc(phoneMask) + '" data-masked="1" placeholder="(555) 555-5555"'
           : ' placeholder="(555) 555-5555"') +
       ' />' +
-      (phoneMask ? '' : '<p class="field__hint">So wedding-day updates can reach you by text.</p>') +
+      (phoneMask
+        ? '<p class="field__hint">We have a phone on file - only fill this in to update it.</p>'
+        : '<p class="field__hint">So wedding-day updates can reach you by text.</p>') +
       '</div>';
 
+    var emailMask = emailHint || '';
     html += '<div class="field">' +
       '<label class="field__label" for="rsvpEmail">Email</label>' +
-      '<input id="rsvpEmail" type="email" autocomplete="email" placeholder="you@email.com" />' +
-      (hasEmail
+      '<input id="rsvpEmail" type="' + (emailMask ? 'text' : 'email') + '" autocomplete="email"' +
+        (emailMask
+          ? ' value="' + esc(emailMask) + '" data-masked="1" placeholder="you@email.com"'
+          : ' placeholder="you@email.com"') +
+      ' />' +
+      (emailMask
         ? '<p class="field__hint">We have an email on file - only fill this in to update it.</p>'
         : '<p class="field__hint">For reminders and details as the day gets closer.</p>') +
       '</div>';
@@ -267,23 +275,27 @@
     party._hasAddress = hasAddress;
 
     // attend toggle behavior + progressive contact reveal
-    var phoneEl = document.getElementById('rsvpPhone');
-    if (phoneEl && phoneEl.getAttribute('data-masked')) {
-      phoneEl.addEventListener('focus', function () {
-        if (phoneEl.getAttribute('data-masked')) {
-          phoneEl.value = '';
-          phoneEl.removeAttribute('data-masked');
-          phoneEl.classList.add('is-editing');
+    function wireMask(el, mask, restoreType) {
+      if (!el || !el.getAttribute('data-masked')) return;
+      el.addEventListener('focus', function () {
+        if (el.getAttribute('data-masked')) {
+          el.value = '';
+          el.removeAttribute('data-masked');
+          el.classList.add('is-editing');
+          if (restoreType) el.type = restoreType;
         }
       });
-      phoneEl.addEventListener('blur', function () {
-        if (!phoneEl.value.trim()) {
-          phoneEl.value = phoneMask;
-          phoneEl.setAttribute('data-masked', '1');
-          phoneEl.classList.remove('is-editing');
+      el.addEventListener('blur', function () {
+        if (!el.value.trim()) {
+          if (restoreType) el.type = 'text';
+          el.value = mask;
+          el.setAttribute('data-masked', '1');
+          el.classList.remove('is-editing');
         }
       });
     }
+    wireMask(document.getElementById('rsvpPhone'), phoneMask);
+    wireMask(document.getElementById('rsvpEmail'), emailMask, 'email');
 
     var contact = document.getElementById('rsvpContact');
     function maybeReveal() {
@@ -357,7 +369,8 @@
       return;
     }
 
-    var email = (document.getElementById('rsvpEmail') || {}).value || '';
+    var emailField = document.getElementById('rsvpEmail');
+    var email = (emailField && !emailField.getAttribute('data-masked')) ? emailField.value : '';
     var phoneField = document.getElementById('rsvpPhone');
     var phone = (phoneField && !phoneField.getAttribute('data-masked')) ? phoneField.value : '';
     var noteEl = document.getElementById('rsvpNote');
