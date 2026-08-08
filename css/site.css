@@ -2363,3 +2363,18 @@ body.joke-open{overflow:hidden}
 .hero--painted .wash-blob--gold{
   background:radial-gradient(closest-side,rgba(229,200,123,.24),rgba(229,200,123,0) 76%);
 }
+
+/* the story clip is a hard-edged rectangle (its paper edge was cropped
+   out when the bars were removed), so feather it into the page */
+.story__art--video video{
+  -webkit-mask-image:
+    linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%),
+    linear-gradient(180deg,transparent 0,#000 9%,#000 91%,transparent 100%);
+  -webkit-mask-composite:source-in;
+  mask-image:
+    linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%),
+    linear-gradient(180deg,transparent 0,#000 9%,#000 91%,transparent 100%);
+  mask-composite:intersect;
+  background:transparent;
+}
+.story__art--video{background:transparent}

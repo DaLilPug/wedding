@@ -178,12 +178,11 @@
         /* the anchored mode only applies where the art is pinned to the
            viewport (mobile hero); in normal flow use the same drift as
            the story painting so scrolling reads the same everywhere */
-        if (el.hasAttribute('data-plx-top') && !wideScreen()) {
-          /* mobile hero: the art is pinned to the bottom of a full-screen
-             section, so it drifts UP into the hero's own empty space as
-             you scroll. Moving it down slid it under the next section. */
+        if (el.hasAttribute('data-plx-top')) {
+          /* hero art: starts exactly where it sits and eases upward as the
+             page scrolls, at both sizes, so nothing jumps on first paint */
           var sc = window.scrollY || document.documentElement.scrollTop || 0;
-          y = -Math.min(sc * (speed * 1.6), 90);
+          y = -Math.min(sc * speed, wideScreen() ? 70 : 90);
         } else {
           var mid = r.top + r.height / 2 - vh / 2;
           y = -mid * speed;
