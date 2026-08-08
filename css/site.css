@@ -2276,3 +2276,12 @@ body.joke-open{overflow:hidden}
   display:block;width:100%;height:auto;aspect-ratio:1448/982;
   background:var(--ivory) center/cover no-repeat;
 }
+
+/* mobile hero: art flows after the content with a guaranteed 25px gap,
+   and still sits on the bottom edge when there is room to spare */
+@media (max-width:860px){
+  .hero--painted{display:flex;flex-direction:column;justify-content:space-between}
+  .hero--painted .hero__art{position:static;margin:25px 0 0;width:100%}
+  .hero--painted .hero__content{padding-bottom:0}
+  .hero--painted .hero__content .btn{margin-bottom:0}
+}
