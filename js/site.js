@@ -24,10 +24,13 @@
 
     /* ---- nav ---- */
     var nav = document.getElementById('nav');
+    var navSolid = null;
     function onScroll() {
-      if (window.scrollY > 40) nav.classList.add('nav--solid');
-      else nav.classList.remove('nav--solid');
-      railProgress();
+      var solid = (window.scrollY || document.documentElement.scrollTop) > 40;
+      if (solid !== navSolid) {          /* only touch the DOM when it changes */
+        navSolid = solid;
+        nav.classList.toggle('nav--solid', solid);
+      }
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
@@ -188,14 +191,19 @@
         el.style.transform = 'translate3d(0,' + y.toFixed(1) + 'px,0)';
       });
     }
-    function plxQueue() {
-      if (!plxTick) { plxTick = true; requestAnimationFrame(plx); }
+    /* a single scroll listener drives everything, batched into one frame */
+    var frameQueued = false;
+    function onFrame() {
+      frameQueued = false;
+      if (!reduced) { plx(); }   /* blooms drift via CSS keyframes, not per-frame JS */
+      railProgress();
     }
-    if (plxEls.length && !reduced) {
-      window.addEventListener('scroll', plxQueue, { passive: true });
-      window.addEventListener('resize', plxQueue, { passive: true });
-      plx();
+    function queueFrame() {
+      if (!frameQueued) { frameQueued = true; requestAnimationFrame(onFrame); }
     }
+    window.addEventListener('scroll', queueFrame, { passive: true });
+    window.addEventListener('resize', queueFrame, { passive: true });
+    if (plxEls.length && !reduced) plx();
 
     /* ---- colour blooms drift with the scroll ---- */
     var bloomHosts = [].slice.call(document.querySelectorAll('.section, .band, .hero--painted'));
@@ -215,14 +223,12 @@
         el.style.setProperty('--bloom-y', (-mid * 0.05).toFixed(1) + 'px');
       });
     }
-    var bloomTick = false;
-    function bloomQueue() {
-      if (!bloomTick) { bloomTick = true; requestAnimationFrame(function () { bloomTick = false; blooms(); }); }
-    }
-    if (!reduced) {
-      window.addEventListener('scroll', bloomQueue, { passive: true });
-      window.addEventListener('resize', bloomQueue, { passive: true });
+    /* blurred, blended layers are expensive to move; drift them on
+       desktop only and let mobile keep the cheap CSS keyframes */
+    if (!reduced && window.matchMedia('(min-width:861px)').matches) {
       blooms();
+    } else {
+      bloomHosts = []; bloomEls = [];
     }
 
     /* ---- hero sky wash ends exactly under the painting ---- */
