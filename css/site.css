@@ -2384,3 +2384,6 @@ body.joke-open{overflow:hidden}
 @media (max-width:860px){
   .hero--painted{min-height:var(--hero-h,100svh)}
 }
+
+/* the painting flows straight into the save-the-date band */
+.band{border-top:0}
