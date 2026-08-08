@@ -21,5 +21,11 @@ window.WEDDING_CONFIG = {
   mealOptions: [],   // e.g. ["Beef", "Chicken", "Vegetarian"]
 
   // Show a free-text "note for the couple" box on the RSVP form.
-  askNote: true
+  askNote: true,
+  /* House Fund payment handles - fill these in and the buttons appear */
+  registry: {
+    venmo: "",     /* e.g. "Austin-Sabella" */
+    paypal: "",    /* e.g. "austinsabella" */
+    zelle: ""      /* e.g. "224-622-5396" */
+  }
 };

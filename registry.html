@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The House Fund | Austin &amp; Ana</title>
+  <meta name="description" content="Help Austin and Ana buy their first house, and vote on which state it should be in." />
+  <meta property="og:title" content="The House Fund - Austin &amp; Ana" />
+  <meta property="og:description" content="Skip the gravy boat. Help us buy a house, and pick the state we land in." />
+  <meta property="og:type" content="website" />
+
+  <link rel="icon" type="image/png" href="assets/favicon.png?v=129" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/site.css?v=129" />
+
+  <script defer src="js/config.js?v=129"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="js/site.js?v=129"></script>
+  <script defer src="js/registry.js?v=129"></script>
+</head>
+<body class="page-registry">
+
+  <div class="sheet">
+
+  <!-- ============ NAV ============ -->
+  <header class="nav nav--solid" id="nav">
+    <div class="nav__inner container">
+      <a href="index.html#top" class="nav__brand" aria-label="Austin and Ana">A<sup>2</sup></a>
+      <a href="#give" class="nav__cta nav__cta--bar">Give</a>
+      <button class="nav__toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav__links" id="navLinks">
+        <a href="index.html#story">Our Story</a>
+        <a href="index.html#day">The Day</a>
+        <a href="index.html#venue">Venue</a>
+        <a href="index.html#gallery">Gallery</a>
+        <a href="registry.html">Registry</a>
+        <a href="index.html#faq">FAQ</a>
+        <a href="index.html#rsvp" class="nav__cta">RSVP</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ REGISTRY ============ -->
+  <section class="section reg">
+    <div class="container container--narrow">
+      <header class="section__head" data-reveal>
+        <p class="section__label">Registry</p>
+        <h2 class="section__title">The House Fund</h2>
+        <span class="ornament ornament--set" aria-hidden="true"><i></i><img class="ornament__pug" src="assets/photos/pug-icon.png?v=129" alt="" /><i></i></span>
+      </header>
+
+      <p class="reg__lede" data-reveal>We have a toaster. What we do not have is a house. We're saving for a down payment on our first one, and if you'd like to give something, that's where it goes.</p>
+
+      <p class="reg__lede reg__lede--twist" data-reveal>Here's the fun part: we haven't decided where that house should be. Every gift is also a vote. Back a state and you move it up the board.</p>
+
+      <!-- standings -->
+      <div class="reg__board" data-reveal>
+        <div class="reg__board-head">
+          <h3 class="reg__board-title">The race</h3>
+          <p class="reg__board-sub" id="regUpdated">Live standings</p>
+        </div>
+        <ol class="reg__states" id="regStates">
+          <li class="reg__state reg__state--skeleton"><span class="reg__state-name">Loading the board...</span></li>
+        </ol>
+        <p class="reg__fineprint">Percentages only. Nobody sees who gave what, or how much.</p>
+      </div>
+
+      <!-- contribute -->
+      <div class="reg__give" id="give" data-reveal>
+        <h3 class="reg__give-title">Cast your vote</h3>
+
+        <div class="field">
+          <label class="field__label">Which state should we land in?</label>
+          <div class="reg__picks" id="regPicks">
+            <button type="button" class="reg__pick" data-state="Illinois"><b>Illinois</b><span>Stay put</span></button>
+            <button type="button" class="reg__pick" data-state="Texas"><b>Texas</b><span>Warm winters</span></button>
+            <button type="button" class="reg__pick" data-state="Colorado"><b>Colorado</b><span>Mountains</span></button>
+            <button type="button" class="reg__pick" data-state="Iowa"><b>Iowa</b><span>Quiet life</span></button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="regAmount">How much are you putting behind it?</label>
+          <div class="reg__amounts" id="regAmounts">
+            <button type="button" class="reg__amt" data-amt="50">$50</button>
+            <button type="button" class="reg__amt" data-amt="100">$100</button>
+            <button type="button" class="reg__amt" data-amt="250">$250</button>
+            <button type="button" class="reg__amt" data-amt="500">$500</button>
+          </div>
+          <input id="regAmount" type="number" min="1" max="100000" step="1" inputmode="decimal" placeholder="Or enter an amount" />
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="regName">Your name <span style="opacity:.6">(optional)</span></label>
+          <input id="regName" type="text" autocomplete="name" placeholder="So we know who to thank" />
+        </div>
+
+        <p class="rsvp__msg" id="regMsg" role="status"></p>
+
+        <div class="reg__actions">
+          <button class="btn btn--primary" id="regSubmit">Lock in my vote</button>
+        </div>
+
+        <div class="reg__pay" id="regPay" hidden>
+          <p class="reg__pay-title">Last step: send the gift</p>
+          <p class="reg__pay-sub" id="regPaySub">Your vote is on the board. Send it whichever way is easiest.</p>
+          <div class="reg__pay-links" id="regPayLinks"></div>
+          <p class="reg__fineprint">No rush, and no pressure. The board already counted you.</p>
+        </div>
+      </div>
+
+      <p class="reg__footnote" data-reveal>Prefer a physical gift? We will never turn down a good bottle of wine. But the house fund is the dream.</p>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <span class="ornament ornament--set ornament--footer" aria-hidden="true"><i></i><img class="ornament__pug" src="assets/photos/pug-icon.png?v=129" alt="" /><i></i></span>
+    <p class="footer__names">Austin <span>&amp;</span> Ana</p>
+    <p class="footer__date">April 23, 2027 &#183; Promontory Point, Chicago</p>
+    <p class="footer__thanks">We can't wait to celebrate with you.</p>
+  </footer>
+
+  </div>
+
+</body>
+</html>

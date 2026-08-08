@@ -1939,3 +1939,80 @@ body.joke-open{overflow:hidden}
 @media (min-width:861px){
   .venue__map-fallback{min-height:440px}
 }
+
+/* ==========================================================
+   REGISTRY: the House Fund board
+   ========================================================== */
+.page-registry .sheet{padding-top:0}
+.reg{background:
+  radial-gradient(66% 40% at 88% 8%,rgba(229,200,123,.2),transparent 70%),
+  radial-gradient(62% 44% at 8% 92%,rgba(220,228,240,.5),transparent 72%),var(--cream)}
+.page-registry .section{padding-top:calc(var(--nav-h) + 34px)}
+.reg__lede{font-size:16.5px;line-height:1.75;color:var(--ink);margin:0 0 18px;text-align:center}
+.reg__lede--twist{color:var(--ink-soft)}
+
+.reg__board{
+  margin:34px 0 8px;padding:22px 20px 18px;background:#fff;border-radius:8px;
+  border:1px solid rgba(160,136,80,.16);box-shadow:0 14px 34px rgba(57,68,94,.09);
+  transition:transform .5s var(--ease),box-shadow .5s var(--ease);
+}
+.reg__board.is-bumped{transform:translateY(-3px);box-shadow:0 20px 44px rgba(57,68,94,.14)}
+.reg__board-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:16px}
+.reg__board-title{font-family:var(--display);font-size:30px;margin:0;color:var(--ink)}
+.reg__board-sub{margin:0;font-family:var(--sans);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep)}
+.reg__states{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.reg__state{display:grid;grid-template-columns:20px 92px 1fr 54px;align-items:center;gap:10px}
+.reg__state-rank{font-family:var(--sans);font-size:11px;color:var(--ink-soft);text-align:center}
+.reg__state-name{font-family:var(--display);font-size:21px;color:var(--ink);line-height:1}
+.reg__state-bar{height:9px;border-radius:999px;background:rgba(57,68,94,.08);overflow:hidden}
+.reg__state-bar i{
+  display:block;height:100%;border-radius:999px;
+  background:linear-gradient(90deg,var(--sage),var(--sage-deep));
+  transition:width .8s var(--ease);
+}
+.reg__state--lead .reg__state-bar i{background:linear-gradient(90deg,var(--gold-bright),var(--gold))}
+.reg__state--lead .reg__state-name{color:var(--gold-deep)}
+.reg__state--you .reg__state-name::after{content:" (you)";font-family:var(--sans);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-deep)}
+.reg__state-pct{font-family:var(--sans);font-size:12.5px;color:var(--ink);text-align:right;font-variant-numeric:tabular-nums}
+.reg__state--skeleton{opacity:.5;grid-template-columns:1fr}
+.reg__fineprint{margin:16px 0 0;font-family:var(--sans);font-size:11px;letter-spacing:.05em;color:var(--ink-soft);text-align:center}
+
+.reg__give{margin-top:38px;padding:26px 20px 24px;background:var(--ivory);border-radius:8px;border:1px solid var(--line)}
+.reg__give-title{font-family:var(--display);font-size:30px;margin:0 0 18px;color:var(--ink);text-align:center}
+.reg__picks{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.reg__pick{
+  padding:14px 10px;border:1px solid var(--line);border-radius:6px;background:#fff;cursor:pointer;
+  display:flex;flex-direction:column;gap:3px;align-items:center;transition:border-color .25s,background .25s,transform .25s;
+}
+.reg__pick b{font-family:var(--display);font-size:22px;font-weight:400;color:var(--ink);line-height:1}
+.reg__pick span{font-family:var(--sans);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.reg__pick:hover{border-color:var(--gold)}
+.reg__pick.is-on{border-color:var(--gold);background:rgba(201,176,117,.14);transform:translateY(-2px)}
+.reg__amounts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
+.reg__amt{
+  padding:11px 4px;border:1px solid var(--line);border-radius:999px;background:#fff;cursor:pointer;
+  font-family:var(--sans);font-size:13px;color:var(--ink);transition:border-color .25s,background .25s;
+}
+.reg__amt:hover{border-color:var(--gold)}
+.reg__amt.is-on{border-color:var(--gold);background:rgba(201,176,117,.16);color:var(--gold-deep)}
+.reg__actions{display:flex;justify-content:center;margin-top:6px}
+.reg__pay{margin-top:24px;padding-top:22px;border-top:1px solid var(--line);text-align:center}
+.reg__pay[hidden]{display:none}
+.reg__pay-title{font-family:var(--display);font-size:26px;margin:0 0 6px;color:var(--ink)}
+.reg__pay-sub{margin:0 0 16px;color:var(--ink-soft);font-size:15px}
+.reg__pay-links{display:flex;flex-direction:column;align-items:center;gap:10px}
+.reg__zelle{margin:0;font-size:14.5px;color:var(--ink)}
+.reg__footnote{margin:30px 0 0;text-align:center;font-size:14.5px;color:var(--ink-soft)}
+
+@media (min-width:861px){
+  .reg__board{padding:28px 28px 24px}
+  .reg__state{grid-template-columns:24px 120px 1fr 62px;gap:14px}
+  .reg__state-name{font-size:25px}
+  .reg__give{padding:32px 30px 28px}
+  .reg__picks{grid-template-columns:repeat(4,1fr)}
+}
+
+/* prefilled phone reads as already-on-file until you click in */
+#rsvpPhone[data-masked]{color:var(--ink-soft);letter-spacing:.08em}
+#rsvpPhone.is-editing{color:var(--ink)}
+.rsvp__done-next{margin:18px 0 0;color:var(--ink-soft);font-size:15px}

@@ -124,6 +124,10 @@
     show(stepRespond);
   }
 
+  function phoneHintPresent(party) {
+    return (party.members || []).some(function (m) { return !!m.phone_hint; });
+  }
+
   /* ---- Step 2: respond ---- */
   var ROLE_LINES = {
     'default': "You're not just a guest - you're on the crew running this thing.",
@@ -179,12 +183,15 @@
     html += '<div class="rsvp__contact" id="rsvpContact" hidden>' +
       '<p class="rsvp__contact-head">One last thing - where do we reach you?</p>';
 
+    var phoneMask = phoneHint ? '(•••) •••-' + phoneHint : '';
     html += '<div class="field">' +
       '<label class="field__label" for="rsvpPhone">Mobile number</label>' +
-      '<input id="rsvpPhone" type="tel" autocomplete="tel" placeholder="(555) 555-5555" />' +
-      (phoneHint
-        ? '<p class="field__hint">We have a number ending in ' + esc(phoneHint) + ' - only fill this in if it changed.</p>'
-        : '<p class="field__hint">So wedding-day updates can reach you by text.</p>') +
+      '<input id="rsvpPhone" type="tel" autocomplete="tel"' +
+        (phoneMask
+          ? ' value="' + esc(phoneMask) + '" data-masked="1" placeholder="(555) 555-5555"'
+          : ' placeholder="(555) 555-5555"') +
+      ' />' +
+      (phoneMask ? '' : '<p class="field__hint">So wedding-day updates can reach you by text.</p>') +
       '</div>';
 
     html += '<div class="field">' +
@@ -193,14 +200,6 @@
       (hasEmail
         ? '<p class="field__hint">We have an email on file - only fill this in to update it.</p>'
         : '<p class="field__hint">For reminders and details as the day gets closer.</p>') +
-      '</div>';
-
-    html += '<div class="field">' +
-      '<label class="field__label" for="rsvpAddress">Mailing address</label>' +
-      '<input id="rsvpAddress" type="text" autocomplete="street-address" placeholder="Street, city, state, zip" />' +
-      (hasAddress
-        ? '<p class="field__hint">We have an address on file - only fill this in if you moved.</p>'
-        : '<p class="field__hint">For the formal invitation. No junk mail, promise.</p>') +
       '</div>';
 
     if (cfg.askNote) {
@@ -221,6 +220,24 @@
     party._hasAddress = hasAddress;
 
     // attend toggle behavior + progressive contact reveal
+    var phoneEl = document.getElementById('rsvpPhone');
+    if (phoneEl && phoneEl.getAttribute('data-masked')) {
+      phoneEl.addEventListener('focus', function () {
+        if (phoneEl.getAttribute('data-masked')) {
+          phoneEl.value = '';
+          phoneEl.removeAttribute('data-masked');
+          phoneEl.classList.add('is-editing');
+        }
+      });
+      phoneEl.addEventListener('blur', function () {
+        if (!phoneEl.value.trim()) {
+          phoneEl.value = phoneMask;
+          phoneEl.setAttribute('data-masked', '1');
+          phoneEl.classList.remove('is-editing');
+        }
+      });
+    }
+
     var contact = document.getElementById('rsvpContact');
     function maybeReveal() {
       var rows = stepRespond.querySelectorAll('.guest-row');
@@ -282,8 +299,8 @@
     }
 
     var email = (document.getElementById('rsvpEmail') || {}).value || '';
-    var phone = (document.getElementById('rsvpPhone') || {}).value || '';
-    var address = (document.getElementById('rsvpAddress') || {}).value || '';
+    var phoneField = document.getElementById('rsvpPhone');
+    var phone = (phoneField && !phoneField.getAttribute('data-masked')) ? phoneField.value : '';
     var noteEl = document.getElementById('rsvpNote');
     var note = noteEl ? noteEl.value : '';
 
@@ -298,8 +315,8 @@
       msg.classList.add('rsvp__msg--err');
       return;
     }
-    if (anyYes && !party._hasAddress && address.trim().length < 8) {
-      msg.textContent = 'Please add your mailing address so the formal invitation can find you.';
+    if (anyYes && !phoneHintPresent(party) && phone.replace(/\D/g, '').length < 10) {
+      msg.textContent = 'Please add a mobile number so wedding-day updates can reach you.';
       msg.classList.add('rsvp__msg--err');
       return;
     }
@@ -307,7 +324,7 @@
     btn.disabled = true;
     msg.textContent = 'Sending...';
     try {
-      await submitRsvp(party.party_key, responses, email.trim(), phone.trim(), note.trim(), address.trim());
+      await submitRsvp(party.party_key, responses, email.trim(), phone.trim(), note.trim(), '');
       renderDone(party, responses);
     } catch (e) {
       msg.textContent = 'Something went wrong sending your RSVP. Please try again.';
@@ -329,12 +346,22 @@
     } else {
       msg = "Thank you for letting us know. We'll miss you, and we're grateful you're in our lives.";
     }
+    var toRegistry = coming.length > 0;
     stepDone.innerHTML = '<div class="rsvp__done"><h3>Thank you</h3><p>' + msg + '</p>' +
+      (toRegistry
+        ? '<p class="rsvp__done-next">One more thing: our registry is a house fund, and your gift also votes on which state we end up in. Taking you there now.</p>' +
+          '<p style="margin-top:18px"><a class="btn btn--primary" href="registry.html">See the house fund</a></p>'
+        : '') +
       '<p style="margin-top:22px"><button class="rsvp__back" id="rsvpAgainBtn">Submit another RSVP</button></p></div>';
     document.getElementById('rsvpAgainBtn').addEventListener('click', function () {
       nameInput.value = ''; searchMsg.textContent = ''; searchMsg.className = 'rsvp__msg';
       show(stepSearch);
     });
     show(stepDone);
+    if (toRegistry) {
+      setTimeout(function () {
+        if (!stepDone.hidden) window.location.href = 'registry.html?from=rsvp';
+      }, 3200);
+    }
   }
 })();
