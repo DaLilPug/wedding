@@ -2076,3 +2076,12 @@ body.joke-open{overflow:hidden}
 .reg__edit:hover{color:var(--gold-deep)}
 .reg__edit[hidden]{display:none}
 #regSubmit.is-locked{pointer-events:none}
+
+/* dollar sign inside the amount field */
+.reg__amount-wrap{position:relative}
+.reg__amount-wrap[hidden]{display:none}
+.reg__amount-sign{
+  position:absolute;left:15px;top:50%;transform:translateY(-50%);
+  font-family:var(--sans);font-size:16px;color:var(--ink-soft);pointer-events:none;
+}
+.reg__amount-wrap #regAmount{padding-left:32px}

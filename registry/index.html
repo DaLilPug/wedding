@@ -9,18 +9,18 @@
   <meta property="og:description" content="Skip the gravy boat. Help us buy a house, and pick the state we land in." />
   <meta property="og:type" content="website" />
 
-  <link rel="icon" type="image/png" href="../assets/favicon.png?v=131" />
+  <link rel="icon" type="image/png" href="../assets/favicon.png?v=132" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="../css/site.css?v=131" />
+  <link rel="stylesheet" href="../css/site.css?v=132" />
 
-  <script defer src="../js/config.js?v=131"></script>
+  <script defer src="../js/config.js?v=132"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script defer src="../js/site.js?v=131"></script>
-  <script defer src="../js/registry.js?v=131"></script>
+  <script defer src="../js/site.js?v=132"></script>
+  <script defer src="../js/registry.js?v=132"></script>
 </head>
 <body class="page-registry">
 
@@ -52,7 +52,7 @@
       <header class="section__head" data-reveal>
         <p class="section__label">Registry</p>
         <h2 class="section__title">The House Fund</h2>
-        <span class="ornament ornament--set" aria-hidden="true"><i></i><img class="ornament__pug" src="../assets/photos/pug-icon.png?v=131" alt="" /><i></i></span>
+        <span class="ornament ornament--set" aria-hidden="true"><i></i><img class="ornament__pug" src="../assets/photos/pug-icon.png?v=132" alt="" /><i></i></span>
       </header>
 
       <p class="reg__lede" data-reveal>We have a toaster. What we do not have is a house. We're saving for a down payment on our first one, and if you'd like to give something, that's where it goes.</p>
@@ -96,7 +96,10 @@
             <button type="button" class="reg__amt" data-amt="500">$500</button>
             <button type="button" class="reg__amt" data-amt="">Other</button>
           </div>
-          <input id="regAmount" type="number" min="1" max="100000" step="1" inputmode="decimal" placeholder="Amount" hidden />
+          <div class="reg__amount-wrap" id="regAmountWrap" hidden>
+            <span class="reg__amount-sign" aria-hidden="true">$</span>
+            <input id="regAmount" type="number" min="1" max="100000" step="1" inputmode="decimal" placeholder="Amount" />
+          </div>
         </div>
 
         <div class="field">
@@ -131,7 +134,7 @@
 
   <!-- ============ FOOTER ============ -->
   <footer class="footer">
-    <span class="ornament ornament--set ornament--footer" aria-hidden="true"><i></i><img class="ornament__pug" src="../assets/photos/pug-icon.png?v=131" alt="" /><i></i></span>
+    <span class="ornament ornament--set ornament--footer" aria-hidden="true"><i></i><img class="ornament__pug" src="../assets/photos/pug-icon.png?v=132" alt="" /><i></i></span>
     <p class="footer__names">Austin <span>&amp;</span> Ana</p>
     <p class="footer__date">April 23, 2027 &#183; Promontory Point, Chicago</p>
     <p class="footer__thanks">We can't wait to celebrate with you.</p>

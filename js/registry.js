@@ -41,6 +41,7 @@
   var selectEl = document.getElementById('regStateSelect');
   var amountsEl = document.getElementById('regAmounts');
   var amountInput = document.getElementById('regAmount');
+  var amountWrap = document.getElementById('regAmountWrap');
   var nameInput = document.getElementById('regName');
   var submitBtn = document.getElementById('regSubmit');
   var msgEl = document.getElementById('regMsg');
@@ -118,7 +119,7 @@
       var preset = b.getAttribute('data-amt');
       amountsEl.querySelectorAll('.reg__amt').forEach(function (x) { x.classList.remove('is-on'); });
       b.classList.add('is-on');
-      amountInput.hidden = false;
+      if (amountWrap) amountWrap.hidden = false;
       amountInput.value = preset || '';
       if (!preset) amountInput.focus();
     });
