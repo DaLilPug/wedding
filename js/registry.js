@@ -156,6 +156,17 @@
     });
   });
 
+  /* scroll so the target clears the fixed nav */
+  function scrollClear(el) {
+    if (!el) return;
+    requestAnimationFrame(function () {
+      var navH = document.getElementById('nav');
+      navH = navH ? navH.getBoundingClientRect().height : 60;
+      var y = el.getBoundingClientRect().top + (window.scrollY || document.documentElement.scrollTop) - navH - 18;
+      window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+    });
+  }
+
   /* ---- locked / editing state ---- */
   function lockIn() {
     giveEl.classList.add('is-locked');
@@ -185,7 +196,7 @@
       unlock();
       msgEl.className = 'rsvp__msg';
       msgEl.textContent = 'Vote withdrawn. Change it and lock it back in.';
-      giveEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      scrollClear(giveEl);
     } catch (e) {
       console.error(e);
       msgEl.textContent = 'Could not undo that vote. Please try again.';
@@ -235,7 +246,7 @@
       payLinks.innerHTML = '';
       methodsEl.querySelectorAll('.reg__method').forEach(function (x) { x.classList.remove('is-on'); });
       payEl.hidden = false;
-      payEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      scrollClear(payEl);
       document.querySelector('.reg__board').classList.add('is-bumped');
     } catch (e) {
       console.error(e);
