@@ -2268,3 +2268,11 @@ body.joke-open{overflow:hidden}
   .hero--painted{overflow:hidden}
   .hero--painted .hero__art img{will-change:transform}
 }
+
+/* story video: show its poster immediately and hold the space so the
+   section never appears blank while the clip spins up */
+.story__art--video{background:var(--ivory)}
+.story__art--video video{
+  display:block;width:100%;height:auto;aspect-ratio:1448/982;
+  background:var(--ivory) center/cover no-repeat;
+}
