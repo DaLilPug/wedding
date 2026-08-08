@@ -2248,3 +2248,17 @@ body.joke-open{overflow:hidden}
 
 /* save-the-date band: matching rule above and below */
 .band{border-top:1px solid var(--line)}
+
+/* the following sections sit above the hero, so the drifting painting
+   slides under the save-the-date band instead of over it */
+.hero--painted{position:relative;z-index:0}
+.band{position:relative;z-index:2;background-color:var(--cream)}
+.section{position:relative;z-index:1}
+
+/* mobile hero: the new painting dissolves on its own, so drop the old
+   top fade, and give the button room to breathe above it */
+@media (max-width:860px){
+  .hero--painted .hero__art img{-webkit-mask-image:none;mask-image:none}
+  .hero--painted .hero__content{padding-bottom:26px}
+  .hero--painted .hero__content .btn{margin-bottom:8px}
+}
