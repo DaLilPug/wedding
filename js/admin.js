@@ -231,16 +231,44 @@
       '</select>';
   }
 
+  var statusFilter = null;   // 'yes' | 'no' | 'await' | null
+
+  /* a party counts for a status if ANY member has it, so split parties
+     show up under both Attending and Declined */
+  function partyHas(p, status) {
+    return p.members.some(function (m) {
+      if (status === 'yes') return m.attending === true;
+      if (status === 'no') return m.attending === false;
+      return m.attending === null || m.attending === undefined;
+    });
+  }
+
   function renderMetrics() {
     var total = guests.length;
     var yes = guests.filter(function (g) { return g.attending === true; }).length;
     var no = guests.filter(function (g) { return g.attending === false; }).length;
     var pending = total - yes - no;
-    var parties_n = parties().length;
-    var cards = [['Guests', total], ['Parties', parties_n], ['Attending', yes], ['Declined', no], ['Awaiting', pending]];
+    var ps = parties();
+    var cards = [
+      ['Guests', total, null], ['Parties', ps.length, null],
+      ['Attending', yes, 'yes'], ['Declined', no, 'no'], ['Awaiting', pending, 'await']
+    ];
     document.getElementById('admMetrics').innerHTML = cards.map(function (c) {
-      return '<div class="metric"><span>' + c[1] + '</span><label>' + c[0] + '</label></div>';
+      var f = c[2];
+      var cls = 'metric' + (f ? ' metric--filter' : ' metric--clear') +
+        (f && statusFilter === f ? ' metric--on' : '');
+      var sub = f ? '<em class="metric__hint">' +
+        ps.filter(function (p) { return partyHas(p, f); }).length + ' parties</em>' : '';
+      return '<button type="button" class="' + cls + '" data-filter="' + (f || '') + '">' +
+        '<span>' + c[1] + '</span><label>' + c[0] + '</label>' + sub + '</button>';
     }).join('');
+    document.querySelectorAll('#admMetrics .metric').forEach(function (b) {
+      b.onclick = function () {
+        var f = b.getAttribute('data-filter') || null;
+        statusFilter = (f && statusFilter === f) ? null : f;
+        render();
+      };
+    });
   }
 
   /* ---- rendering the editable list ---- */
@@ -272,6 +300,7 @@
     renderMetrics();
     var q = (document.getElementById('admSearch').value || '').trim().toLowerCase();
     var ps = parties().filter(function (p) {
+      if (statusFilter && !partyHas(p, statusFilter)) return false;
       if (!q) return true;
       return p.key.toLowerCase().indexOf(q) !== -1 ||
         p.members.some(function (m) { return (m.full_name || '').toLowerCase().indexOf(q) !== -1; });
@@ -283,7 +312,7 @@
         '</div>';
     }).join('');
     document.getElementById('admList').innerHTML = html ||
-      '<p class="admin-cell-muted" style="padding:18px">No guests match your search.</p>';
+      '<p class="admin-cell-muted" style="padding:18px">No parties match this filter.</p>';
     wire();
   }
 
