@@ -2105,3 +2105,29 @@ body.joke-open{overflow:hidden}
 
 /* native anchor jumps clear the fixed nav too */
 .section[id],section[id],#rsvp,#story,#day,#venue,#gallery,#faq{scroll-margin-top:calc(var(--nav-h) + 14px)}
+
+/* ==========================================================
+   HERO, DESKTOP: same approach as Our Story - text, then the
+   painting at its natural size, full sheet width. No stretched
+   background wash, no viewport-height crop, no masks.
+   ========================================================== */
+@media (min-width:861px){
+  .hero--painted{
+    min-height:0;height:auto;overflow:visible;
+    background:var(--cream);
+    padding:0 0 0;
+  }
+  .hero--painted .hero__wash{display:none}
+  .hero--painted .hero__content{
+    position:relative;margin:calc(var(--nav-h) + 30px) 0 0;padding:0 22px;
+  }
+  .hero--painted .hero__content::before{content:none}   /* glow pools not needed on cream */
+  .hero--painted .hero__art{
+    position:static;width:100%;margin:26px 0 0;
+  }
+  .hero--painted .hero__art img{
+    width:100%;height:auto;display:block;
+    object-fit:unset;object-position:center;
+    -webkit-mask-image:none;mask-image:none;
+  }
+}
