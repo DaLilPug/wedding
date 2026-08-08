@@ -73,6 +73,56 @@
       });
     }
 
+    /* ---- in-page anchors: land below the fixed nav, after layout settles ---- */
+    function navHeight() {
+      var n = document.getElementById('nav');
+      return n ? n.getBoundingClientRect().height : 60;
+    }
+    function scrollToTarget(el, smooth) {
+      if (!el) return;
+      var wanted = function () {
+        return Math.max(0, el.getBoundingClientRect().top +
+          (window.scrollY || document.documentElement.scrollTop) - navHeight() - 14);
+      };
+      var go = function (behavior) {
+        window.scrollTo({ top: wanted(), behavior: behavior });
+      };
+      requestAnimationFrame(function () {
+        go(smooth === false ? 'auto' : 'smooth');
+        /* lazy images and fonts can grow the page mid-scroll, which used to
+           leave the target short - re-aim until it settles */
+        var tries = 0;
+        var fix = setInterval(function () {
+          tries++;
+          var y = wanted();
+          var now = window.scrollY || document.documentElement.scrollTop;
+          if (Math.abs(y - now) > 6) go(tries > 4 ? 'auto' : 'smooth');
+          if (tries >= 10) clearInterval(fix);
+        }, 220);
+      });
+    }
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+      if (!a) return;
+      var id = a.getAttribute('href').slice(1);
+      if (!id) return;
+      var el = document.getElementById(id);
+      if (!el) return;
+      e.preventDefault();
+      document.body.classList.remove('nav-open');
+      if (toggle) toggle.setAttribute('aria-expanded', 'false');
+      scrollToTarget(el);
+      if (history.replaceState) history.replaceState(null, '', '#' + id);
+    });
+    /* arriving with a hash (or from another page) lands correctly too */
+    if (location.hash.length > 1) {
+      var deep = document.getElementById(location.hash.slice(1));
+      if (deep) {
+        scrollToTarget(deep, false);
+        window.addEventListener('load', function () { setTimeout(function () { scrollToTarget(deep, false); }, 120); });
+      }
+    }
+
     /* ---- countdown ---- */
     var target = cfg.weddingDateISO ? new Date(cfg.weddingDateISO).getTime() : null;
     var elD = document.getElementById('cdDays'), elH = document.getElementById('cdHours'),

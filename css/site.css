@@ -2102,3 +2102,6 @@ body.joke-open{overflow:hidden}
 .rsvp__already-note{margin:18px 0 0;color:var(--ink-soft);font-size:15px;text-align:center}
 #rsvpEmail[data-masked]{color:var(--ink-soft);letter-spacing:.02em}
 #rsvpEmail.is-editing{color:var(--ink)}
+
+/* native anchor jumps clear the fixed nav too */
+.section[id],section[id],#rsvp,#story,#day,#venue,#gallery,#faq{scroll-margin-top:calc(var(--nav-h) + 14px)}
