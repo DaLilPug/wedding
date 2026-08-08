@@ -112,16 +112,29 @@
       };
       requestAnimationFrame(function () {
         go(smooth === false ? 'auto' : 'smooth');
-        /* lazy images and fonts can grow the page mid-scroll, which used to
-           leave the target short - re-aim until it settles */
-        var tries = 0;
+        /* Lazy images can grow the page mid-scroll and leave the target
+           short, so re-aim briefly - but hand control straight back the
+           moment the reader touches the screen, otherwise the correction
+           fights their swipe and the page appears to jump. */
+        var tries = 0, released = false;
+        function release() {
+          released = true;
+          clearInterval(fix);
+          ['touchstart', 'wheel', 'keydown', 'pointerdown'].forEach(function (evt) {
+            window.removeEventListener(evt, release);
+          });
+        }
+        ['touchstart', 'wheel', 'keydown', 'pointerdown'].forEach(function (evt) {
+          window.addEventListener(evt, release, { passive: true, once: true });
+        });
         var fix = setInterval(function () {
+          if (released) { clearInterval(fix); return; }
           tries++;
           var y = wanted();
           var now = window.scrollY || document.documentElement.scrollTop;
-          if (Math.abs(y - now) > 6) go(tries > 4 ? 'auto' : 'smooth');
-          if (tries >= 10) clearInterval(fix);
-        }, 220);
+          if (Math.abs(y - now) > 6) go('auto');
+          if (tries >= 5) { release(); }
+        }, 260);
       });
     }
     document.addEventListener('click', function (e) {

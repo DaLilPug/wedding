@@ -2387,3 +2387,7 @@ body.joke-open{overflow:hidden}
 
 /* the painting flows straight into the save-the-date band */
 .band{border-top:0}
+
+/* JS drives the smooth anchor scrolling; leaving CSS smooth-scroll on as
+   well meant two animations competing for the scroll position on touch */
+html{scroll-behavior:auto}
