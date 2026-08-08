@@ -24,8 +24,8 @@ window.WEDDING_CONFIG = {
   askNote: true,
   /* House Fund payment handles - fill these in and the buttons appear */
   registry: {
-    venmo: "",     /* e.g. "Austin-Sabella" */
-    paypal: "",    /* e.g. "austinsabella" */
-    zelle: ""      /* e.g. "224-622-5396" */
+    venmo: "Austin-Sabella",
+    paypal: "austinsabella@gmail.com",
+    zelle: "austinsabella@gmail.com"
   }
 };

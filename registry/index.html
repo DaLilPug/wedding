@@ -9,18 +9,18 @@
   <meta property="og:description" content="Skip the gravy boat. Help us buy a house, and pick the state we land in." />
   <meta property="og:type" content="website" />
 
-  <link rel="icon" type="image/png" href="assets/favicon.png?v=129" />
+  <link rel="icon" type="image/png" href="../assets/favicon.png?v=130" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/site.css?v=129" />
+  <link rel="stylesheet" href="../css/site.css?v=130" />
 
-  <script defer src="js/config.js?v=129"></script>
+  <script defer src="../js/config.js?v=130"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script defer src="js/site.js?v=129"></script>
-  <script defer src="js/registry.js?v=129"></script>
+  <script defer src="../js/site.js?v=130"></script>
+  <script defer src="../js/registry.js?v=130"></script>
 </head>
 <body class="page-registry">
 
@@ -29,19 +29,19 @@
   <!-- ============ NAV ============ -->
   <header class="nav nav--solid" id="nav">
     <div class="nav__inner container">
-      <a href="index.html#top" class="nav__brand" aria-label="Austin and Ana">A<sup>2</sup></a>
+      <a href="../index.html#top" class="nav__brand" aria-label="Austin and Ana">A<sup>2</sup></a>
       <a href="#give" class="nav__cta nav__cta--bar">Give</a>
       <button class="nav__toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
       <nav class="nav__links" id="navLinks">
-        <a href="index.html#story">Our Story</a>
-        <a href="index.html#day">The Day</a>
-        <a href="index.html#venue">Venue</a>
-        <a href="index.html#gallery">Gallery</a>
-        <a href="registry.html">Registry</a>
-        <a href="index.html#faq">FAQ</a>
-        <a href="index.html#rsvp" class="nav__cta">RSVP</a>
+        <a href="../index.html#story">Our Story</a>
+        <a href="../index.html#day">The Day</a>
+        <a href="../index.html#venue">Venue</a>
+        <a href="../index.html#gallery">Gallery</a>
+        <a href="/registry/">Registry</a>
+        <a href="../index.html#faq">FAQ</a>
+        <a href="../index.html#rsvp" class="nav__cta">RSVP</a>
       </nav>
     </div>
   </header>
@@ -52,7 +52,7 @@
       <header class="section__head" data-reveal>
         <p class="section__label">Registry</p>
         <h2 class="section__title">The House Fund</h2>
-        <span class="ornament ornament--set" aria-hidden="true"><i></i><img class="ornament__pug" src="assets/photos/pug-icon.png?v=129" alt="" /><i></i></span>
+        <span class="ornament ornament--set" aria-hidden="true"><i></i><img class="ornament__pug" src="../assets/photos/pug-icon.png?v=130" alt="" /><i></i></span>
       </header>
 
       <p class="reg__lede" data-reveal>We have a toaster. What we do not have is a house. We're saving for a down payment on our first one, and if you'd like to give something, that's where it goes.</p>
@@ -68,6 +68,7 @@
         <ol class="reg__states" id="regStates">
           <li class="reg__state reg__state--skeleton"><span class="reg__state-name">Loading the board...</span></li>
         </ol>
+        <p class="reg__more" id="regMore"></p>
         <p class="reg__fineprint">Percentages only. Nobody sees who gave what, or how much.</p>
       </div>
 
@@ -83,12 +84,13 @@
             <button type="button" class="reg__pick" data-state="Colorado"><b>Colorado</b><span>Mountains</span></button>
             <button type="button" class="reg__pick" data-state="Iowa"><b>Iowa</b><span>Quiet life</span></button>
           </div>
+          <p class="reg__anystate">Somewhere else entirely? All 50 are on the table.</p>
+          <select id="regStateSelect" class="reg__select" aria-label="Choose any state"><option value="">Choose any state...</option></select>
         </div>
 
         <div class="field">
           <label class="field__label" for="regAmount">How much are you putting behind it?</label>
           <div class="reg__amounts" id="regAmounts">
-            <button type="button" class="reg__amt" data-amt="50">$50</button>
             <button type="button" class="reg__amt" data-amt="100">$100</button>
             <button type="button" class="reg__amt" data-amt="250">$250</button>
             <button type="button" class="reg__amt" data-amt="500">$500</button>
@@ -110,6 +112,12 @@
         <div class="reg__pay" id="regPay" hidden>
           <p class="reg__pay-title">Last step: send the gift</p>
           <p class="reg__pay-sub" id="regPaySub">Your vote is on the board. Send it whichever way is easiest.</p>
+          <div class="reg__methods" id="regMethods">
+            <button type="button" class="reg__method" data-method="venmo">Venmo</button>
+            <button type="button" class="reg__method" data-method="paypal">PayPal</button>
+            <button type="button" class="reg__method" data-method="zelle">Zelle</button>
+            <button type="button" class="reg__method" data-method="cash">Cash or check</button>
+          </div>
           <div class="reg__pay-links" id="regPayLinks"></div>
           <p class="reg__fineprint">No rush, and no pressure. The board already counted you.</p>
         </div>
@@ -121,7 +129,7 @@
 
   <!-- ============ FOOTER ============ -->
   <footer class="footer">
-    <span class="ornament ornament--set ornament--footer" aria-hidden="true"><i></i><img class="ornament__pug" src="assets/photos/pug-icon.png?v=129" alt="" /><i></i></span>
+    <span class="ornament ornament--set ornament--footer" aria-hidden="true"><i></i><img class="ornament__pug" src="../assets/photos/pug-icon.png?v=130" alt="" /><i></i></span>
     <p class="footer__names">Austin <span>&amp;</span> Ana</p>
     <p class="footer__date">April 23, 2027 &#183; Promontory Point, Chicago</p>
     <p class="footer__thanks">We can't wait to celebrate with you.</p>

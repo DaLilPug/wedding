@@ -2016,3 +2016,36 @@ body.joke-open{overflow:hidden}
 #rsvpPhone[data-masked]{color:var(--ink-soft);letter-spacing:.08em}
 #rsvpPhone.is-editing{color:var(--ink)}
 .rsvp__done-next{margin:18px 0 0;color:var(--ink-soft);font-size:15px}
+
+/* ---- registry v2: any state, richer board, payment methods ---- */
+.reg__state{grid-template-columns:18px 30px 1fr 1.35fr 52px;gap:8px}
+.reg__state-abbr{
+  font-family:var(--sans);font-size:10px;letter-spacing:.1em;color:var(--gold-deep);
+  border:1px solid rgba(160,136,80,.3);border-radius:4px;padding:2px 0;text-align:center;
+}
+.reg__state-name{font-size:19px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.reg__state--p1 .reg__state-bar i{background:linear-gradient(90deg,var(--gold-bright),var(--gold))}
+.reg__state--p2 .reg__state-bar i{background:linear-gradient(90deg,#B9C6DC,var(--sage))}
+.reg__state--p3 .reg__state-bar i{background:linear-gradient(90deg,#E3C9C4,var(--rose))}
+.reg__state--p1 .reg__state-name{color:var(--gold-deep)}
+.reg__more{margin:14px 0 0;text-align:center;font-family:var(--sans);font-size:11px;letter-spacing:.08em;color:var(--gold-deep)}
+.reg__anystate{margin:12px 0 8px;text-align:center;font-size:14px;color:var(--ink-soft)}
+.reg__select{
+  width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:6px;background:#fff;
+  font-family:var(--sans);font-size:15px;color:var(--ink);
+}
+.reg__amounts{grid-template-columns:repeat(3,1fr)}
+.reg__methods{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 18px}
+.reg__method{
+  padding:12px 6px;border:1px solid var(--line);border-radius:999px;background:#fff;cursor:pointer;
+  font-family:var(--sans);font-size:12px;letter-spacing:.06em;color:var(--ink);transition:border-color .25s,background .25s;
+}
+.reg__method:hover{border-color:var(--gold)}
+.reg__method.is-on{border-color:var(--gold);background:rgba(201,176,117,.16);color:var(--gold-deep)}
+.reg__handle{margin:10px 0 0;font-size:14.5px;color:var(--ink)}
+.reg__handle--big{font-family:var(--display);font-size:24px;color:var(--ink);margin:0}
+@media (min-width:861px){
+  .reg__state{grid-template-columns:22px 36px 150px 1fr 60px;gap:12px}
+  .reg__state-name{font-size:23px}
+  .reg__methods{grid-template-columns:repeat(4,1fr)}
+}

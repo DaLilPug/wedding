@@ -350,7 +350,7 @@
     stepDone.innerHTML = '<div class="rsvp__done"><h3>Thank you</h3><p>' + msg + '</p>' +
       (toRegistry
         ? '<p class="rsvp__done-next">One more thing: our registry is a house fund, and your gift also votes on which state we end up in. Taking you there now.</p>' +
-          '<p style="margin-top:18px"><a class="btn btn--primary" href="registry.html">See the house fund</a></p>'
+          '<p style="margin-top:18px"><a class="btn btn--primary" href="/registry/">See the house fund</a></p>'
         : '') +
       '<p style="margin-top:22px"><button class="rsvp__back" id="rsvpAgainBtn">Submit another RSVP</button></p></div>';
     document.getElementById('rsvpAgainBtn').addEventListener('click', function () {
@@ -360,7 +360,7 @@
     show(stepDone);
     if (toRegistry) {
       setTimeout(function () {
-        if (!stepDone.hidden) window.location.href = 'registry.html?from=rsvp';
+        if (!stepDone.hidden) window.location.href = '/registry/?from=rsvp';
       }, 3200);
     }
   }
