@@ -2391,3 +2391,9 @@ body.joke-open{overflow:hidden}
 /* JS drives the smooth anchor scrolling; leaving CSS smooth-scroll on as
    well meant two animations competing for the scroll position on touch */
 html{scroll-behavior:auto}
+
+/* the soft edge is baked into the clip now, so no CSS mask overlay */
+.story__art--video video{
+  -webkit-mask-image:none;mask-image:none;
+  background:transparent;
+}
