@@ -48,10 +48,13 @@
   var methodsEl = document.getElementById('regMethods');
   var payLinks = document.getElementById('regPayLinks');
   var paySub = document.getElementById('regPaySub');
+  var editBtn = document.getElementById('regEdit');
+  var giveEl = document.getElementById('give');
   if (!statesEl) return;
 
   var chosenState = null;
   var lastAmount = null;
+  var pledgeId = null;
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -112,13 +115,13 @@
   });
   amountsEl.querySelectorAll('.reg__amt').forEach(function (b) {
     b.addEventListener('click', function () {
-      amountInput.value = b.getAttribute('data-amt');
+      var preset = b.getAttribute('data-amt');
       amountsEl.querySelectorAll('.reg__amt').forEach(function (x) { x.classList.remove('is-on'); });
       b.classList.add('is-on');
+      amountInput.hidden = false;
+      amountInput.value = preset || '';
+      if (!preset) amountInput.focus();
     });
-  });
-  amountInput.addEventListener('input', function () {
-    amountsEl.querySelectorAll('.reg__amt').forEach(function (x) { x.classList.remove('is-on'); });
   });
 
   /* ---- payment methods ---- */
@@ -153,6 +156,45 @@
     });
   });
 
+  /* ---- locked / editing state ---- */
+  function lockIn() {
+    giveEl.classList.add('is-locked');
+    submitBtn.classList.add('is-locked');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Locked in';
+    editBtn.hidden = false;
+  }
+  function unlock() {
+    giveEl.classList.remove('is-locked');
+    submitBtn.classList.remove('is-locked');
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Lock in my vote';
+    editBtn.hidden = true;
+    payEl.hidden = true;
+    payLinks.innerHTML = '';
+  }
+  editBtn.addEventListener('click', async function () {
+    editBtn.disabled = true;
+    try {
+      if (sb && pledgeId && pledgeId !== 'demo') {
+        var r = await sb.rpc('registry_retract', { p_id: pledgeId });
+        if (r.error) throw r.error;
+      }
+      pledgeId = null;
+      await loadStandings();
+      unlock();
+      msgEl.className = 'rsvp__msg';
+      msgEl.textContent = 'Vote withdrawn. Change it and lock it back in.';
+      giveEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (e) {
+      console.error(e);
+      msgEl.textContent = 'Could not undo that vote. Please try again.';
+      msgEl.classList.add('rsvp__msg--err');
+    } finally {
+      editBtn.disabled = false;
+    }
+  });
+
   /* ---- submit ---- */
   submitBtn.addEventListener('click', async function () {
     msgEl.className = 'rsvp__msg';
@@ -179,25 +221,29 @@
           p_name: (nameInput.value || '').trim(), p_note: null
         });
         if (res.error) throw res.error;
-        render(res.data, chosenState);
+        pledgeId = res.data;
+        await loadStandings(chosenState);
       } else {
         await new Promise(function (r) { setTimeout(r, 400); });
+        pledgeId = 'demo';
         render(DEMO, chosenState);
       }
       lastAmount = amount;
+      lockIn();
       msgEl.textContent = '';
       paySub.textContent = 'Your vote for ' + chosenState + ' is on the board. Pick how you would like to send it.';
       payLinks.innerHTML = '';
       methodsEl.querySelectorAll('.reg__method').forEach(function (x) { x.classList.remove('is-on'); });
       payEl.hidden = false;
-      payEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      payEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
       document.querySelector('.reg__board').classList.add('is-bumped');
     } catch (e) {
       console.error(e);
       msgEl.textContent = 'Something went wrong counting that. Please try again.';
       msgEl.classList.add('rsvp__msg--err');
     } finally {
-      submitBtn.disabled = false;
+      /* stay disabled while the vote is locked in */
+      submitBtn.disabled = giveEl.classList.contains('is-locked');
     }
   });
 

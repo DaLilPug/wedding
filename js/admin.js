@@ -97,11 +97,79 @@
     loadReminders();
   }
 
+  /* ---- house fund pledges ---- */
+  var pledges = [];
+
+  async function loadPledges() {
+    var res = await sb.rpc('admin_list_pledges');
+    if (res.error) { setMsg(document.getElementById('admPledgeMsg'), 'Could not load pledges: ' + res.error.message, 'err'); return; }
+    pledges = res.data || [];
+    renderPledges();
+  }
+
+  function renderPledges() {
+    var totals = {}, grand = 0, received = 0, real = 0;
+    pledges.forEach(function (p) {
+      var amt = Number(p.amount) || 0;
+      totals[p.state] = (totals[p.state] || 0) + amt;
+      grand += amt;
+      if (!p.is_baseline) { real += amt; if (p.confirmed) received += amt; }
+    });
+    var lead = Object.keys(totals).sort(function (a, b) { return totals[b] - totals[a]; })[0] || '-';
+    var money = function (n) { return '$' + Number(n || 0).toLocaleString(undefined, { maximumFractionDigits: 0 }); };
+    document.getElementById('admPledgeMetrics').innerHTML = [
+      ['Pledged (real)', money(real)],
+      ['Received', money(received)],
+      ['Gifts', String(pledges.filter(function (p) { return !p.is_baseline; }).length)],
+      ['Leading', lead]
+    ].map(function (c) {
+      return '<div class="metric"><span>' + esc(c[1]) + '</span><label>' + esc(c[0]) + '</label></div>';
+    }).join('');
+
+    document.getElementById('admPledges').innerHTML = pledges.map(function (p) {
+      var when = p.created_at ? new Date(p.created_at).toLocaleDateString() : '';
+      return '<div class="grow pl-row' + (p.is_baseline ? ' pl-row--base' : '') + '" data-id="' + esc(p.id) + '">' +
+        '<input class="pl-state" type="text" value="' + esc(p.state) + '" placeholder="State" />' +
+        '<input class="pl-amount" type="number" step="1" value="' + esc(p.amount) + '" placeholder="Amount" />' +
+        '<input class="pl-name" type="text" value="' + esc(p.guest_name || '') + '" placeholder="From" />' +
+        '<label class="pl-conf"><input type="checkbox"' + (p.confirmed ? ' checked' : '') + ' /> received</label>' +
+        '<span class="pl-date">' + esc(when) + '</span>' +
+        '<button class="grow-save pl-save" type="button">Save</button>' +
+        '<button class="grow-del pl-del" type="button" title="Remove" aria-label="Remove">&#10005;</button>' +
+        '</div>';
+    }).join('') || '<p class="admin-cell-muted" style="padding:18px">No gifts yet.</p>';
+
+    var list = document.getElementById('admPledges');
+    list.querySelectorAll('.pl-save').forEach(function (b) { b.onclick = function () { savePledge(b.closest('.pl-row')); }; });
+    list.querySelectorAll('.pl-del').forEach(function (b) { b.onclick = function () { delPledge(b.closest('.pl-row')); }; });
+  }
+
+  async function savePledge(row) {
+    var msg = document.getElementById('admPledgeMsg');
+    var res = await sb.rpc('admin_save_pledge', {
+      p_id: row.getAttribute('data-id'),
+      p_state: row.querySelector('.pl-state').value.trim(),
+      p_amount: parseFloat(row.querySelector('.pl-amount').value),
+      p_name: row.querySelector('.pl-name').value.trim(),
+      p_confirmed: row.querySelector('.pl-conf input').checked
+    });
+    if (res.error) { setMsg(msg, 'Could not save: ' + res.error.message, 'err'); return; }
+    setMsg(msg, 'Saved.', 'ok');
+    loadPledges();
+  }
+
+  async function delPledge(row) {
+    if (!confirm('Remove this gift and its vote?')) return;
+    var res = await sb.rpc('admin_delete_pledge', { p_id: row.getAttribute('data-id') });
+    if (res.error) { setMsg(document.getElementById('admPledgeMsg'), 'Could not remove: ' + res.error.message, 'err'); return; }
+    loadPledges();
+  }
+
   /* ---- auth ---- */
 
   async function init() {
     var s = await sb.auth.getSession();
-    if (s.data && s.data.session) { showDashboard(); loadGuests(); loadReminders(); } else { showLogin(); }
+    if (s.data && s.data.session) { showDashboard(); loadGuests(); loadReminders(); loadPledges(); } else { showLogin(); }
   }
   async function login() {
     var email = document.getElementById('admEmail').value.trim();
@@ -112,7 +180,7 @@
     var res = await sb.auth.signInWithPassword({ email: email, password: pass });
     btn.disabled = false;
     if (res.error) { setMsg(msgEl, 'Could not sign in. Check your email and password.', 'err'); return; }
-    setMsg(msgEl, ''); showDashboard(); loadGuests(); loadReminders();
+    setMsg(msgEl, ''); showDashboard(); loadGuests(); loadReminders(); loadPledges();
   }
   async function signout() {
     await sb.auth.signOut(); guests = [];
@@ -360,4 +428,7 @@
     el.querySelectorAll('.rem-del').forEach(function (b) { b.onclick = function () { deleteReminder(b.closest('.rem-row')); }; });
   });
 
+
+  var plRefresh = document.getElementById('admPledgeRefresh');
+  if (plRefresh) plRefresh.addEventListener('click', loadPledges);
 })();
