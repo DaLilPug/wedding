@@ -16,7 +16,7 @@
     'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York',
     'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island',
     'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington',
-    'West Virginia', 'Wisconsin', 'Wyoming'];
+    'West Virginia', 'Wisconsin', 'Wyoming', 'Ukraine'];
 
   var ABBR = {
     'Alabama': 'AL', 'Alaska': 'AK', 'Arizona': 'AZ', 'Arkansas': 'AR', 'California': 'CA', 'Colorado': 'CO',
@@ -28,12 +28,12 @@
     'New York': 'NY', 'North Carolina': 'NC', 'North Dakota': 'ND', 'Ohio': 'OH', 'Oklahoma': 'OK',
     'Oregon': 'OR', 'Pennsylvania': 'PA', 'Rhode Island': 'RI', 'South Carolina': 'SC', 'South Dakota': 'SD',
     'Tennessee': 'TN', 'Texas': 'TX', 'Utah': 'UT', 'Vermont': 'VT', 'Virginia': 'VA', 'Washington': 'WA',
-    'West Virginia': 'WV', 'Wisconsin': 'WI', 'Wyoming': 'WY'
+    'West Virginia': 'WV', 'Wisconsin': 'WI', 'Wyoming': 'WY', 'Ukraine': 'UA'
   };
 
   var DEMO = [
     { state: 'Illinois', pct: 38.0, rank: 1 }, { state: 'Texas', pct: 35.0, rank: 2 },
-    { state: 'Colorado', pct: 16.0, rank: 3 }, { state: 'Iowa', pct: 11.0, rank: 4 }
+    { state: 'Ukraine', pct: 16.0, rank: 3 }, { state: 'Iowa', pct: 11.0, rank: 4 }
   ];
 
   var statesEl = document.getElementById('regStates');
