@@ -28,7 +28,7 @@
     'New York': 'NY', 'North Carolina': 'NC', 'North Dakota': 'ND', 'Ohio': 'OH', 'Oklahoma': 'OK',
     'Oregon': 'OR', 'Pennsylvania': 'PA', 'Rhode Island': 'RI', 'South Carolina': 'SC', 'South Dakota': 'SD',
     'Tennessee': 'TN', 'Texas': 'TX', 'Utah': 'UT', 'Vermont': 'VT', 'Virginia': 'VA', 'Washington': 'WA',
-    'West Virginia': 'WV', 'Wisconsin': 'WI', 'Wyoming': 'WY', 'Ukraine': 'UA'
+    'West Virginia': 'WV', 'Wisconsin': 'WI', 'Wyoming': 'WY', 'Ukraine': 'UKR'
   };
 
   var DEMO = [
