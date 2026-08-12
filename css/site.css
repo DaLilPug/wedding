@@ -2456,3 +2456,11 @@ html{scroll-behavior:auto}
   .hero--painted .hero__content{margin-top:calc(var(--nav-h) + 20px);margin-bottom:0}
   .hero--painted .hero__art{margin:10px 0 0}
 }
+
+/* desktop hero: pull the ornament closer to the names (the script face
+   carries a lot of empty line box under the glyphs) */
+@media (min-width:861px){
+  .hero--painted .hero__names{line-height:.86}
+  .hero--painted .hero__rule{margin:0}
+  .hero--painted .ornament--set-hero{margin-top:0}
+}
