@@ -2464,3 +2464,74 @@ html{scroll-behavior:auto}
   .hero--painted .hero__rule{margin:0}
   .hero--painted .ornament--set-hero{margin-top:0}
 }
+
+/* ==========================================================
+   REGISTRY: stepped gift flow (checkout-style)
+   ========================================================== */
+.steps{
+  list-style:none;display:flex;align-items:center;justify-content:center;gap:0;
+  margin:0 0 26px;padding:0;
+}
+.steps__item{display:flex;align-items:center;gap:8px;flex:0 0 auto;color:var(--ink-soft)}
+.steps__item + .steps__item{margin-left:10px}
+.steps__item + .steps__item::before{
+  content:"";width:26px;height:1px;background:var(--line);margin-right:10px;
+}
+.steps__dot{
+  width:26px;height:26px;border-radius:50%;display:grid;place-items:center;
+  border:1px solid var(--line);background:#fff;
+  font-family:var(--sans);font-size:12px;color:var(--ink-soft);transition:all .3s var(--ease);
+}
+.steps__label{font-family:var(--sans);font-size:10px;letter-spacing:.16em;text-transform:uppercase}
+.steps__item.is-active .steps__dot{border-color:var(--gold);background:rgba(201,176,117,.18);color:var(--gold-deep)}
+.steps__item.is-active{color:var(--gold-deep)}
+.steps__item.is-done .steps__dot{border-color:var(--gold);background:var(--gold);color:#fff;font-size:0}
+.steps__item.is-done .steps__dot::after{content:"¹3";font-size:13px;color:#fff}
+
+.step{
+  border-top:1px solid var(--line);padding:18px 0 0;margin-top:18px;
+}
+.step:first-of-type{border-top:0;margin-top:0;padding-top:0}
+.step__head{display:flex;align-items:center;gap:10px}
+.step__num{
+  width:24px;height:24px;flex:0 0 24px;border-radius:50%;display:grid;place-items:center;
+  border:1px solid var(--line);font-family:var(--sans);font-size:11px;color:var(--ink-soft);background:#fff;
+}
+.step__title{
+  font-family:var(--display);font-size:24px;font-weight:400;margin:0;color:var(--ink);line-height:1.1;flex:1;
+}
+.step__edit,.step__back{
+  background:none;border:0;cursor:pointer;font-family:var(--sans);font-size:11px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);
+  text-decoration:underline;text-underline-offset:4px;padding:6px 2px;
+}
+.step__edit:hover,.step__back:hover{color:var(--gold-deep)}
+.step__summary{
+  margin:6px 0 0 34px;font-family:var(--sans);font-size:14px;color:var(--gold-deep);
+}
+.step__body{max-height:0;overflow:hidden;opacity:0;transition:max-height .45s var(--ease),opacity .3s var(--ease)}
+.step.is-open .step__body{max-height:1200px;opacity:1;margin-top:16px;overflow:visible}
+.step.is-locked{opacity:.45}
+.step.is-locked .step__title{color:var(--ink-soft)}
+.step.is-done .step__num{border-color:var(--gold);background:var(--gold);color:#fff;font-size:0}
+.step.is-done .step__num::after{content:"¹3";font-size:12px;color:#fff}
+.step.is-open .step__num{border-color:var(--gold);background:rgba(201,176,117,.18);color:var(--gold-deep)}
+.step__actions{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:18px}
+.step__next[disabled]{opacity:.45;pointer-events:none}
+
+.reg__review{
+  background:#fff;border:1px solid rgba(160,136,80,.2);border-radius:8px;padding:16px 18px;margin-bottom:16px;
+}
+.reg__review-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:6px 0}
+.reg__review-row + .reg__review-row{border-top:1px dashed var(--line)}
+.reg__review-row span{font-family:var(--sans);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.reg__review-row b{font-family:var(--display);font-size:24px;font-weight:400;color:var(--ink)}
+.step.is-counted .reg__review{border-color:var(--gold);background:rgba(201,176,117,.08)}
+.reg__pay{border-top:1px solid var(--line);margin-top:22px;padding-top:20px}
+
+@media (min-width:861px){
+  .steps__item + .steps__item::before{width:48px}
+  .steps__label{font-size:11px}
+  .step__title{font-size:28px}
+  .step__actions{flex-direction:row;justify-content:center;gap:18px}
+}

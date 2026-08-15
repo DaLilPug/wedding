@@ -1,5 +1,5 @@
 /* =========================================================
-   registry.js - the House Fund board + pledge flow
+   registry.js - the House Fund board + a stepped gift flow
    Standings are percentages only; no dollar amounts or names
    are ever exposed to the page.
    ========================================================= */
@@ -37,6 +37,8 @@
   ];
 
   var statesEl = document.getElementById('regStates');
+  if (!statesEl) return;
+
   var picksEl = document.getElementById('regPicks');
   var selectEl = document.getElementById('regStateSelect');
   var amountsEl = document.getElementById('regAmounts');
@@ -50,11 +52,12 @@
   var payLinks = document.getElementById('regPayLinks');
   var paySub = document.getElementById('regPaySub');
   var editBtn = document.getElementById('regEdit');
-  var giveEl = document.getElementById('give');
-  if (!statesEl) return;
+  var stepsEl = document.getElementById('regSteps');
+  var next1 = document.getElementById('next1');
+  var next2 = document.getElementById('next2');
 
   var chosenState = null;
-  var lastAmount = null;
+  var chosenAmount = null;
   var pledgeId = null;
 
   function esc(s) {
@@ -62,8 +65,11 @@
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
   }
+  function money(n) {
+    return '$' + Number(n || 0).toLocaleString(undefined, { maximumFractionDigits: 0 });
+  }
 
-  /* ---- the board ---- */
+  /* ---------------- the board ---------------- */
   function render(rows, highlight) {
     if (!rows || !rows.length) {
       statesEl.innerHTML = '<li class="reg__state reg__state--skeleton"><span class="reg__state-name">No votes yet. Be the first.</span></li>';
@@ -94,19 +100,69 @@
     render(res.data && res.data.length ? res.data : DEMO, highlight);
   }
 
-  /* ---- pickers ---- */
+  /* ---------------- the stepper ---------------- */
+  var current = 1;
+
+  function stepEl(n) { return document.getElementById('step' + n); }
+
+  function openStep(n, opts) {
+    current = n;
+    [1, 2, 3].forEach(function (i) {
+      var s = stepEl(i);
+      var done = i < n;
+      s.classList.toggle('is-open', i === n);
+      s.classList.toggle('is-done', done);
+      s.classList.toggle('is-locked', i > n);
+      var edit = s.querySelector('.step__edit');
+      if (edit) edit.hidden = !done;
+      var sum = document.getElementById('sum' + i);
+      if (sum) sum.hidden = !done;
+    });
+    stepsEl.querySelectorAll('.steps__item').forEach(function (li) {
+      var i = +li.getAttribute('data-step');
+      li.classList.toggle('is-active', i === n);
+      li.classList.toggle('is-done', i < n);
+      if (i === n) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current');
+    });
+    if (!opts || opts.scroll !== false) scrollClear(stepEl(n));
+  }
+
+  function scrollClear(el) {
+    if (!el) return;
+    requestAnimationFrame(function () {
+      var nav = document.getElementById('nav');
+      var navH = nav ? nav.getBoundingClientRect().height : 60;
+      var y = el.getBoundingClientRect().top + (window.scrollY || document.documentElement.scrollTop) - navH - 18;
+      window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+    });
+  }
+
+  function setSummaries() {
+    var s1 = document.getElementById('sum1');
+    var s2 = document.getElementById('sum2');
+    if (s1) s1.textContent = chosenState || '';
+    if (s2) s2.textContent = chosenAmount ? money(chosenAmount) + (nameInput.value.trim() ? ' from ' + nameInput.value.trim() : '') : '';
+    var rs = document.getElementById('revState');
+    var ra = document.getElementById('revAmount');
+    if (rs) rs.textContent = chosenState || '-';
+    if (ra) ra.textContent = chosenAmount ? money(chosenAmount) : '-';
+  }
+
+  /* ---------------- step 1: place ---------------- */
   STATES.forEach(function (s) {
     var o = document.createElement('option');
     o.value = s; o.textContent = s;
     selectEl.appendChild(o);
   });
+
   function setState(s, fromSelect) {
     chosenState = s;
     picksEl.querySelectorAll('.reg__pick').forEach(function (x) {
       x.classList.toggle('is-on', x.getAttribute('data-state') === s);
     });
     if (!fromSelect) selectEl.value = STATES.indexOf(s) > -1 ? s : '';
-    msgEl.textContent = ''; msgEl.className = 'rsvp__msg';
+    next1.disabled = !s;
+    setSummaries();
   }
   picksEl.querySelectorAll('.reg__pick').forEach(function (b) {
     b.addEventListener('click', function () { setState(b.getAttribute('data-state')); });
@@ -114,6 +170,18 @@
   selectEl.addEventListener('change', function () {
     if (selectEl.value) setState(selectEl.value, true);
   });
+  next1.addEventListener('click', function () {
+    if (!chosenState) return;
+    setSummaries();
+    openStep(2);
+  });
+
+  /* ---------------- step 2: amount ---------------- */
+  function setAmount(v) {
+    chosenAmount = (v && v > 0) ? v : null;
+    next2.disabled = !chosenAmount || chosenAmount > 100000;
+    setSummaries();
+  }
   amountsEl.querySelectorAll('.reg__amt').forEach(function (b) {
     b.addEventListener('click', function () {
       var preset = b.getAttribute('data-amt');
@@ -121,11 +189,28 @@
       b.classList.add('is-on');
       if (amountWrap) amountWrap.hidden = false;
       amountInput.value = preset || '';
+      setAmount(parseFloat(preset));
       if (!preset) amountInput.focus();
     });
   });
+  amountInput.addEventListener('input', function () {
+    setAmount(parseFloat(amountInput.value));
+  });
+  nameInput.addEventListener('input', setSummaries);
+  next2.addEventListener('click', function () {
+    if (!chosenAmount) return;
+    setSummaries();
+    openStep(3);
+  });
 
-  /* ---- payment methods ---- */
+  /* ---------------- edit / back links ---------------- */
+  document.querySelectorAll('[data-edit]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      openStep(+b.getAttribute('data-edit'));
+    });
+  });
+
+  /* ---------------- payment methods ---------------- */
   function methodHtml(method, amount, state) {
     var p = cfg.registry || {};
     var note = encodeURIComponent('House fund - ' + state);
@@ -148,88 +233,49 @@
     }
     return '<p class="reg__handle">We will send you the details.</p>';
   }
-
   methodsEl.querySelectorAll('.reg__method').forEach(function (b) {
     b.addEventListener('click', function () {
       methodsEl.querySelectorAll('.reg__method').forEach(function (x) { x.classList.remove('is-on'); });
       b.classList.add('is-on');
-      payLinks.innerHTML = methodHtml(b.getAttribute('data-method'), lastAmount, chosenState);
+      payLinks.innerHTML = methodHtml(b.getAttribute('data-method'), chosenAmount, chosenState);
     });
   });
 
-  /* scroll so the target clears the fixed nav */
-  function scrollClear(el) {
-    if (!el) return;
-    requestAnimationFrame(function () {
-      var navH = document.getElementById('nav');
-      navH = navH ? navH.getBoundingClientRect().height : 60;
-      var y = el.getBoundingClientRect().top + (window.scrollY || document.documentElement.scrollTop) - navH - 18;
-      window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
-    });
-  }
-
-  /* ---- locked / editing state ---- */
+  /* ---------------- step 3: submit / retract ---------------- */
   function lockIn() {
-    giveEl.classList.add('is-locked');
-    submitBtn.classList.add('is-locked');
+    stepEl(3).classList.add('is-counted');
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Locked in';
-    editBtn.hidden = false;
+    submitBtn.textContent = 'Vote counted';
+    payEl.hidden = false;
+    stepsEl.querySelectorAll('.steps__item').forEach(function (li) { li.classList.add('is-done'); });
   }
   function unlock() {
-    giveEl.classList.remove('is-locked');
-    submitBtn.classList.remove('is-locked');
+    stepEl(3).classList.remove('is-counted');
     submitBtn.disabled = false;
-    submitBtn.textContent = 'Lock in my vote';
-    editBtn.hidden = true;
+    submitBtn.textContent = 'Count my vote';
     payEl.hidden = true;
     payLinks.innerHTML = '';
+    methodsEl.querySelectorAll('.reg__method').forEach(function (x) { x.classList.remove('is-on'); });
+    stepsEl.querySelectorAll('.steps__item').forEach(function (li) {
+      li.classList.toggle('is-done', (+li.getAttribute('data-step')) < current);
+    });
   }
-  editBtn.addEventListener('click', async function () {
-    editBtn.disabled = true;
-    try {
-      if (sb && pledgeId && pledgeId !== 'demo') {
-        var r = await sb.rpc('registry_retract', { p_id: pledgeId });
-        if (r.error) throw r.error;
-      }
-      pledgeId = null;
-      await loadStandings();
-      unlock();
-      msgEl.className = 'rsvp__msg';
-      msgEl.textContent = 'Vote withdrawn. Change it and lock it back in.';
-      scrollClear(giveEl);
-    } catch (e) {
-      console.error(e);
-      msgEl.textContent = 'Could not undo that vote. Please try again.';
-      msgEl.classList.add('rsvp__msg--err');
-    } finally {
-      editBtn.disabled = false;
-    }
-  });
 
-  /* ---- submit ---- */
   submitBtn.addEventListener('click', async function () {
     msgEl.className = 'rsvp__msg';
-    var amount = parseFloat(amountInput.value);
-    if (!chosenState) {
-      msgEl.textContent = 'Pick a state first - that is the whole game.';
-      msgEl.classList.add('rsvp__msg--err'); return;
-    }
-    if (!amount || amount <= 0) {
-      msgEl.textContent = 'Add an amount so we know how much weight your vote carries.';
-      msgEl.classList.add('rsvp__msg--err'); return;
-    }
-    if (amount > 100000) {
+    if (!chosenState) { openStep(1); return; }
+    if (!chosenAmount || chosenAmount <= 0) { openStep(2); return; }
+    if (chosenAmount > 100000) {
       msgEl.textContent = 'That is a very generous number. Text us instead.';
-      msgEl.classList.add('rsvp__msg--err'); return;
+      msgEl.classList.add('rsvp__msg--err');
+      return;
     }
-
     submitBtn.disabled = true;
     msgEl.textContent = 'Counting your vote...';
     try {
       if (sb) {
         var res = await sb.rpc('registry_pledge', {
-          p_state: chosenState, p_amount: amount,
+          p_state: chosenState, p_amount: chosenAmount,
           p_name: (nameInput.value || '').trim(), p_note: null
         });
         if (res.error) throw res.error;
@@ -240,24 +286,41 @@
         pledgeId = 'demo';
         render(DEMO, chosenState);
       }
-      lastAmount = amount;
-      lockIn();
       msgEl.textContent = '';
-      paySub.textContent = 'Your vote for ' + chosenState + ' is on the board. Pick how you would like to send it.';
-      payLinks.innerHTML = '';
-      methodsEl.querySelectorAll('.reg__method').forEach(function (x) { x.classList.remove('is-on'); });
-      payEl.hidden = false;
+      paySub.textContent = 'Your vote for ' + chosenState + ' is on the board. Now pick how you would like to send ' + money(chosenAmount) + '.';
+      lockIn();
       scrollClear(payEl);
       document.querySelector('.reg__board').classList.add('is-bumped');
     } catch (e) {
       console.error(e);
       msgEl.textContent = 'Something went wrong counting that. Please try again.';
       msgEl.classList.add('rsvp__msg--err');
-    } finally {
-      /* stay disabled while the vote is locked in */
-      submitBtn.disabled = giveEl.classList.contains('is-locked');
+      submitBtn.disabled = false;
     }
   });
 
+  editBtn.addEventListener('click', async function () {
+    editBtn.disabled = true;
+    try {
+      if (sb && pledgeId && pledgeId !== 'demo') {
+        var r = await sb.rpc('registry_retract', { p_id: pledgeId });
+        if (r.error) throw r.error;
+      }
+      pledgeId = null;
+      await loadStandings();
+      unlock();
+      openStep(1);
+      msgEl.className = 'rsvp__msg';
+      msgEl.textContent = 'Vote withdrawn. Pick again and count it back in.';
+    } catch (e) {
+      console.error(e);
+      msgEl.textContent = 'Could not undo that vote. Please try again.';
+      msgEl.classList.add('rsvp__msg--err');
+    } finally {
+      editBtn.disabled = false;
+    }
+  });
+
+  openStep(1, { scroll: false });
   loadStandings();
 })();
