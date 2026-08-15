@@ -2635,3 +2635,18 @@ html{scroll-behavior:auto}
   .reg__state{grid-template-columns:22px 36px minmax(104px,auto) 1fr 58px;gap:12px}
   .reg__state-pct{font-size:12.5px}
 }
+
+/* the asterisk and its fine print */
+.reg__ast{
+  color:var(--gold-deep);text-decoration:none;font-weight:600;
+  padding-left:1px;vertical-align:baseline;
+}
+.reg__ast:hover{text-decoration:underline}
+.reg__legal{
+  margin:26px 0 0;font-family:var(--sans);font-size:10.5px;line-height:1.65;
+  color:var(--ink-soft);opacity:.75;text-align:left;max-width:640px;
+  scroll-margin-top:calc(var(--nav-h) + 20px);
+}
+@media (min-width:861px){
+  .reg__legal{font-size:11px;margin:32px auto 0;text-align:center}
+}
