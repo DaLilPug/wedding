@@ -2578,3 +2578,39 @@ html{scroll-behavior:auto}
   .step__actions{align-items:center}
   .step__actions .btn{width:auto;min-width:220px}
 }
+
+/* ==========================================================
+   REGISTRY FLOW: plain type. The script face is lovely for
+   headings but this is a form - state names, amounts and step
+   titles read faster in Quicksand. Sizes drop to match, since
+   the script was set large to compensate for its small x-height.
+   ========================================================== */
+.reg__board-title,
+.reg__state-name,
+.reg__give-title,
+.step__title,
+.reg__review-row b,
+.reg__impact,
+.reg__pay-title,
+.reg__handle,
+.reg__handle--big,
+.reg__pick b{
+  font-family:var(--sans);
+}
+.reg__board-title{font-size:19px;font-weight:600;letter-spacing:.02em}
+.reg__state-name{font-size:14.5px;font-weight:500;letter-spacing:.01em}
+.reg__give-title{font-size:21px;font-weight:600;letter-spacing:.02em}
+.step__title{font-size:16.5px;font-weight:500;line-height:1.3}
+.reg__review-row b{font-size:19px;font-weight:600}
+.reg__impact{font-size:16px;font-weight:600;line-height:1.4}
+.reg__pay-title{font-size:17px;font-weight:600}
+.reg__handle--big{font-size:16.5px;font-weight:500}
+.reg__pick b{font-size:15.5px;font-weight:600}
+@media (min-width:861px){
+  .reg__board-title{font-size:21px}
+  .reg__state-name{font-size:16px}
+  .reg__give-title{font-size:23px}
+  .step__title{font-size:18px}
+  .reg__review-row b{font-size:21px}
+  .reg__impact{font-size:17.5px}
+}
