@@ -2614,3 +2614,24 @@ html{scroll-behavior:auto}
   .reg__review-row b{font-size:21px}
   .reg__impact{font-size:17.5px}
 }
+
+/* how-it-works line above the race */
+.reg__how{
+  margin:0 0 16px;text-align:center;font-family:var(--sans);
+  font-size:14px;line-height:1.6;color:var(--ink-soft);
+}
+.reg__how b{
+  font-weight:600;color:var(--gold-deep);letter-spacing:.06em;
+  text-transform:uppercase;font-size:11px;
+}
+@media (min-width:861px){
+  .reg__how{font-size:15px;margin-bottom:20px}
+}
+
+/* board columns retuned for the wider plain type (names were clipping) */
+.reg__state{grid-template-columns:16px 30px minmax(66px,auto) minmax(52px,1fr) 46px;gap:7px}
+.reg__state-pct{font-size:11.5px}
+@media (min-width:861px){
+  .reg__state{grid-template-columns:22px 36px minmax(104px,auto) 1fr 58px;gap:12px}
+  .reg__state-pct{font-size:12.5px}
+}
