@@ -52,13 +52,13 @@
   var payLinks = document.getElementById('regPayLinks');
   var paySub = document.getElementById('regPaySub');
   var editBtn = document.getElementById('regEdit');
-  var stepsEl = document.getElementById('regSteps');
   var next1 = document.getElementById('next1');
   var next2 = document.getElementById('next2');
 
   var chosenState = null;
   var chosenAmount = null;
   var pledgeId = null;
+  var lastRows = null;
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -94,10 +94,12 @@
   }
 
   async function loadStandings(highlight) {
-    if (!sb) { render(DEMO, highlight); return; }
+    if (!sb) { lastRows = DEMO; render(DEMO, highlight); return DEMO; }
     var res = await sb.rpc('registry_standings');
-    if (res.error) { console.error(res.error); render(DEMO, highlight); return; }
-    render(res.data && res.data.length ? res.data : DEMO, highlight);
+    if (res.error) { console.error(res.error); lastRows = DEMO; render(DEMO, highlight); return DEMO; }
+    lastRows = (res.data && res.data.length) ? res.data : DEMO;
+    render(lastRows, highlight);
+    return lastRows;
   }
 
   /* ---------------- the stepper ---------------- */
@@ -117,12 +119,6 @@
       if (edit) edit.hidden = !done;
       var sum = document.getElementById('sum' + i);
       if (sum) sum.hidden = !done;
-    });
-    stepsEl.querySelectorAll('.steps__item').forEach(function (li) {
-      var i = +li.getAttribute('data-step');
-      li.classList.toggle('is-active', i === n);
-      li.classList.toggle('is-done', i < n);
-      if (i === n) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current');
     });
     if (!opts || opts.scroll !== false) scrollClear(stepEl(n));
   }
@@ -163,6 +159,7 @@
     if (!fromSelect) selectEl.value = STATES.indexOf(s) > -1 ? s : '';
     next1.disabled = !s;
     setSummaries();
+    if (lastRows) render(lastRows, s);   /* light up the row you are backing */
   }
   picksEl.querySelectorAll('.reg__pick').forEach(function (b) {
     b.addEventListener('click', function () { setState(b.getAttribute('data-state')); });
@@ -241,13 +238,28 @@
     });
   });
 
+  /* ---------------- what the vote did ---------------- */
+  function showImpact(rows) {
+    var el = document.getElementById('regImpact');
+    if (!el || !rows) return;
+    var i = rows.map(function (r) { return r.state; }).indexOf(chosenState);
+    if (i < 0) { el.hidden = true; return; }
+    var r = rows[i];
+    var pct = Number(r.pct).toFixed(1) + '%';
+    var place = (i === 0) ? 'now leading the race' : 'now in ' + ordinal(i + 1) + ' place';
+    el.textContent = chosenState + ' is ' + place + ' at ' + pct + '.';
+    el.hidden = false;
+  }
+  function ordinal(n) {
+    return n + (['th', 'st', 'nd', 'rd'][(n % 100 - 20) % 10] || ['th', 'st', 'nd', 'rd'][n % 100] || 'th');
+  }
+
   /* ---------------- step 3: submit / retract ---------------- */
   function lockIn() {
     stepEl(3).classList.add('is-counted');
     submitBtn.disabled = true;
     submitBtn.textContent = 'Vote counted';
     payEl.hidden = false;
-    stepsEl.querySelectorAll('.steps__item').forEach(function (li) { li.classList.add('is-done'); });
   }
   function unlock() {
     stepEl(3).classList.remove('is-counted');
@@ -255,10 +267,9 @@
     submitBtn.textContent = 'Count my vote';
     payEl.hidden = true;
     payLinks.innerHTML = '';
+    var imp = document.getElementById('regImpact');
+    if (imp) { imp.hidden = true; imp.textContent = ''; }
     methodsEl.querySelectorAll('.reg__method').forEach(function (x) { x.classList.remove('is-on'); });
-    stepsEl.querySelectorAll('.steps__item').forEach(function (li) {
-      li.classList.toggle('is-done', (+li.getAttribute('data-step')) < current);
-    });
   }
 
   submitBtn.addEventListener('click', async function () {
@@ -280,11 +291,14 @@
         });
         if (res.error) throw res.error;
         pledgeId = res.data;
-        await loadStandings(chosenState);
+        var rows = await loadStandings(chosenState);
+        showImpact(rows);
       } else {
         await new Promise(function (r) { setTimeout(r, 400); });
         pledgeId = 'demo';
+        lastRows = DEMO;
         render(DEMO, chosenState);
+        showImpact(DEMO);
       }
       msgEl.textContent = '';
       paySub.textContent = 'Your vote for ' + chosenState + ' is on the board. Now pick how you would like to send ' + money(chosenAmount) + '.';

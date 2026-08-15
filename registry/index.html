@@ -9,18 +9,18 @@
   <meta property="og:description" content="Skip the gravy boat. Help us buy a house, and pick the state we land in." />
   <meta property="og:type" content="website" />
 
-  <link rel="icon" type="image/png" href="../assets/favicon.png?v=179" />
+  <link rel="icon" type="image/png" href="../assets/favicon.png?v=181" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="../css/site.css?v=179" />
+  <link rel="stylesheet" href="../css/site.css?v=181" />
 
-  <script defer src="../js/config.js?v=179"></script>
+  <script defer src="../js/config.js?v=181"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script defer src="../js/site.js?v=179"></script>
-  <script defer src="../js/registry.js?v=179"></script>
+  <script defer src="../js/site.js?v=181"></script>
+  <script defer src="../js/registry.js?v=181"></script>
 </head>
 <body class="page-registry">
 
@@ -52,36 +52,30 @@
       <header class="section__head" data-reveal>
         <p class="section__label">Registry</p>
         <h2 class="section__title">The House Fund</h2>
-        <span class="ornament ornament--set" aria-hidden="true"><i></i><img class="ornament__pug" src="../assets/photos/pug-icon.png?v=179" alt="" /><i></i></span>
+        <span class="ornament ornament--set" aria-hidden="true"><i></i><img class="ornament__pug" src="../assets/photos/pug-icon.png?v=181" alt="" /><i></i></span>
       </header>
 
       <p class="reg__lede" data-reveal>We have a toaster. What we do not have is a house. We're saving for a down payment on our first one, and if you'd like to give something, that's where it goes.</p>
 
       <p class="reg__lede reg__lede--twist" data-reveal>Here's the fun part: we haven't decided where that house should be. Every gift is also a vote. Back a state and you move it up the board.</p>
 
-      <!-- standings -->
-      <div class="reg__board" data-reveal>
-        <div class="reg__board-head">
-          <h3 class="reg__board-title">The race</h3>
-          <p class="reg__board-sub" id="regUpdated">Live standings</p>
-        </div>
-        <ol class="reg__states" id="regStates">
-          <li class="reg__state reg__state--skeleton"><span class="reg__state-name">Loading the board...</span></li>
-        </ol>
-        <p class="reg__more" id="regMore"></p>
-        <p class="reg__fineprint">Percentages only. Nobody sees who gave what, or how much.</p>
-      </div>
 
       <!-- contribute -->
       <div class="reg__give" id="give" data-reveal>
+        <div class="reg__board" data-reveal>
+          <div class="reg__board-head">
+            <h3 class="reg__board-title">The race</h3>
+            <p class="reg__board-sub" id="regUpdated">Live standings</p>
+          </div>
+          <ol class="reg__states" id="regStates">
+            <li class="reg__state reg__state--skeleton"><span class="reg__state-name">Loading the board...</span></li>
+          </ol>
+          <p class="reg__more" id="regMore"></p>
+          <p class="reg__fineprint">Percentages only. Nobody sees who gave what, or how much.</p>
+        </div>
+
         <h3 class="reg__give-title">Cast your vote</h3>
 
-        <!-- progress -->
-        <ol class="steps" id="regSteps" aria-label="Progress">
-          <li class="steps__item is-active" data-step="1"><span class="steps__dot">1</span><span class="steps__label">Place</span></li>
-          <li class="steps__item" data-step="2"><span class="steps__dot">2</span><span class="steps__label">Amount</span></li>
-          <li class="steps__item" data-step="3"><span class="steps__dot">3</span><span class="steps__label">Send</span></li>
-        </ol>
 
         <!-- STEP 1: where -->
         <section class="step is-open" id="step1" data-step="1">
@@ -155,6 +149,7 @@
 
             <div class="reg__pay" id="regPay" hidden>
               <p class="reg__pay-title" id="regPayTitle">Vote counted</p>
+              <p class="reg__impact" id="regImpact" hidden></p>
               <p class="reg__pay-sub" id="regPaySub">Your vote is on the board. Now pick how you would like to send the gift.</p>
               <div class="reg__methods" id="regMethods">
                 <button type="button" class="reg__method" data-method="venmo">Venmo</button>
@@ -176,7 +171,7 @@
 
   <!-- ============ FOOTER ============ -->
   <footer class="footer">
-    <span class="ornament ornament--set ornament--footer" aria-hidden="true"><i></i><img class="ornament__pug" src="../assets/photos/pug-icon.png?v=179" alt="" /><i></i></span>
+    <span class="ornament ornament--set ornament--footer" aria-hidden="true"><i></i><img class="ornament__pug" src="../assets/photos/pug-icon.png?v=181" alt="" /><i></i></span>
     <p class="footer__names">Austin <span>&amp;</span> Ana</p>
     <p class="footer__date">April 23, 2027 &#183; Promontory Point, Chicago</p>
     <p class="footer__thanks">We can't wait to celebrate with you.</p>
