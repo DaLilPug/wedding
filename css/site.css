@@ -2650,3 +2650,6 @@ html{scroll-behavior:auto}
 @media (min-width:861px){
   .reg__legal{font-size:11px;margin:32px auto 0;text-align:center}
 }
+
+/* footer identification (carrier rules want the site owner named on the landing page) */
+.footer__contact { margin-top: 14px; font-family: var(--sans); font-size: 12px; letter-spacing: .04em; color: var(--ink-soft); opacity: .8; }
