@@ -96,6 +96,14 @@
       });
     }
 
+    /* ---- keep index.html out of the address bar ---- */
+    function cleanPath() {
+      return location.pathname.replace(/index\.html$/, '');
+    }
+    if (history.replaceState && /index\.html$/.test(location.pathname)) {
+      history.replaceState(null, '', cleanPath() + location.search + location.hash);
+    }
+
     /* ---- in-page anchors: land below the fixed nav, after layout settles ---- */
     function navHeight() {
       var n = document.getElementById('nav');
@@ -148,7 +156,7 @@
       document.body.classList.remove('nav-open');
       if (toggle) toggle.setAttribute('aria-expanded', 'false');
       scrollToTarget(el);
-      if (history.replaceState) history.replaceState(null, '', '#' + id);
+      if (history.replaceState) history.replaceState(null, '', cleanPath() + '#' + id);
     });
     /* arriving with a hash (or from another page) lands correctly too */
     if (location.hash.length > 1) {
