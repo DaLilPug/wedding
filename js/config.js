@@ -27,5 +27,15 @@ window.WEDDING_CONFIG = {
     venmo: "Austin-Sabella",
     paypal: "austinsabella@gmail.com",
     zelle: "austinsabella@gmail.com"
+  },
+
+  /* Texting. Only used by the admin dashboard, to estimate cost and to
+     prefill the "send one test" prompt. The Twilio credentials themselves
+     live in the Edge Function's environment, never here. */
+  sms: {
+    perSegment: 0.0079,   // Twilio outbound rate per segment
+    carrierFee: 0.003,    // carrier surcharge, roughly
+    testPhone: "",        // your own mobile, +1 and ten digits
+    testEmail: "austinsabella@gmail.com"
   }
 };

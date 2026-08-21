@@ -116,3 +116,38 @@ button.metric--clear { cursor: default; }
 .metric--on { border-color: var(--sage-deep); background: #eef2ec; }
 .metric--on label { color: var(--ink); }
 .metric__hint { display: block; margin-top: 4px; font-family: var(--sans); font-style: normal; font-size: 10px; letter-spacing: .1em; color: #9ca3af; }
+
+/* ---- reminders: channel picker, counters, send controls ---- */
+.grow textarea {
+  font-family: var(--serif); font-size: 17px; line-height: 1.55; color: var(--ink);
+  background: var(--ivory); border: 1px solid var(--line); border-radius: 3px; padding: 9px 11px;
+}
+.grow textarea:focus { outline: none; border-color: var(--sage); }
+.rem-chan { flex: 0 0 158px; }
+.rem-sms { flex: 1 1 100%; min-height: 62px; resize: vertical; }
+
+/* one row, three shapes: the channel decides which fields exist */
+.rem-row--email .rem-sms { display: none; }
+.rem-row--sms .rem-subject,
+.rem-row--sms .rem-body { display: none; }
+
+.rem-meta { flex: 1 1 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-top: 4px; }
+.rem-count { font-family: var(--sans); font-size: 12px; color: var(--ink-soft); }
+.rem-acts { display: flex; gap: 8px; flex-wrap: wrap; }
+.rem-btn {
+  font-family: var(--sans); font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase;
+  padding: 7px 13px; background: var(--ivory); border: 1px solid var(--line);
+  color: var(--ink-soft); border-radius: 3px; cursor: pointer;
+}
+.rem-btn:hover { border-color: var(--sage); color: var(--ink); }
+.rem-btn--go { background: var(--sage); border-color: var(--sage); color: var(--cream); }
+.rem-btn--go:hover { background: var(--sage-deep); border-color: var(--sage-deep); color: var(--cream); }
+.rem-btn:disabled { opacity: 0.5; cursor: default; }
+
+/* ---- text delivery log ---- */
+.sms-sum { gap: 10px; font-family: var(--sans); font-size: 13px; }
+.sms-row { gap: 10px; font-family: var(--sans); font-size: 13px; align-items: center; }
+.sms-row--bad { background: #fdf4f1; border-radius: 4px; padding-left: 10px; padding-right: 10px; }
+.sms-who { flex: 0 1 190px; font-family: var(--serif); font-size: 16px; }
+.sms-ph { flex: 0 0 130px; color: var(--ink-soft); }
+.sms-msg { flex: 1 1 240px; color: var(--ink); }

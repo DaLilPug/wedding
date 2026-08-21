@@ -62,14 +62,26 @@
     <p class="admin-msg" id="admDashMsg" role="status"></p>
 
     <div class="admin-head" style="margin-top:56px">
-      <h1>Email reminders</h1>
+      <h1>Reminders</h1>
       <div class="admin-head__actions">
+        <button class="rsvp__back" id="admAudRefresh">Refresh reach</button>
         <button class="btn btn--primary" id="admAddReminder">+ Add reminder</button>
       </div>
     </div>
-    <p class="admin-hint">Each reminder emails its audience once, on its send date (late morning Chicago time), from hello@sabellawedding.com. Guests get on the email list automatically when they RSVP. Audiences: everyone, attending, declined, or not-yet-responded.</p>
+    <div class="admin-metrics" id="admReach"></div>
+    <p class="admin-hint">Every message goes out from here, the first invite and every nudge after it: email from hello@sabellawedding.com, texts from the wedding number. Pick a date, an audience, and a channel, then <b>Preview</b> to see who it reaches, <b>Send one test</b> to try it on yourself first, and <b>Send now</b> to go. Leave it alone and it sends itself on its date, late morning Chicago time. Write <b>{{first}}</b> anywhere in a message and it becomes that guest's first name, plus anyone in their party who has no number of their own.</p>
     <div class="admin-list" id="admReminders"></div>
     <p class="admin-msg" id="admRemMsg" role="status"></p>
+
+    <div class="admin-head" style="margin-top:48px">
+      <h1 style="font-size:28px">Text delivery</h1>
+      <div class="admin-head__actions">
+        <button class="rsvp__back" id="admSmsRefresh">Refresh</button>
+      </div>
+    </div>
+    <p class="admin-hint">"Sent" means the carrier accepted it. "Delivered" means it actually arrived. Only the failures are listed below, because those are the ones worth chasing another way. Replies land here and are forwarded to your email; anyone who texts back STOP is marked opted out and never texted again.</p>
+    <div class="admin-list" id="admSmsLog"></div>
+    <p class="admin-msg" id="admSmsMsg" role="status"></p>
 
     <div class="admin-head" style="margin-top:56px">
       <h1>House fund</h1>

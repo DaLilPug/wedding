@@ -34,9 +34,63 @@
   function showDashboard() { loginEl.hidden = true; dashEl.hidden = false; }
   function showLogin() { dashEl.hidden = true; loginEl.hidden = false; }
 
-  /* ---- reminders ---- */
+  /* ---- reminders: email and text, one pipeline ---- */
   var reminders = [];
+  var reach = {};
   var AUDIENCES = [['all','Everyone'],['attending','Attending'],['declined','Declined'],['not_responded','Not yet responded']];
+  var CHANNELS  = [['email','Email only'],['sms','Text only'],['both','Email and text']];
+  var SMS_RATE  = (cfg.sms && cfg.sms.perSegment) || 0.0079;
+  var SMS_FEE   = (cfg.sms && cfg.sms.carrierFee) || 0.003;
+
+  // One emoji turns the whole message into 70-character segments, which
+  // triples the bill. Count it the way the carrier does.
+  function segCount(body) {
+    var uni = false;
+    for (var i = 0; i < body.length; i++) { if (body.charCodeAt(i) > 255) { uni = true; break; } }
+    var single = uni ? 70 : 160, per = uni ? 67 : 153;
+    return body.length <= single ? 1 : Math.ceil(body.length / per);
+  }
+
+  /* Call send-reminders as the signed-in admin. The function re-checks the
+     allowlist itself, so the public anon key alone gets nowhere. */
+  async function invokeSend(payload) {
+    var s = await sb.auth.getSession();
+    var token = s.data && s.data.session ? s.data.session.access_token : '';
+    var res = await fetch(cfg.supabaseUrl.replace(/\/$/, '') + '/functions/v1/send-reminders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+        'apikey': cfg.supabaseAnonKey
+      },
+      body: JSON.stringify(payload || {})
+    });
+    var text = await res.text(), json = {};
+    try { json = JSON.parse(text); } catch (e) { json = { error: text }; }
+    if (!res.ok) throw new Error(json.error || text || ('HTTP ' + res.status));
+    return json;
+  }
+
+  async function loadReach() {
+    var res = await sb.rpc('admin_audience_counts');
+    if (res.error) { reach = {}; return; }
+    reach = {};
+    (res.data || []).forEach(function (r) { reach[r.audience] = r; });
+    renderReach();
+    document.querySelectorAll('.rem-row').forEach(updateCount);
+  }
+
+  function renderReach() {
+    var el = document.getElementById('admReach');
+    if (!el) return;
+    el.innerHTML = AUDIENCES.map(function (a) {
+      var r = reach[a[0]] || {};
+      return '<div class="metric"><span>' + (r.sms_count == null ? '-' : r.sms_count) + '</span>' +
+        '<label>' + a[1] + ' by text</label>' +
+        '<em class="metric__hint">' + (r.email_count || 0) + ' by email' +
+        (r.no_phone ? ' &middot; ' + r.no_phone + ' with no number' : '') + '</em></div>';
+    }).join('');
+  }
 
   async function loadReminders() {
     var res = await sb.rpc('admin_list_reminders');
@@ -48,43 +102,109 @@
   function reminderRowHtml(r) {
     var id = r ? r.id : '';
     var sent = r && r.sent_at;
+    var ch = (r && r.channel) || 'email';
+    var aud = (r && r.audience) || 'all';
+    var dis = sent ? ' disabled' : '';
     var opts = AUDIENCES.map(function (a) {
-      return '<option value="' + a[0] + '"' + ((r && r.audience) === a[0] ? ' selected' : '') + '>' + a[1] + '</option>';
+      return '<option value="' + a[0] + '"' + (aud === a[0] ? ' selected' : '') + '>' + a[1] + '</option>';
     }).join('');
-    return '<div class="grow rem-row' + (sent ? ' rem-row--sent' : '') + '" data-id="' + esc(id) + '">' +
-      '<input class="rem-date" type="date" value="' + esc(r ? r.send_on : '') + '"' + (sent ? ' disabled' : '') + ' />' +
-      '<select class="rem-aud"' + (sent ? ' disabled' : '') + '>' + opts + '</select>' +
-      '<input class="rem-subject" type="text" value="' + esc(r ? r.subject : '') + '" placeholder="Subject"' + (sent ? ' disabled' : '') + ' />' +
+    var chOpts = CHANNELS.map(function (c) {
+      return '<option value="' + c[0] + '"' + (ch === c[0] ? ' selected' : '') + '>' + c[1] + '</option>';
+    }).join('');
+    return '<div class="grow rem-row rem-row--' + ch + (sent ? ' rem-row--sent' : '') + '" data-id="' + esc(id) + '">' +
+      '<input class="rem-date" type="date" value="' + esc(r ? r.send_on : '') + '"' + dis + ' />' +
+      '<select class="rem-aud"' + dis + '>' + opts + '</select>' +
+      '<select class="rem-chan"' + dis + '>' + chOpts + '</select>' +
+      '<input class="rem-subject" type="text" value="' + esc(r ? r.subject : '') + '" placeholder="Email subject"' + dis + ' />' +
       (sent
-        ? '<span class="rem-status">Sent to ' + (r.sent_count || 0) + '</span>'
+        ? '<span class="rem-status">Sent ' + String(r.sent_at).slice(0, 10) + ' &middot; ' +
+          (r.sent_count || 0) + ' email, ' + (r.sms_sent_count || 0) + ' text</span>'
         : '<button class="grow-save rem-save" type="button">Save</button>' +
           '<button class="grow-del rem-del" type="button" title="Remove" aria-label="Remove">&#10005;</button>') +
-      '<textarea class="rem-body" placeholder="Message... (blank line = new paragraph)"' + (sent ? ' disabled' : '') + '>' + esc(r ? r.body : '') + '</textarea>' +
+      '<textarea class="rem-body" placeholder="Email message... (blank line starts a new paragraph)"' + dis + '>' + esc(r ? r.body : '') + '</textarea>' +
+      '<textarea class="rem-sms" placeholder="Text message... keep it short. {{first}} becomes their first name."' + dis + '>' + esc(r ? r.sms_body : '') + '</textarea>' +
+      '<div class="rem-meta"><span class="rem-count"></span>' +
+      (sent ? '' :
+        '<span class="rem-acts">' +
+          '<button class="rem-btn rem-preview" type="button">Preview</button>' +
+          '<button class="rem-btn rem-test" type="button">Send one test</button>' +
+          '<button class="rem-btn rem-btn--go rem-now" type="button">Send now</button>' +
+        '</span>') +
+      '</div>' +
       '</div>';
+  }
+
+  function rowChannel(row) {
+    var el = row.querySelector('.rem-chan');
+    return el ? el.value : 'email';
+  }
+
+  function updateCount(row) {
+    var ta = row.querySelector('.rem-sms');
+    var out = row.querySelector('.rem-count');
+    if (!ta || !out) return;
+    if (rowChannel(row) === 'email') { out.innerHTML = ''; return; }
+    var body = ta.value || '';
+    if (!body) { out.innerHTML = 'No text written yet.'; return; }
+    var segs = segCount(body);
+    var audEl = row.querySelector('.rem-aud');
+    var n = (reach[audEl ? audEl.value : 'all'] || {}).sms_count || 0;
+    out.innerHTML = body.length + ' characters, ' + segs + ' segment' + (segs > 1 ? 's' : '') + ' each' +
+      ' &middot; ' + n + ' recipient' + (n === 1 ? '' : 's') +
+      ' &middot; about $' + (n * segs * (SMS_RATE + SMS_FEE)).toFixed(2);
+  }
+
+  function wireRow(row) {
+    // Each handler gets its own binding on purpose. Sharing one "var el"
+    // across them means every closure sees whatever it pointed at last.
+    var chan = row.querySelector('.rem-chan');
+    if (chan) chan.onchange = function () {
+      row.className = row.className.replace(/rem-row--(email|sms|both)/, 'rem-row--' + chan.value);
+      updateCount(row);
+    };
+    var sms = row.querySelector('.rem-sms');
+    if (sms) sms.oninput = function () { updateCount(row); };
+    var aud = row.querySelector('.rem-aud');
+    if (aud) aud.onchange = function () { updateCount(row); };
+
+    var on = function (sel, fn) {
+      var b = row.querySelector(sel);
+      if (b) b.onclick = function () { fn(row); };
+    };
+    on('.rem-save', saveReminder);
+    on('.rem-del', deleteReminder);
+    on('.rem-preview', previewReminder);
+    on('.rem-test', testReminder);
+    on('.rem-now', sendNow);
+    updateCount(row);
   }
 
   function renderReminders() {
     var el = document.getElementById('admReminders');
     el.innerHTML = reminders.map(function (r) { return reminderRowHtml(r); }).join('') ||
       '<p class="admin-cell-muted" style="padding:18px">No reminders yet. Add one above.</p>';
-    el.querySelectorAll('.rem-save').forEach(function (b) { b.onclick = function () { saveReminder(b.closest('.rem-row')); }; });
-    el.querySelectorAll('.rem-del').forEach(function (b) { b.onclick = function () { deleteReminder(b.closest('.rem-row')); }; });
+    el.querySelectorAll('.rem-row').forEach(wireRow);
   }
 
   async function saveReminder(row) {
     var msg = document.getElementById('admRemMsg');
     var id = row.getAttribute('data-id') || null;
     var sendOn = row.querySelector('.rem-date').value;
+    var channel = rowChannel(row);
     var subject = row.querySelector('.rem-subject').value.trim();
     var body = row.querySelector('.rem-body').value.trim();
-    if (!sendOn || !subject || !body) { setMsg(msg, 'A reminder needs a date, subject, and message.', 'err'); return; }
+    var smsBody = row.querySelector('.rem-sms').value.trim();
+    if (!sendOn) { setMsg(msg, 'A reminder needs a date.', 'err'); return; }
+    if (channel !== 'sms' && (!subject || !body)) { setMsg(msg, 'An email reminder needs a subject and a message.', 'err'); return; }
+    if (channel !== 'email' && !smsBody) { setMsg(msg, 'A text reminder needs a text message.', 'err'); return; }
     var res = await sb.rpc('admin_save_reminder', {
       p_id: id, p_send_on: sendOn,
       p_audience: row.querySelector('.rem-aud').value,
-      p_subject: subject, p_body: body
+      p_subject: subject, p_body: body,
+      p_channel: channel, p_sms_body: smsBody
     });
     if (res.error) { setMsg(msg, 'Could not save: ' + res.error.message, 'err'); return; }
-    setMsg(msg, 'Reminder saved for ' + sendOn + '.', 'ok');
+    setMsg(msg, 'Saved for ' + sendOn + '.', 'ok');
     loadReminders();
   }
 
@@ -95,6 +215,122 @@
     var res = await sb.rpc('admin_delete_reminder', { p_id: id });
     if (res.error) { setMsg(document.getElementById('admRemMsg'), 'Could not remove: ' + res.error.message, 'err'); return; }
     loadReminders();
+  }
+
+  function needsId(row, msg) {
+    var id = row.getAttribute('data-id');
+    if (!id) { setMsg(msg, 'Save the reminder first, then preview or send it.', 'err'); return null; }
+    return id;
+  }
+
+  async function previewReminder(row) {
+    var msg = document.getElementById('admRemMsg');
+    var id = needsId(row, msg); if (!id) return;
+    setMsg(msg, 'Working out who this reaches...');
+    try {
+      var r = ((await invokeSend({ reminder_id: id, dry_run: true })).results || [])[0] || {};
+      var bits = [];
+      if (r.email) bits.push(r.email.recipients + ' by email');
+      if (r.sms) bits.push(r.sms.recipients + ' by text at ' + r.sms.segments_each +
+        ' segment' + (r.sms.segments_each > 1 ? 's' : '') + ' each');
+      setMsg(msg, 'This reaches ' + (bits.join(' and ') || 'nobody') + '.' +
+        (r.sms && r.sms.preview ? ' The first text reads: ' + r.sms.preview : ''), 'ok');
+    } catch (e) { setMsg(msg, 'Preview failed: ' + e.message, 'err'); }
+  }
+
+  async function testReminder(row) {
+    var msg = document.getElementById('admRemMsg');
+    var id = needsId(row, msg); if (!id) return;
+    var ch = rowChannel(row);
+    var suggest = ch === 'email' ? ((cfg.sms && cfg.sms.testEmail) || '') : ((cfg.sms && cfg.sms.testPhone) || '');
+    var to = prompt(ch === 'email' ? 'Send one test email to which address?'
+                                   : 'Send one test text to which number? Use +1 and the ten digits.', suggest);
+    if (!to) return;
+    setMsg(msg, 'Sending one test...');
+    try {
+      var r = ((await invokeSend({ reminder_id: id, test_to: to.trim() })).results || [])[0] || {};
+      var ok = ((r.sms && r.sms.sent) || 0) + ((r.email && r.email.sent) || 0);
+      var errs = ((r.sms && r.sms.errs) || []).concat((r.email && r.email.errs) || []);
+      setMsg(msg, ok ? 'Test sent to ' + to + '. Check that it actually arrived before you send the real one.'
+                     : 'Test did not send. ' + (errs.join(' | ') || 'That address does not match the channel.'),
+        ok ? 'ok' : 'err');
+      loadSmsLog();
+    } catch (e) { setMsg(msg, 'Test failed: ' + e.message, 'err'); }
+  }
+
+  async function sendNow(row) {
+    var msg = document.getElementById('admRemMsg');
+    var id = needsId(row, msg); if (!id) return;
+    var pre;
+    try { pre = await invokeSend({ reminder_id: id, dry_run: true }); }
+    catch (e) { setMsg(msg, 'Could not check the audience: ' + e.message, 'err'); return; }
+    var r = (pre.results || [])[0] || {};
+    var bits = [];
+    if (r.email && r.email.recipients) bits.push(r.email.recipients + ' emails');
+    if (r.sms && r.sms.recipients) bits.push(r.sms.recipients + ' texts');
+    if (!bits.length) { setMsg(msg, 'Nothing to send: that audience is empty.', 'err'); return; }
+    if (!confirm('Send now?\n\n' + bits.join('\n') +
+      (r.sms && r.sms.preview ? '\n\nThe text reads:\n' + r.sms.preview : '') +
+      '\n\nThis goes out immediately and cannot be recalled.')) return;
+    var btn = row.querySelector('.rem-now');
+    if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
+    setMsg(msg, 'Sending. Texts go one at a time on purpose, so give it a minute.');
+    try {
+      var g = ((await invokeSend({ reminder_id: id })).results || [])[0] || {};
+      var done = [];
+      if (g.email) done.push(g.email.sent + ' of ' + g.email.recipients + ' emails');
+      if (g.sms) done.push(g.sms.sent + ' of ' + g.sms.recipients + ' texts');
+      var errs = ((g.sms && g.sms.errs) || []).concat((g.email && g.email.errs) || []);
+      setMsg(msg, 'Sent ' + done.join(' and ') + '.' + (errs.length ? ' Problems: ' + errs.join(' | ') : ''),
+        errs.length ? 'err' : 'ok');
+      loadReminders(); loadSmsLog(); loadReach();
+    } catch (e) {
+      setMsg(msg, 'Send failed: ' + e.message, 'err');
+      if (btn) { btn.disabled = false; btn.textContent = 'Send now'; }
+    }
+  }
+
+  /* ---- text delivery and replies ---- */
+  async function loadSmsLog() {
+    var el = document.getElementById('admSmsLog');
+    if (!el) return;
+    var msg = document.getElementById('admSmsMsg');
+    var a = await sb.rpc('admin_sms_log', { p_reminder_id: null });
+    if (a.error) { setMsg(msg, 'Could not load the delivery log: ' + a.error.message, 'err'); return; }
+    var b = await sb.rpc('admin_sms_inbound');
+    var log = a.data || [], inbound = (b.data || []);
+
+    var tally = {};
+    log.forEach(function (r) { var s = r.status || 'unknown'; tally[s] = (tally[s] || 0) + 1; });
+    var summary = Object.keys(tally).map(function (k) { return tally[k] + ' ' + k; }).join(', ');
+    var bad = log.filter(function (r) {
+      return r.status === 'undelivered' || r.status === 'failed' || r.status === 'error';
+    });
+
+    var html = '';
+    if (log.length) {
+      html += '<div class="grow sms-sum"><b>' + log.length + ' texts sent</b>' +
+        (summary ? '<span class="admin-cell-muted">' + esc(summary) + '</span>' : '') + '</div>';
+    }
+    html += bad.map(function (r) {
+      return '<div class="grow sms-row sms-row--bad">' +
+        '<span class="sms-who">' + esc(r.greeting || r.phone) + '</span>' +
+        '<span class="sms-ph">' + esc(r.phone) + '</span>' +
+        '<span class="badge badge--no">' + esc(r.status || 'error') + '</span>' +
+        '<span class="admin-cell-muted">' + esc(r.error || '') + '</span></div>';
+    }).join('');
+    if (inbound.length) {
+      html += '<div class="grow sms-sum"><b>' + inbound.length + ' replies</b></div>' +
+        inbound.map(function (r) {
+          return '<div class="grow sms-row">' +
+            '<span class="sms-who">' + esc(r.guest_name || r.from_phone) + '</span>' +
+            (r.is_opt_out ? '<span class="badge badge--no">opted out</span>' : '') +
+            '<span class="sms-msg">' + esc(r.body || '') + '</span>' +
+            '<span class="pl-date">' + String(r.received_at || '').slice(0, 10) + '</span></div>';
+        }).join('');
+    }
+    el.innerHTML = html || '<p class="admin-cell-muted" style="padding:18px">No texts sent yet.</p>';
+    setMsg(msg, '');
   }
 
   /* ---- house fund pledges ---- */
@@ -169,7 +405,7 @@
 
   async function init() {
     var s = await sb.auth.getSession();
-    if (s.data && s.data.session) { showDashboard(); loadGuests(); loadReminders(); loadPledges(); } else { showLogin(); }
+    if (s.data && s.data.session) { showDashboard(); loadGuests(); loadReminders(); loadReach(); loadSmsLog(); loadPledges(); } else { showLogin(); }
   }
   async function login() {
     var email = document.getElementById('admEmail').value.trim();
@@ -180,7 +416,7 @@
     var res = await sb.auth.signInWithPassword({ email: email, password: pass });
     btn.disabled = false;
     if (res.error) { setMsg(msgEl, 'Could not sign in. Check your email and password.', 'err'); return; }
-    setMsg(msgEl, ''); showDashboard(); loadGuests(); loadReminders(); loadPledges();
+    setMsg(msgEl, ''); showDashboard(); loadGuests(); loadReminders(); loadReach(); loadSmsLog(); loadPledges();
   }
   async function signout() {
     await sb.auth.signOut(); guests = [];
@@ -453,10 +689,15 @@
     var el = document.getElementById('admReminders');
     if (el.querySelector('.admin-cell-muted')) el.innerHTML = '';
     el.insertAdjacentHTML('afterbegin', reminderRowHtml(null));
-    el.querySelectorAll('.rem-save').forEach(function (b) { b.onclick = function () { saveReminder(b.closest('.rem-row')); }; });
-    el.querySelectorAll('.rem-del').forEach(function (b) { b.onclick = function () { deleteReminder(b.closest('.rem-row')); }; });
+    el.querySelectorAll('.rem-row').forEach(wireRow);
   });
 
+
+  var audRefresh = document.getElementById('admAudRefresh');
+  if (audRefresh) audRefresh.addEventListener('click', function () { loadReach(); loadReminders(); });
+
+  var smsRefresh = document.getElementById('admSmsRefresh');
+  if (smsRefresh) smsRefresh.addEventListener('click', loadSmsLog);
 
   var plRefresh = document.getElementById('admPledgeRefresh');
   if (plRefresh) plRefresh.addEventListener('click', loadPledges);
