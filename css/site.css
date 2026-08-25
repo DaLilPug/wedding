@@ -2653,3 +2653,6 @@ html{scroll-behavior:auto}
 
 /* footer identification (carrier rules want the site owner named on the landing page) */
 .footer__contact { margin-top: 14px; font-family: var(--sans); font-size: 12px; letter-spacing: .04em; color: var(--ink-soft); opacity: .8; }
+.footer__legal { margin-top: 6px; font-family: var(--sans); font-size: 12px; letter-spacing: .04em; }
+.footer__legal a { color: var(--ink-soft); opacity: .8; text-decoration: none; border-bottom: 1px solid rgba(104,112,138,.3); }
+.footer__legal a:hover { opacity: 1; }
