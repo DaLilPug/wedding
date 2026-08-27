@@ -103,15 +103,17 @@ begin
        and party_key = p_party_key;
   end loop;
 
+  -- party-wide: the note is from the party, the address is the household's
   update public.guests
-     set email   = coalesce(nullif(btrim(p_email), ''), email),
-         note    = coalesce(nullif(btrim(p_note),  ''), note),
+     set note    = coalesce(nullif(btrim(p_note),  ''), note),
          address = coalesce(nullif(btrim(p_address), ''), address)
    where party_key = p_party_key;
 
-  -- phone applies to the primary guest only (never clobbers a +1's number)
+  -- primary guest only: the form collects one phone and one email, belonging
+  -- to whoever filled it in. Never clobber a +1's own phone or email.
   update public.guests
-     set phone = coalesce(nullif(btrim(p_phone), ''), phone)
+     set phone = coalesce(nullif(btrim(p_phone), ''), phone),
+         email = coalesce(nullif(btrim(p_email), ''), email)
    where party_key = p_party_key
      and is_plus_one = false;
 end;

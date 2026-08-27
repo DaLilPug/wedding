@@ -228,12 +228,19 @@
     });
 
     /* contact details reveal once everyone has answered */
+    // The phone and email land on the primary guest only, so on a party of two
+    // or more the labels name them. Otherwise it reads as if we are asking the
+    // last person listed. search_party orders primaries first, so members[0]
+    // is the row the database will actually write to.
+    var lead = (party.members && party.members.length > 1) ? party.members[0].name : '';
+    var own = lead ? esc(lead) + '&#39;s ' : '';
+
     html += '<div class="rsvp__contact" id="rsvpContact" hidden>' +
       '<p class="rsvp__contact-head">One last thing - where do we reach you?</p>';
 
     var phoneMask = phoneHint ? '(•••) •••-' + phoneHint : '';
     html += '<div class="field">' +
-      '<label class="field__label" for="rsvpPhone">Mobile number</label>' +
+      '<label class="field__label" for="rsvpPhone">' + own + 'Mobile number</label>' +
       '<input id="rsvpPhone" type="tel" autocomplete="tel"' +
         (phoneMask
           ? ' value="' + esc(phoneMask) + '" data-masked="1" placeholder="(555) 555-5555"'
@@ -246,7 +253,7 @@
 
     var emailMask = emailHint || '';
     html += '<div class="field">' +
-      '<label class="field__label" for="rsvpEmail">Email</label>' +
+      '<label class="field__label" for="rsvpEmail">' + own + 'Email</label>' +
       '<input id="rsvpEmail" type="' + (emailMask ? 'text' : 'email') + '" autocomplete="email"' +
         (emailMask
           ? ' value="' + esc(emailMask) + '" data-masked="1" placeholder="you@email.com"'
