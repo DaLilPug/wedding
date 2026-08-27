@@ -260,7 +260,7 @@
     if (cfg.askNote) {
       html += '<div class="field">' +
         '<label class="field__label" for="rsvpNote">A note for us <span style="opacity:.6">(optional)</span></label>' +
-        '<textarea id="rsvpNote" placeholder="Song requests, dietary needs, or just say hi..."></textarea></div>';
+        '<textarea id="rsvpNote" placeholder="Song requests, objections, or just say hi..."></textarea></div>';
     }
     html += '</div>';
 
