@@ -4,14 +4,16 @@
 // come from the same sender.
 //
 // Called three ways:
-//   1. pg_cron, daily, with the x-cron-secret header. Sends everything due.
+//   1. pg_cron, daily, with the x-cron-secret header. Reports what is due and
+//      sends NOTHING, because it passes no reminder_id.
 //   2. The admin dashboard, with a signed-in admin's bearer token, to send one
 //      reminder immediately, preview its audience, or fire a single test.
 //   3. Nothing else. Anything unauthenticated gets a 403.
 //
 // Body (all optional):
 //   { reminder_id, dry_run, test_to, channels }
-//   reminder_id  send just this one, ignoring its send_on date
+//   reminder_id  send just this one, ignoring its send_on date. REQUIRED for
+//                anything to actually send; without it every call is a dry run
 //   dry_run      resolve the audience and return it, send nothing
 //   test_to      send only to this phone or email, leave the reminder unsent
 //   channels     ["sms"] or ["email"] to send only one half of a "both"
@@ -135,8 +137,15 @@ Deno.serve(async (req) => {
   if (!who.ok) return new Response("forbidden", { status: 403, headers: cors });
 
   const opts = await req.json().catch(() => ({}));
-  const dryRun = !!opts.dry_run;
   const testTo = String(opts.test_to || "").trim();
+
+  // Manual sending only. A call without an explicit reminder_id can never
+  // send: it resolves the audience and reports back, nothing more. That makes
+  // an accidental blast structurally impossible rather than something we have
+  // to remember to keep switched off. The dashboard's Send now always passes a
+  // reminder_id, so nothing a human does from the UI is affected.
+  const targeted = !!opts.reminder_id;
+  const dryRun = !!opts.dry_run || !targeted;
   const only: string[] | null = Array.isArray(opts.channels) && opts.channels.length ? opts.channels : null;
 
   const today = new Date().toISOString().slice(0, 10);
