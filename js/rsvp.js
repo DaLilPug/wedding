@@ -418,22 +418,24 @@
     } else {
       msg = "Thank you for letting us know. We'll miss you, and we're grateful you're in our lives.";
     }
-    var toRegistry = coming.length > 0;
+    // Everyone sees the house fund, whether they can make it or not. Someone
+    // who declines may still want to mark the occasion, so the invitation is
+    // the same, only the framing changes.
+    var nextLine = coming.length
+      ? 'One more thing: our registry is a house fund, and your gift also votes on which state we end up in. Taking you there now.'
+      : 'If you would still like to mark the occasion, our registry is a house fund, and your gift also votes on which state we end up in. Taking you there now.';
+
     stepDone.innerHTML = '<div class="rsvp__done"><h3>Thank you</h3><p>' + msg + '</p>' +
-      (toRegistry
-        ? '<p class="rsvp__done-next">One more thing: our registry is a house fund, and your gift also votes on which state we end up in. Taking you there now.</p>' +
-          '<p style="margin-top:18px"><a class="btn btn--primary" href="/registry/">See the house fund</a></p>'
-        : '') +
+      '<p class="rsvp__done-next">' + nextLine + '</p>' +
+      '<p style="margin-top:18px"><a class="btn btn--primary" href="/registry/">See the house fund</a></p>' +
       '<p style="margin-top:22px"><button class="rsvp__back" id="rsvpAgainBtn">Submit another RSVP</button></p></div>';
     document.getElementById('rsvpAgainBtn').addEventListener('click', function () {
       nameInput.value = ''; searchMsg.textContent = ''; searchMsg.className = 'rsvp__msg';
       show(stepSearch);
     });
     show(stepDone);
-    if (toRegistry) {
-      setTimeout(function () {
-        if (!stepDone.hidden) window.location.href = '/registry/?from=rsvp';
-      }, 3200);
-    }
+    setTimeout(function () {
+      if (!stepDone.hidden) window.location.href = '/registry/?from=rsvp';
+    }, 3200);
   }
 })();
