@@ -127,10 +127,6 @@
     show(stepRespond);
   }
 
-  function phoneHintPresent(party) {
-    return (party.members || []).some(function (m) { return !!m.phone_hint; });
-  }
-
   /* ---- Step 2: respond ---- */
   var ROLE_LINES = {
     'default': "You're not just a guest - you're on the crew running this thing.",
@@ -193,9 +189,8 @@
     var names = party.members.map(function (m) { return esc(m.name); }).join(' & ');
     var meals = Array.isArray(cfg.mealOptions) ? cfg.mealOptions : [];
     var roles = party.members.filter(function (m) { return m.role; });
-    var phoneHint = null, emailHint = null, hasEmail = false, hasAddress = false;
+    var emailHint = null, hasEmail = false, hasAddress = false;
     party.members.forEach(function (m) {
-      if (m.phone_hint && !phoneHint) phoneHint = m.phone_hint;
       if (m.email_hint && !emailHint) emailHint = m.email_hint;
       if (m.has_email) hasEmail = true;
       if (m.has_address) hasAddress = true;
@@ -237,19 +232,6 @@
 
     html += '<div class="rsvp__contact" id="rsvpContact" hidden>' +
       '<p class="rsvp__contact-head">One last thing - where do we reach you?</p>';
-
-    var phoneMask = phoneHint ? '(•••) •••-' + phoneHint : '';
-    html += '<div class="field">' +
-      '<label class="field__label" for="rsvpPhone">' + own + 'Mobile number</label>' +
-      '<input id="rsvpPhone" type="tel" autocomplete="tel"' +
-        (phoneMask
-          ? ' value="' + esc(phoneMask) + '" data-masked="1" placeholder="(555) 555-5555"'
-          : ' placeholder="(555) 555-5555"') +
-      ' />' +
-      (phoneMask
-        ? '<p class="field__hint">We have a phone on file - only fill this in to update it.</p>'
-        : '<p class="field__hint">So wedding-day updates can reach you by text.</p>') +
-      '</div>';
 
     var emailMask = emailHint || '';
     html += '<div class="field">' +
@@ -301,7 +283,6 @@
         }
       });
     }
-    wireMask(document.getElementById('rsvpPhone'), phoneMask);
     wireMask(document.getElementById('rsvpEmail'), emailMask, 'email');
 
     var contact = document.getElementById('rsvpContact');
@@ -378,8 +359,6 @@
 
     var emailField = document.getElementById('rsvpEmail');
     var email = (emailField && !emailField.getAttribute('data-masked')) ? emailField.value : '';
-    var phoneField = document.getElementById('rsvpPhone');
-    var phone = (phoneField && !phoneField.getAttribute('data-masked')) ? phoneField.value : '';
     var noteEl = document.getElementById('rsvpNote');
     var note = noteEl ? noteEl.value : '';
 
@@ -394,16 +373,11 @@
       msg.classList.add('rsvp__msg--err');
       return;
     }
-    if (anyYes && !phoneHintPresent(party) && phone.replace(/\D/g, '').length < 10) {
-      msg.textContent = 'Please add a mobile number so wedding-day updates can reach you.';
-      msg.classList.add('rsvp__msg--err');
-      return;
-    }
 
     btn.disabled = true;
     msg.textContent = 'Sending...';
     try {
-      await submitRsvp(party.party_key, responses, email.trim(), phone.trim(), note.trim(), '');
+      await submitRsvp(party.party_key, responses, email.trim(), '', note.trim(), '');
       renderDone(party, responses);
     } catch (e) {
       msg.textContent = 'Something went wrong sending your RSVP. Please try again.';
