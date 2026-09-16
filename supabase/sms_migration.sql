@@ -118,6 +118,12 @@ as $fn$
   order by gr.phone;
 $fn$;
 
+-- Postgres grants EXECUTE to PUBLIC on new functions by default, and this one
+-- returns every guest's phone number with no auth check inside: it exists for
+-- the send function, which calls it as service_role. Nobody else gets it.
+revoke execute on function public.sms_audience(text) from public, anon, authenticated;
+grant execute on function public.sms_audience(text) to service_role;
+
 -- ---------------------------------------------------------
 -- 4. Admin reads
 -- ---------------------------------------------------------
