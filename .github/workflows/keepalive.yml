@@ -1,10 +1,15 @@
 name: Keep Supabase awake
 
-# Free-tier Supabase projects pause after ~7 days without traffic.
-# A tiny query every 3 days keeps the RSVP database live.
+# Free-tier Supabase projects pause after about 7 days without traffic.
+# One small query a day keeps the RSVP database live with a wide margin.
+#
+# The project paused on 2026-09-24 despite a "successful" ping two days
+# earlier. The old step never checked the HTTP code, so a rejected ping
+# still passed. Now each run retries, and a run that cannot get a 200
+# fails red, which emails the repo owner.
 on:
   schedule:
-    - cron: "17 9 */3 * *"
+    - cron: "17 14 * * *"
   workflow_dispatch:
 
 jobs:
@@ -13,13 +18,20 @@ jobs:
     steps:
       - name: Ping search_party RPC
         run: |
-          curl -sS -X POST \
-            "https://ugweqscwfbxsdecgruqw.supabase.co/rest/v1/rpc/search_party" \
-            -H "apikey: ${SUPABASE_ANON_KEY}" \
-            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
-            -H "Content-Type: application/json" \
-            -d '{"q":"keepalive-ping"}' \
-            -w "\nHTTP %{http_code}\n"
+          for attempt in 1 2 3 4 5; do
+            code=$(curl -sS -o body.txt -w "%{http_code}" --max-time 30 -X POST \
+              "https://ugweqscwfbxsdecgruqw.supabase.co/rest/v1/rpc/search_party" \
+              -H "apikey: ${SUPABASE_ANON_KEY}" \
+              -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
+              -H "Content-Type: application/json" \
+              -d '{"q":"keepalive-ping"}') || code=000
+            echo "attempt ${attempt}: HTTP ${code}"
+            if [ "${code}" = "200" ]; then exit 0; fi
+            cat body.txt 2>/dev/null || true
+            sleep 60
+          done
+          echo "::error::Supabase did not answer the keepalive ping after 5 tries. The RSVP database may be pausing - check the dashboard."
+          exit 1
         env:
           # anon key is public by design (also shipped in js/config.js)
           SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVnd2Vxc2N3ZmJ4c2RlY2dydXF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzMDcyNTksImV4cCI6MjA5Nzg4MzI1OX0.7WBJyPrDkiKgk4fvy49WBcV7Q9cRiDeBdIGDiR1zvyU
