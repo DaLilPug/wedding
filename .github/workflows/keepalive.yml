@@ -7,15 +7,43 @@ name: Keep Supabase awake
 # earlier. The old step never checked the HTTP code, so a rejected ping
 # still passed. Now each run retries, and a run that cannot get a 200
 # fails red, which emails the repo owner.
+#
+# GitHub also switches off scheduled workflows after 60 days without a
+# commit to the repo. On the 1st of each month this job commits a one-line
+# date stamp, which counts as activity and keeps the schedule alive.
 on:
   schedule:
     - cron: "17 14 * * *"
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
+      - name: Decide whether today gets an activity stamp
+        id: day
+        run: |
+          if [ "$(date -u +%d)" = "01" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "stamp=yes" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.day.outputs.stamp == 'yes'
+
+      # Runs before the ping so a failed ping can never skip a month's stamp.
+      - name: Commit the monthly activity stamp
+        if: steps.day.outputs.stamp == 'yes'
+        run: |
+          date -u +"%Y-%m-%d %H:%M UTC" > .github/keepalive-stamp.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/keepalive-stamp.txt
+          git commit -m "Keepalive: monthly activity stamp"
+          git push
+
       - name: Ping search_party RPC
         run: |
           for attempt in 1 2 3 4 5; do
